@@ -62,7 +62,7 @@ Objectiu: Sistema complet amb proves
 
 ## Tecnologies Utilitzades
 
-| Tecnologia | Versio | Us |
+| Tecnologia | Versio | Us  |
 |------------|--------|-----|
 | NGINX | Alpine | Proxy invers, balanceig, servidor estatic |
 | PHP-FPM | 8.x | Execucio scripts PHP |
