@@ -1,0 +1,46 @@
+body {
+    background: #fafafa;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    background: white;
+    padding: 16px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+input[type=text] {
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+    padding: 10px;
+    width: 300px;
+}
+
+input[type=submit] {
+    background: #0095f6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    width: 300px;
+    cursor: pointer;
+}
+
+#file { display: none; }
+#preview { max-width: 300px; cursor: pointer; }
+
+.post {
+    max-width: 600px;
+    margin: 20px auto;
+    background: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+}
+
+.post img { max-width: 100%; }
+.post p { padding: 16px; margin: 0; }
