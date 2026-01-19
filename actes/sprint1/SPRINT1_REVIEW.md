@@ -14,6 +14,7 @@
 | Nom | Rol | Assistencia |
 |-----|-----|-------------|
 | Hamza | Product Owner / DevOps Lead | Present |
+| Steven | Backend Developer / DBA | Absent |
 | Kevin | Infrastructure / Frontend | Present |
 
 ---
