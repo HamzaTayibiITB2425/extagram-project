@@ -36,18 +36,18 @@ Crear un MVP de l'aplicacio Extagram funcionant en una sola maquina.
 
 | ID | Tasca | Assignat | Estat | Comentaris |
 |----|-------|----------|-------|------------|
-| T1.1 | Crear repositori GitHub | Hamza | | |
-| T1.2 | Configurar claus SSH | Hamza | | |
-| T1.3 | Documentar analisi | Hamza | | |
-| T1.4 | Installar NGINX | Kevin | | |
-| T1.5 | Configurar virtual host | Kevin | | |
-| T1.6 | Configurar PHP-FPM | Steven | | |
-| T1.7 | Configurar MySQL | Steven | | |
-| T1.8 | Crear BBDD | Steven | | |
-| T1.9 | Desplegar aplicacio | Kevin | | |
-| T1.10 | Proves funcionament | Tots | | |
-| T1.11 | Guia installacio | Hamza | | |
-| T1.12 | Preparar Review | Tots | | |
+| T1.1 | Crear repositori GitHub | Hamza | ✓ | Fet |
+| T1.2 | Configurar claus SSH | Hamza | ✓ | Fet |
+| T1.3 | Documentar analisi | Hamza | ✓ | Fet |
+| T1.4 | Installar NGINX | Kevin | ✓ | Fet |
+| T1.5 | Configurar virtual host | Kevin | ✓ | Fet |
+| T1.6 | Configurar PHP-FPM | Steven | ✓ | Fet |
+| T1.7 | Configurar MySQL | Steven | ✓ | Fet |
+| T1.8 | Crear BBDD | Steven | ✓ | Fet |
+| T1.9 | Desplegar aplicacio | Kevin | ✓ | Fet |
+| T1.10 | Proves funcionament | Tots | ✓ | Fet |
+| T1.11 | Guia installacio | Hamza | ✓ | Fet |
+| T1.12 | Preparar Review | Tots | ✓ | Fet |
 
 ---
 
