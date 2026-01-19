@@ -1112,7 +1112,7 @@ Tots els resultats detallats es troben a:
 3. Les dades es mantenen al volum `db_data`
 
 #### Si es perden dades:
-1. Restaurar des de backup (si existeix)
+1. Restaurar des de backup
 2. Reconstruir base de dades amb `init.sql`
 3. Re-desplegar contenidors
 
@@ -1151,27 +1151,6 @@ Sprint Retrospective (Millora contínua)
 | **Product Owner** | Hamza | Definir Product Backlog<br>Prioritzar tasques<br>Acceptar o rebutjar entregables |
 | **Scrum Master** | Hamza | Facilitar ceremonies<br>Eliminar impediments<br>Assegurar seguiment de Scrum |
 | **Development Team** | Steven, Kevin | Desenvolupar funcionalitats<br>Auto-organització<br>Comprometre's amb Sprint Goals |
-
----
-
-### Backlog del Projecte
-
-#### Product Backlog (Priorització MoSCoW)
-
-| Prioritat | Funcionalitat | Sprint | Estat |
-|-----------|--------------|--------|-------|
-| **Must Have** | Servidor web funcional | Sprint 1 | COMPLETAT |
-| **Must Have** | Base de dades MySQL | Sprint 1 | COMPLETAT |
-| **Must Have** | Publicar posts | Sprint 1 | COMPLETAT |
-| **Must Have** | Pujar imatges | Sprint 1 | COMPLETAT |
-| **Must Have** | Dockerització completa | Sprint 2 | PENDENT |
-| **Must Have** | Balanceig de càrrega | Sprint 2 | PENDENT |
-| **Should Have** | Alta disponibilitat (redundància) | Sprint 2 | PENDENT |
-| **Should Have** | Proves de caiguda de nodes | Sprint 3 | PENDENT |
-| **Should Have** | Documentació tècnica completa | Sprint 3 | PENDENT |
-| **Could Have** | Esquema Packet Tracer | Sprint 3 | PENDENT |
-| **Could Have** | SSL/HTTPS | Futur | Backlog |
-| **Won't Have** | Autenticació d'usuaris | Futur | Backlog |
 
 ---
 
@@ -1268,38 +1247,6 @@ Accions de millora per Sprint 2:
 - Establir hora fixa per dailies (15:30h)
 - Usar Planning Poker per estimar tasques
 - Commits cada cop que es completa una subtasca
-```
-
----
-
-### Mètriques del Projecte
-
-| Mètrica | Sprint 1 | Sprint 2 | Sprint 3 | Total |
-|---------|----------|----------|----------|-------|
-| **Tasques Planificades** | 12 | 12 | 11 | 35 |
-| **Tasques Completades** | 12 | 0 | 0 | 12 |
-| **Hores Estimades** | 28h | 20h | 22h | 70h |
-| **Hores Reals** | 31h | - | - | 31h |
-| **Velocity** | 12 | - | - | - |
-| **% Completat** | 100% | 0% | 0% | 34% |
-
----
-
-## Control de Versions
-
-### Estratègia de Branques (Git Flow Simplificat)
-
-```
-main (producció)
-  │
-  ├── dev (desenvolupament)
-  │     │
-  │     ├── feature/docker-setup     [Sprint 2 - PENDENT]
-  │     ├── feature/load-balancer    [Sprint 2 - PENDENT]
-  │     ├── feature/documentation    [Sprint 3 - PENDENT]
-  │     └── fix/nginx-config         [Si cal]
-  │
-  └── hotfix/critical-bug            [Si cal]
 ```
 
 ---
