@@ -5,8 +5,8 @@
 | Camp | Valor |
 |------|-------|
 | Data | 15/12/2025 |
-| Hora | 09:00 - 10:30 |
-| Lloc | Aula ASIX / Online |
+| Hora | 15:30 - 16:00 |
+| Lloc | Aula ASIX |
 | Sprint | Sprint 1 |
 | Duracio Sprint | 15/12/2025 - 19/01/2026 |
 
