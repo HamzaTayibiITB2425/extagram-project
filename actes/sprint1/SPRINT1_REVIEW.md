@@ -83,7 +83,7 @@ Crear un MVP de l'aplicacio Extagram funcionant en una sola maquina.
 
 ---
 
-## 6. Signatures
+## 6. Team
 
 | Rol | Nom | 
 |-----|-----|
