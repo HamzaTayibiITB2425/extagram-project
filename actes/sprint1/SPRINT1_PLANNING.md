@@ -94,20 +94,20 @@ T1.1 --> T1.2 --> T1.3
 
 | Tipus | Data | Hora |
 |-------|------|------|
-| Daily Standup | 16/12/2025 | 09:00 |
-| Sprint Review | 19/01/2026 | 10:00 |
+| Daily Standup | 16/12/2025 | 15:30 |
+| Sprint Review | 19/01/2026 | 16:00 |
 
 ---
 
-## 8. Signatures
+## 8. Team
 
-| Rol | Nom | Signatura |
-|-----|-----|-----------|
-| Product Owner | Hamza | _____________ |
-| Developer | Steven | _____________ |
-| Developer | Kevin | _____________ |
+| Rol | Nom |
+|-----|-----|
+| Product Owner | Hamza |
+| Developer | Steven |
+| Developer | Kevin |
 
 ---
 
 Acta generada: 15/12/2025
-Versio: 1.0
+Versio: 1.1
