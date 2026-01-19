@@ -46,27 +46,10 @@ Desplegar l'aplicacio Extagram amb alta disponibilitat i escalabilitat utilitzan
 | S6 Static | nginx:alpine |
 | S7 Database | mysql:8 |
 
----
-
-## 4. Arquitectura
-
-```
-Browser --> S1 (Load Balancer)
-              |
-    +---------+---------+
-    |         |         |
-   S2/S3     S4        S5/S6
-  (PHP)   (Upload)   (Static)
-    |         |
-    +----+----+
-         |
-        S7
-     (MySQL)
-```
 
 ---
 
-## 5. Riscos
+## 4. Riscos
 
 | Risc | Mitigacio |
 |------|-----------|
