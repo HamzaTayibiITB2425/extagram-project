@@ -1464,20 +1464,20 @@ Totes les captures del dashboard de ProofHub es troben a:
 
 | Nom | Rol | Email | GitHub |
 |-----|-----|-------|--------|
-| Hamza | Product Owner / DevOps | hamza@students.itb.cat | [@hamza-itb](https://github.com/hamza-itb) |
-| Steven | Backend Developer | steven@students.itb.cat | [@steven-itb](https://github.com/steven-itb) |
-| Kevin | Infrastructure Engineer | kevin@students.itb.cat | [@kevin-itb](https://github.com/kevin-itb) |
+| Hamza | Product Owner / DevOps | hamza.tayibi.7e6@itb.cat | [@HamzaTayibiITB2425](https://github.com/HamzaTayibiITB2425) |
+| Steven | Backend Developer | steven.zapata.7e6@itb.cat | [@StevenZapata-ITB2425](https://github.com/StevenZapata-ITB2425) |
+| Kevin | Infrastructure Engineer | kevin.armada.7e4@students.itb.cat | [@KevinArmada-ITB2425](https://github.com/KevinArmada-ITB2425) |
 
 ---
 
 ### Institut i Tutor
 
 **Institut Tecnològic de Barcelona**  
-Carrer de Ciutat de Balaguer, 17, 08022 Barcelona  
+Carrer d'Aiguablava, 121, Nou Barris, 08033 Barcelona  
 Web: [www.itb.cat](https://www.itb.cat)
 
-**Tutor del Projecte:** [Nom del Professor]  
-Email: professor@itb.cat
+**Tutor del Projecte:** [Jordi Cases]  
+Email: jordi.casas@itb.cat
 
 ---
 
@@ -1517,7 +1517,7 @@ Tots els drets reservats per a ús educatiu.
 ## Agraïments
 
 - **Institut Tecnològic de Barcelona** per proporcionar la infraestructura i suport
-- **Professor [Nom]** per la tutoria i guia durant el projecte
+- **Professors [Jordi, Isaac]** per la tutoria i guia durant el projecte
 - **Comunitat Docker** per l'excel·lent documentació
 - **Comunitat NGINX** per les millors pràctiques
 - **Stack Overflow** per resoldre dubtes tècnics
