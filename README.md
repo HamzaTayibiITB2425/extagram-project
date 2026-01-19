@@ -1440,7 +1440,7 @@ Totes les captures del dashboard de ProofHub es troben a:
 Carrer d'Aiguablava, 121, Nou Barris, 08033 Barcelona  
 Web: [www.itb.cat](https://www.itb.cat)
 
-**Tutor del Projecte:** [Jordi Cases]  
+**Tutor del Projecte:** [Jordi Casas]  
 Email: jordi.casas@itb.cat
 
 ---
