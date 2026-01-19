@@ -1429,7 +1429,7 @@ Totes les captures del dashboard de ProofHub es troben a:
 | Nom | Rol | Email | GitHub |
 |-----|-----|-------|--------|
 | Hamza | Product Owner / DevOps | hamza.tayibi.7e6@itb.cat | [@HamzaTayibiITB2425](https://github.com/HamzaTayibiITB2425) |
-| Steven | Backend Developer | steven.zapata.7e6@itb.cat | [@StevenZapata-ITB2425](https://github.com/StevenZapata-ITB2425) |
+| Steven | Backend Developer | steven.zapata.7e6@itb.cat | [@stevenitb](https://github.com/stevenitb) |
 | Kevin | Infrastructure Engineer | kevin.armada.7e4@students.itb.cat | [@KevinArmada-ITB2425](https://github.com/KevinArmada-ITB2425) |
 
 ---
@@ -1442,18 +1442,6 @@ Web: [www.itb.cat](https://www.itb.cat)
 
 **Tutor del Projecte:** [Jordi Casas]  
 Email: jordi.casas@itb.cat
-
----
-
-### Reportar Issues
-
-Si trobes algun problema o tens suggeriments:
-
-1. Crea un **Issue a GitHub**: [github.com/usuari/extagram-project/issues](https://github.com/usuari/extagram-project/issues)
-2. Utilitza la plantilla d'issue corresponent:
-   - Bug Report
-   - Feature Request
-   - Documentation Issue
 
 ---
 
