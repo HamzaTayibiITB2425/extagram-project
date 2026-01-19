@@ -1272,42 +1272,6 @@ Accions de millora per Sprint 2:
 
 ---
 
-### Seguiment amb ProofHub
-
-**Dashboard URL:** [https://proofhub.com/extagram-project](https://proofhub.com/extagram-project)
-
-#### Quadre Kanban:
-
-```
-┌─────────────┬─────────────┬─────────────┬─────────────┐
-│   Backlog   │  To Do      │ In Progress │    Done     │
-├─────────────┼─────────────┼─────────────┼─────────────┤
-│ T2.1-T2.12  │             │             │ T1.1 Repo   │
-│ T3.1-T3.11  │             │             │ T1.2 SSH    │
-│             │             │             │ T1.3 Anàlisi│
-│             │             │             │ T1.4 NGINX  │
-│             │             │             │ T1.5 VHost  │
-│             │             │             │ T1.6 PHP    │
-│             │             │             │ T1.7 MySQL  │
-│             │             │             │ T1.8 BBDD   │
-│             │             │             │ T1.9 Deploy │
-│             │             │             │ T1.10 Proves│
-│             │             │             │ T1.11 Docs  │
-│             │             │             │ T1.12 Review│
-└─────────────┴─────────────┴─────────────┴─────────────┘
-```
-
-#### Funcionalitats Utilitzades:
-
-- **Kanban Board:** Seguiment visual de tasques
-- **Gantt Chart:** Planificació temporal dels sprints
-- **Time Tracking:** Registre d'hores dedicades per tasca
-- **Discussions:** Comunicació asíncrona de l'equip
-- **File Manager:** Compartir captures i documents
-- **Calendar:** Esdeveniments de ceremonies Scrum
-
----
-
 ### Mètriques del Projecte
 
 | Mètrica | Sprint 1 | Sprint 2 | Sprint 3 | Total |
