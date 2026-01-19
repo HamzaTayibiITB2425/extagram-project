@@ -5,8 +5,8 @@
 | Camp | Valor |
 |------|-------|
 | Data | 19/01/2026 |
-| Hora | 10:00 - 11:30 |
-| Lloc | Aula ASIX / Online |
+| Hora | 16:00 - 16:30 |
+| Lloc | Aula ASIX |
 | Sprint | Sprint 1 |
 
 ## Assistents
@@ -14,9 +14,7 @@
 | Nom | Rol | Assistencia |
 |-----|-----|-------------|
 | Hamza | Product Owner / DevOps Lead | Present |
-| Steven | Backend Developer / DBA | Present |
 | Kevin | Infrastructure / Frontend | Present |
-| Professor | Tutor | Present |
 
 ---
 
@@ -28,7 +26,7 @@ Crear un MVP de l'aplicacio Extagram funcionant en una sola maquina.
 
 ### Resultat
 
-- [ ] Objectiu assolit completament
+- [x] Objectiu assolit completament
 - [ ] Objectiu assolit parcialment
 - [ ] Objectiu no assolit
 
@@ -68,13 +66,13 @@ Crear un MVP de l'aplicacio Extagram funcionant en una sola maquina.
 
 ### Que ha anat be?
 
-1.
-2.
+1. **Eficiencia en l'assignacio de rols:** La distribucio clara de responsabilitats (DevOps, Backend, Frontend) ha evitat solapaments i ha permès treballar en parallel eficaçment.
+2. **Resolucio col·laborativa d'incidencies:** Excel·lent suport entre companys (Teamwork). Quan un membre tenia un bloqueig tècnic, la resta de l'equip ha prioritzat ajudar-lo per desencallar la tasca.
 
 ### Que podria millorar?
 
-1.
-2.
+1. **Compromis amb l'horari (Puntualitat):** S'ha detectat la necessitat de millorar la puntualitat i l'assistencia a les reunions (Dailies i Review) per respectar el temps de tot l'equip.
+2. **Flux de comunicacio:** Cal millorar la comunicacio constant sobre l'estat de les tasques per evitar incerteses, especialment quan hi ha canvis o retards imprevistos.
 
 ---
 
@@ -86,11 +84,11 @@ Crear un MVP de l'aplicacio Extagram funcionant en una sola maquina.
 
 ## 6. Signatures
 
-| Rol | Nom | Signatura |
-|-----|-----|-----------|
-| Product Owner | Hamza | _____________ |
-| Developer | Steven | _____________ |
-| Developer | Kevin | _____________ |
+| Rol | Nom | 
+|-----|-----|
+| Product Owner | Hamza | 
+| Developer | Steven |
+| Developer | Kevin |
 
 ---
 
