@@ -4,7 +4,7 @@
 
 | Camp | Valor |
 |------|-------|
-| Data | 19/01/2026 |
+| Data | 20/01/2026 |
 | Hora | 15:00 - 15:30 |
 | Lloc | Aula ASIX |
 | Sprint | Sprint 2 |
