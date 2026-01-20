@@ -5,8 +5,8 @@
 | Camp | Valor |
 |------|-------|
 | Data | 02/02/2026 |
-| Hora | 09:00 - 10:30 |
-| Lloc | Aula ASIX / Online |
+| Hora | 15:00 - 15:30 |
+| Lloc | Aula ASIX |
 | Sprint | Sprint 3 |
 | Duracio Sprint | 02/02/2026 - 10/02/2026 |
 
@@ -70,13 +70,13 @@ Completar la integracio del sistema, crear l'esquema de xarxa amb Packet Tracer,
 
 ---
 
-## 5. Signatures
+## 5. Team
 
-| Rol | Nom | Signatura |
-|-----|-----|-----------|
-| Product Owner | Hamza | _____________ |
-| Developer | Steven | _____________ |
-| Developer | Kevin | _____________ |
+| Rol | Nom |
+|-----|-----|
+| Product Owner | Hamza | 
+| Developer | Steven |
+| Developer | Kevin |
 
 ---
 
