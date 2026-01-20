@@ -986,7 +986,7 @@ extagram-project/
 
 | ID | Descripció | Resultat Esperat | Estat | Data |
 |----|------------|------------------|-------|------|
-| OP-01 | Accedir a http://localhost/extagram.php | Pàgina carrega correctament amb formulari | COMPLETAT | 19/01/2026 |
+| OP-01 | Accedir a http://107.21.188.16 | Pàgina carrega correctament amb formulari | COMPLETAT | 19/01/2026 |
 | OP-02 | Publicar post sense imatge | Post apareix a la llista | COMPLETAT | 19/01/2026 |
 | OP-03 | Publicar post amb imatge | Post i imatge visibles | COMPLETAT | 19/01/2026 |
 | OP-04 | Verificar CSS carrega | Estils aplicats correctament | COMPLETAT | 19/01/2026 |
