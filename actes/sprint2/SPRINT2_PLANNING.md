@@ -5,8 +5,8 @@
 | Camp | Valor |
 |------|-------|
 | Data | 19/01/2026 |
-| Hora | 14:00 - 15:30 |
-| Lloc | Aula ASIX / Online |
+| Hora | 15:00 - 15:30 |
+| Lloc | Aula ASIX |
 | Sprint | Sprint 2 |
 | Duracio Sprint | 19/01/2026 - 27/01/2026 |
 
@@ -51,14 +51,14 @@ Segregar l'aplicacio en contenidors Docker, implementant proxy invers, balanceig
 
 ---
 
-## 4. Signatures
+## 4. Team
 
-| Rol | Nom | Signatura |
-|-----|-----|-----------|
-| Product Owner | Hamza | _____________ |
-| Developer | Steven | _____________ |
-| Developer | Kevin | _____________ |
+| Rol | Nom | 
+|-----|-----|
+| Product Owner | Hamza |
+| Developer | Steven | 
+| Developer | Kevin |
 
 ---
 
-Acta generada: 19/01/2026
+Acta generada: 20/01/2026
