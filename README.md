@@ -2,8 +2,8 @@
 
 <div align="center">
 
-![Status](https://img.shields.io/badge/Status-Sprint%201%20Completat-success)
-![Sprint](https://img.shields.io/badge/Sprint-1%2F3-blue)
+![Status](https://img.shields.io/badge/Status-Sprint%202%20Progress-orange)
+![Sprint](https://img.shields.io/badge/Sprint-2%2F3-blue)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)
 ![Agile](https://img.shields.io/badge/Methodology-Agile%20Scrum-green)
 
@@ -573,7 +573,6 @@ ARQUITECTURA EXTAGRAM
 **Documents del Sprint 1:**
 - [Sprint 1 Planning](actes/sprint1/SPRINT1_PLANNING.md)
 - [Sprint 1 Review](actes/sprint1/SPRINT1_REVIEW.md)
-- [ProofHub Dashboard Sprint 1](https://proofhub.com/dashboard/sprint1)
 
 ---
 
@@ -583,7 +582,7 @@ ARQUITECTURA EXTAGRAM
 
 **Dates:** 20 de Gener de 2026 - 2 de Febrer de 2026
 
-**Estat:** PENDENT - Començarà demà (20/01/2026)
+**Estat:** PENDENT - Ja hem començat (20/01/2026)
 
 #### Backlog del Sprint 2
 
@@ -605,8 +604,8 @@ ARQUITECTURA EXTAGRAM
 **Total estimat:** 20 hores (~7h per persona)
 
 **Documents del Sprint 2:**
-- [Sprint 2 Planning](actes/sprint2/SPRINT2_PLANNING.md) - A crear demà
-- Sprint 2 Review - A crear al final del sprint
+- [Sprint 2 Planning](actes/sprint2/SPRINT2_PLANNING.md) 
+- [Sprint 2 Review](actes/sprint2/SPRINT2_REVIEW.md) 
 
 ---
 
@@ -637,8 +636,8 @@ ARQUITECTURA EXTAGRAM
 **Total estimat:** 22 hores (~7.5h per persona)
 
 **Documents del Sprint 3:**
-- Sprint 3 Planning - A crear després del Sprint 2
-- Sprint 3 Review - A crear al final del sprint
+- [Sprint 3 Planning](actes/sprint3/SPRINT3_PLANNING.md)
+- [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md)
 
 ---
 
@@ -649,7 +648,7 @@ Progrés Global del Projecte
 ───────────────────────────
 
 Sprint 1: ████████████████████ 100% COMPLETAT
-Sprint 2: □□□□□□□□□□□□□□□□□□□□   0% PENDENT
+Sprint 2: ██████□□□□□□□□□□□□□□□□   33% PENDENT
 Sprint 3: □□□□□□□□□□□□□□□□□□□□   0% PENDENT
 
 Total:    ██████□□□□□□□□□□□□□□  33% (1/3 sprints)
@@ -1154,8 +1153,8 @@ Sprint Retrospective (Millora contínua)
 
 **Enllaços:**
 - [Sprint 1 Planning](actes/sprint1/SPRINT1_PLANNING.md)
-- [Sprint 2 Planning](actes/sprint2/SPRINT2_PLANNING.md) - A crear demà
-- Sprint 3 Planning - A crear després Sprint 2
+- [Sprint 2 Planning](actes/sprint2/SPRINT2_PLANNING.md)
+- [Sprint 3 Planning](actes/sprint3/SPRINT3_PLANNING.md)
 
 ---
 
@@ -1202,8 +1201,8 @@ Kevin:
 
 **Enllaços:**
 - [Sprint 1 Review](actes/sprint1/SPRINT1_REVIEW.md) - Completat 19/01/2026
-- Sprint 2 Review - A crear al final del sprint
-- Sprint 3 Review - A crear al final del sprint
+- [Sprint 2 Review](actes/sprint2/SPRINT2_REVIEW.md) - Pendent 27/01/2026
+- [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md) - Pendent 10/02/2026
 
 ---
 
@@ -1337,13 +1336,10 @@ Totes les actes de reunions es troben al directori `/actes`:
 
 - [Sprint 1 Planning](actes/sprint1/SPRINT1_PLANNING.md)
 - [Sprint 1 Review](actes/sprint1/SPRINT1_REVIEW.md)
-- Sprint 1 Retrospective [PENDENT]
-- Sprint 2 Planning [PENDENT]
-- Sprint 2 Review [PENDENT]
-- Sprint 2 Retrospective [PENDENT]
-- Sprint 3 Planning [PENDENT]
-- Sprint 3 Review [PENDENT]
-- Sprint 3 Retrospective [PENDENT]
+- [Sprint 2 Planning](actes/sprint2/SPRINT2_REVIEW.md)
+- [Sprint 2 Review](actes/sprint2/SPRINT2_REVIEW.md)
+- [Sprint 3 Planning](actes/sprint3/SPRINT3_REVIEW.md)
+- [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md)
 
 ---
 
@@ -1351,9 +1347,9 @@ Totes les actes de reunions es troben al directori `/actes`:
 
 Totes les captures del dashboard de ProofHub es troben a:
 
-- `/actes/sprint1/captures/`
-- `/actes/sprint2/captures/` [PENDENT]
-- `/actes/sprint3/captures/` [PENDENT]
+- [/actes/sprint1/captures/](/actes/sprint1/captures/)
+- [/actes/sprint2/captures/](/actes/sprint2/captures/) - PENDENT
+- [/actes/sprint3/captures/](/actes/sprint3/captures/) - PENDENT
 
 ---
 
