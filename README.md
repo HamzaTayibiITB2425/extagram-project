@@ -44,12 +44,12 @@
 | **Activitat** | P0.1 - Desplegament aplicació Extagram amb Alta Disponibilitat |
 | **Institut** | Institut Tecnològic de Barcelona |
 | **Curs** | ASIX2c (Administració de Sistemes Informàtics en Xarxa) |
-| **Tutor del Projecte** | [Jordi Casas] |
+| **Tutor del Projecte** | Jordi Casas |
 | **Data d'Inici** | 15 de Desembre de 2025 |
 | **Data de Finalització** | 10 de Febrer de 2026 |
 | **Durada Total** | 8 setmanes (3 sprints) |
 | **Hores Estimades** | 120 hores totals (40h per membre) |
-| **Repositori GitHub** | [github.com/HamzaTayibiITB2425/extagram-project](https://github.com/usuari/extagram-project) |
+| **Repositori GitHub** | [github.com/HamzaTayibiITB2425/extagram-project](https://github.com/HamzaTayibiITB2425/extagram-project) |
 
 ---
 
