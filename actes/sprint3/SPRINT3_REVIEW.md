@@ -5,9 +5,9 @@
 | Camp | Valor |
 |------|-------|
 | Data | 10/02/2026 |
-| Hora | 10:00 - 12:00 |
+| Hora | 16:00 - 16:30 |
 | Lloc | Aula ASIX |
-| Sprint | Sprint 3 (Final) |
+| Sprint | Sprint 3 |
 
 ## Assistents
 
@@ -16,7 +16,6 @@
 | Hamza | Product Owner / DevOps Lead | Present |
 | Steven | Backend Developer / DBA | Present |
 | Kevin | Infrastructure / Frontend | Present |
-| Professor | Tutor | Present |
 
 ---
 
@@ -109,14 +108,14 @@
 
 ---
 
-## 7. Signatures Finals
+## 7. Team
 
-| Rol | Nom | Signatura |
-|-----|-----|-----------|
-| Product Owner | Hamza | _____________ |
-| Developer | Steven | _____________ |
-| Developer | Kevin | _____________ |
-| Tutor | Professor | _____________ |
+| Rol | Nom | 
+|-----|-----|
+| Product Owner | Hamza |
+| Developer | Steven | 
+| Developer | Kevin | 
+| Tutor | Professor | 
 
 ---
 
