@@ -54,13 +54,28 @@ docker-compose logs -f s1-loadbalancer
 
 ---
 
-## 4. Captura ProofHub
+## 4. Retrospectiva
+
+### Que ha anat be?
+
+1. 
+2. 
+
+### Que podria millorar?
+
+1. 
+2. 
+
+---
+
+
+## 5. Captura ProofHub
 
 ![ProofHub Sprint 2 Review](./captures/proofhub_sprint2_review.png)
 
 ---
 
-## 5. Team
+## 6. Team
 
 | Rol | Nom |
 |-----|-----|
