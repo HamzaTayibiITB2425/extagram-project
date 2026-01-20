@@ -913,17 +913,14 @@ extagram-project/
 │   ├── sprint1/
 │   │   ├── SPRINT1_PLANNING.md
 │   │   ├── SPRINT1_REVIEW.md
-│   │   ├── SPRINT1_RETROSPECTIVE.md
 │   │   └── captures/               # Captures ProofHub Sprint 1
 │   ├── sprint2/
-│   │   ├── SPRINT2_PLANNING.md     [PENDENT]
+│   │   ├── SPRINT2_PLANNING.md     
 │   │   ├── SPRINT2_REVIEW.md       [PENDENT]
-│   │   ├── SPRINT2_RETROSPECTIVE.md [PENDENT]
 │   │   └── captures/
 │   └── sprint3/
 │       ├── SPRINT3_PLANNING.md     [PENDENT]
-│       ├── SPRINT3_REVIEW.md       [PENDENT]
-│       ├── SPRINT3_RETROSPECTIVE.md [PENDENT]
+│       ├── SPRINT3_REVIEW.md       [PENDENT] 
 │       └── captures/
 │
 ├── configuracions/                  # Configuracions de serveis
