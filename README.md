@@ -122,17 +122,6 @@ Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una
 - Desenvolupar habilitats de **treball en equip** i **comunicació tècnica**
 - Adquirir experiència en **documentació tècnica professional**
 
-### Indicadors d'Èxit (KPIs)
-
-| KPI | Objectiu | Mesura |
-|-----|----------|--------|
-| Disponibilitat del Sistema | > 99% | Uptime durant proves |
-| Temps de Resposta | < 2 segons | Temps càrrega pàgina |
-| Cobertura de Proves | > 90% | Tests passats/totals |
-| Documentació Completa | 100% | Tots els docs presents |
-| Metodologia Agile | 100% | Tots els sprints documentats |
-| Commits a Git | > 50 commits | Activitat al repositori |
-
 ---
 
 ## Arquitectura del Sistema
