@@ -648,7 +648,7 @@ Progrés Global del Projecte
 ───────────────────────────
 
 Sprint 1: ████████████████████ 100% COMPLETAT
-Sprint 2: ██████□□□□□□□□□□□□□□□□   33% PENDENT
+Sprint 2: ██████□□□□□□□□□□□□□□   33% PENDENT
 Sprint 3: □□□□□□□□□□□□□□□□□□□□   0% PENDENT
 
 Total:    ██████□□□□□□□□□□□□□□  33% (1/3 sprints)
