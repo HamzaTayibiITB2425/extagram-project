@@ -8,7 +8,7 @@
 | Hora | 15:00 - 15:30 |
 | Lloc | Aula ASIX |
 | Sprint | Sprint 2 |
-| Duracio Sprint | 19/01/2026 - 27/01/2026 |
+| Duracio Sprint | 20/01/2026 - 27/01/2026 |
 
 ## Assistents
 
