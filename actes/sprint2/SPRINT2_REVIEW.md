@@ -5,8 +5,8 @@
 | Camp | Valor |
 |------|-------|
 | Data | 27/01/2026 |
-| Hora | 10:00 - 11:30 |
-| Lloc | Aula ASIX / Online |
+| Hora | 16:00 - 16:30 |
+| Lloc | Aula ASIX |
 | Sprint | Sprint 2 |
 
 ## Assistents
@@ -16,7 +16,6 @@
 | Hamza | Product Owner / DevOps Lead | Present |
 | Steven | Backend Developer / DBA | Present |
 | Kevin | Infrastructure / Frontend | Present |
-| Professor | Tutor | Present |
 
 ---
 
@@ -61,13 +60,13 @@ docker-compose logs -f s1-loadbalancer
 
 ---
 
-## 5. Signatures
+## 5. Team
 
-| Rol | Nom | Signatura |
-|-----|-----|-----------|
-| Product Owner | Hamza | _____________ |
-| Developer | Steven | _____________ |
-| Developer | Kevin | _____________ |
+| Rol | Nom |
+|-----|-----|
+| Product Owner | Hamza | 
+| Developer | Steven |
+| Developer | Kevin |
 
 ---
 
