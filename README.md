@@ -1415,6 +1415,6 @@ Tots els drets reservats per a ús educatiu.
 
 ---
 
-**Última actualització:** 19 de Gener de 2026  
+**Última actualització:** 20 de Gener de 2026  
 **Versió del Document:** 2.0  
 **Estat del Projecte:** En Desenvolupament Actiu (Sprint 1 Completat)
