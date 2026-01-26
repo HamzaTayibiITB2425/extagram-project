@@ -24,7 +24,8 @@ services:
     volumes:
       - ./s2-s3-php/extagram.php:/var/www/html/extagram.php:ro
     depends_on:
-      - s7-database
+      s7-database:
+        condition: service_healthy
     networks:
       - extagram_network
     restart: unless-stopped
@@ -35,7 +36,8 @@ services:
     volumes:
       - ./s2-s3-php/extagram.php:/var/www/html/extagram.php:ro
     depends_on:
-      - s7-database
+      s7-database:
+        condition: service_healthy
     networks:
       - extagram_network
     restart: unless-stopped
@@ -47,7 +49,8 @@ services:
       - ./s4-upload/upload.php:/var/www/html/upload.php:ro
       - uploads_data:/var/www/html/uploads
     depends_on:
-      - s7-database
+      s7-database:
+        condition: service_healthy
     networks:
       - extagram_network
     restart: unless-stopped
@@ -87,6 +90,12 @@ services:
     networks:
       - extagram_network
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpass123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
 networks:
   extagram_network:
