@@ -1161,7 +1161,6 @@ Sprint Retrospective (Millora contínua)
 - **Durada:** 15 minuts màxim
 - **Participants:** Tot l'equip
 - **Format:**
-  - Què vaig fer ahir?
   - Què faré avui?
   - Tinc algun bloqueig?
 
