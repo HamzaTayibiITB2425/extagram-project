@@ -4,7 +4,7 @@
 
 | Camp | Valor |
 |------|-------|
-| Data | 27/01/2026 |
+| Data | 02/02/2026 |
 | Hora | 16:00 - 16:30 |
 | Lloc | Aula ASIX |
 | Sprint | Sprint 2 |
@@ -85,4 +85,4 @@ docker-compose logs -f s1-loadbalancer
 
 ---
 
-Acta generada: 27/01/2026
+Acta generada: 02/02/2026
