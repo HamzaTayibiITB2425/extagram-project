@@ -1165,23 +1165,20 @@ Sprint Retrospective (Millora contínua)
   - Què faré avui?
   - Tinc algun bloqueig?
 
-**Exemples de Daily:**
+**Daily:**
 
 ```
-Daily Standup - 16/01/2026
+Daily Standup - 26/01/2026
 
 Hamza:
-- Ahir: Vaig documentar l'anàlisi del projecte
 - Avui: Començaré a crear docker-compose.yml (Sprint 2)
 - Bloquejos: Cap
 
 Steven:
-- Ahir: Vaig configurar PHP-FPM amb mysqli
 - Avui: Crearé els Dockerfiles per S2/S3/S4 (Sprint 2)
 - Bloquejos: Necessito ajuda amb volums Docker
 
 Kevin:
-- Ahir: NGINX configurat com a proxy
 - Avui: Configuració del balanceig Round-Robin (Sprint 2)
 - Bloquejos: Cap
 ```
@@ -1198,8 +1195,8 @@ Kevin:
 
 **Enllaços:**
 - [Sprint 1 Review](actes/sprint1/SPRINT1_REVIEW.md) - Completat 19/01/2026
-- [Sprint 2 Review](actes/sprint2/SPRINT2_REVIEW.md) - Pendent 27/01/2026
-- [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md) - Pendent 10/02/2026
+- [Sprint 2 Review](actes/sprint2/SPRINT2_REVIEW.md) - Pendent 02/02/2026
+- [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md) - Pendent 16/02/2026
 
 ---
 
@@ -1415,6 +1412,6 @@ Tots els drets reservats per a ús educatiu.
 
 ---
 
-**Última actualització:** 20 de Gener de 2026  
+**Última actualització:** 26 de Gener de 2026  
 **Versió del Document:** 2.0  
-**Estat del Projecte:** En Desenvolupament Actiu (Sprint 1 Completat)
+**Estat del Projecte:** En Desenvolupament Actiu (Sprint 2 on progress)
