@@ -1174,10 +1174,6 @@ Hamza:
 - Avui: Començaré a crear docker-compose.yml (Sprint 2)
 - Bloquejos: Cap
 
-Steven:
-- Avui: Crearé els Dockerfiles per S2/S3/S4 (Sprint 2)
-- Bloquejos: Necessito ajuda amb volums Docker
-
 Kevin:
 - Avui: Configuració del balanceig Round-Robin (Sprint 2)
 - Bloquejos: Cap
