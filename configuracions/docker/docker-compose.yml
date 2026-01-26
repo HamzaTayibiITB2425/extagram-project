@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   s1-loadbalancer:
     image: nginx:alpine
@@ -22,9 +20,10 @@ services:
     build: ./s2-s3-php
     container_name: extagram-s2-php
     volumes:
-      - ./s2-s3-php/extagram.php:/var/www/html/extagram.php:ro
+      - ./s2-s3-php:/var/www/html:ro
     depends_on:
-      - s7-database
+      s7-database:
+        condition: service_healthy
     networks:
       - extagram_network
     restart: unless-stopped
@@ -33,9 +32,10 @@ services:
     build: ./s2-s3-php
     container_name: extagram-s3-php
     volumes:
-      - ./s2-s3-php/extagram.php:/var/www/html/extagram.php:ro
+      - ./s2-s3-php:/var/www/html:ro
     depends_on:
-      - s7-database
+      s7-database:
+        condition: service_healthy
     networks:
       - extagram_network
     restart: unless-stopped
@@ -45,9 +45,12 @@ services:
     container_name: extagram-s4-upload
     volumes:
       - ./s4-upload/upload.php:/var/www/html/upload.php:ro
+      - ./s4-upload/delete.php:/var/www/html/delete.php:ro
+      - ./s4-upload/recover.php:/var/www/html/recover.php:ro
       - uploads_data:/var/www/html/uploads
     depends_on:
-      - s7-database
+      s7-database:
+        condition: service_healthy
     networks:
       - extagram_network
     restart: unless-stopped
@@ -87,6 +90,12 @@ services:
     networks:
       - extagram_network
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpass123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
 networks:
   extagram_network:

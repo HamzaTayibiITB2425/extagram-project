@@ -1,0 +1,18 @@
+-- Primero creamos la base de datos si no existe y entramos
+CREATE DATABASE IF NOT EXISTS extagram_db;
+USE extagram_db;
+-- creamos la tabla de usuarios
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+-- Crea la tabla de lo
+CREATE TABLE posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    image_path VARCHAR(255) NOT NULL,
+    image_blob LONGBLOB NOT NULL, -- Aquí es donde guardaremos la réplica binaria
+    caption TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);

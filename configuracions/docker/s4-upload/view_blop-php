@@ -1,0 +1,16 @@
+<?php
+require 'config.php'; // Asegúrate de que apunte a s7-database
+
+if (isset($_GET['id'])) {
+    $stmt = $pdo->prepare("SELECT image_blob FROM posts WHERE id = ?");
+    $stmt->execute([$_GET['id']]);
+    $post = $stmt->fetch();
+
+    if ($post && $post['image_blob']) {
+        // Esto le dice al navegador: "Oye, esto no es texto, es una imagen PNG"
+        header("Content-Type: image/png"); 
+        echo $post['image_blob'];
+        exit;
+    }
+}
+echo "Imagen no encontrada.";
