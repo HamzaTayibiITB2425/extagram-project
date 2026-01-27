@@ -188,15 +188,21 @@
                 echo "<div class='post-header'>";
                 echo "<button class='delete-btn' onclick=\"if(confirm('Segur que vols eliminar aquest post?')) window.location.href='/delete.php?id=" . $fila['id'] . "'\">✕</button>";
                 echo "</div>";
-                echo "<p>" . htmlspecialchars($fila['caption']) . "</p>";
                 
-                // Mostrar imagen desde disco (rápido)
-                if (!empty($fila['image_path'])) {
-                    echo "<img src='/uploads/" . htmlspecialchars($fila['image_path']) . "' alt='Post image'>";
+                // Compatibilidad: 'caption' (nuevo) o 'post' (viejo)
+                $texto = $fila['caption'] ?? $fila['post'] ?? '';
+                if (!empty($texto)) {
+                    echo "<p>" . htmlspecialchars($texto) . "</p>";
                 }
-                // Si no hay imagen en disco, mostrar desde BLOB (fallback)
+                
+                // Compatibilidad: 'image_path' (nuevo) o 'photourl' (viejo)
+                $imagen = $fila['image_path'] ?? $fila['photourl'] ?? '';
+                if (!empty($imagen)) {
+                    echo "<img src='/uploads/" . htmlspecialchars($imagen) . "' alt='Post image'>";
+                }
+                // Fallback: mostrar desde BLOB si no hay archivo en disco
                 elseif (!empty($fila['image_blob'])) {
-                    echo "<img src='data:image/jpeg;base64," . base64_encode($fila['image_blob']) . "' alt='Post image'>";
+                    echo "<img src='data:image/jpeg;base64," . base64_encode($fila['image_blob']) . "' alt='Post image from BLOB'>";
                 }
                 
                 echo "</div>";

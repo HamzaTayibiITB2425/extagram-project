@@ -3,7 +3,7 @@ services:
     image: nginx:alpine
     container_name: extagram-s1-loadbalancer
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
       - ./s1-loadbalancer/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
@@ -56,22 +56,17 @@ services:
     restart: unless-stopped
 
   s5-images:
-    image: nginx:alpine
+    build: ./s5-images
     container_name: extagram-s5-images
     volumes:
-      - ./s5-images/nginx.conf:/etc/nginx/nginx.conf:ro
       - uploads_data:/var/www/html/uploads:ro
     networks:
       - extagram_network
     restart: unless-stopped
 
   s6-static:
-    image: nginx:alpine
+    build: ./s6-static
     container_name: extagram-s6-static
-    volumes:
-      - ./s6-static/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./s6-static/style.css:/var/www/html/style.css:ro
-      - ./s6-static/preview.svg:/var/www/html/preview.svg:ro
     networks:
       - extagram_network
     restart: unless-stopped
