@@ -26,7 +26,12 @@ if (!empty($_POST["caption"])) {
     }
     
     // Conectar a base de datos
-    $db = new mysqli("s7-database", "extagram_admin", "pass123", "extagram_db");
+    $db = new mysqli(
+    getenv('DB_HOST') ?: 's7-database',
+    getenv('DB_USER') ?: 'extagram_admin',
+    getenv('DB_PASSWORD') ?: 'pass123',
+    getenv('DB_NAME') ?: 'extagram_db'
+    );
     
     if (!$db->connect_error) {
         // IMPORTANTE: Solo usar send_long_data si hay BLOB

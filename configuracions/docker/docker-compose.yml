@@ -2,6 +2,11 @@ services:
   s1-loadbalancer:
     image: nginx:alpine
     container_name: extagram-s1-loadbalancer
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
     ports:
       - "80:80"
     volumes:
@@ -31,6 +36,11 @@ services:
   s3-php:
     build: ./s2-s3-php
     container_name: extagram-s3-php
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
     volumes:
       - ./s2-s3-php:/var/www/html:ro
     depends_on:
@@ -43,6 +53,11 @@ services:
   s4-upload:
     build: ./s4-upload
     container_name: extagram-s4-upload
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
     volumes:
       - ./s4-upload/upload.php:/var/www/html/upload.php:ro
       - ./s4-upload/delete.php:/var/www/html/delete.php:ro
@@ -75,10 +90,10 @@ services:
     image: mysql:8
     container_name: extagram-s7-database
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass123
-      MYSQL_DATABASE: extagram_db
-      MYSQL_USER: extagram_admin
-      MYSQL_PASSWORD: pass123
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
       - ./s7-mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
@@ -86,7 +101,7 @@ services:
       - extagram_network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpass123"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
       timeout: 5s
       retries: 5

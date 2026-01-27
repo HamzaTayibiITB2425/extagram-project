@@ -1,0 +1,22 @@
+# Environment variables (NUNCA subir contraseñas)
+.env
+configuracions/docker/.env
+
+# Docker volumes data
+configuracions/docker/volumes/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+*~
