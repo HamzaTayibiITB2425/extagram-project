@@ -175,7 +175,12 @@
     </div>
 
     <?php
-    $db = new mysqli("s7-database", "extagram_admin", "pass123", "extagram_db");
+    $db = new mysqli(
+    getenv('DB_HOST'),
+    getenv('DB_USER'),
+    getenv('DB_PASSWORD'),
+    getenv('DB_NAME')
+    );
 
     if ($db->connect_error) {
         echo "<div class='card'><div class='error'>Error de connexió: " . htmlspecialchars($db->connect_error) . "</div></div>";

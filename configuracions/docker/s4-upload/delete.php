@@ -3,10 +3,10 @@ if (!empty($_GET['id'])) {
     $id = intval($_GET['id']);
     
     $db = new mysqli(
-    getenv('DB_HOST') ?: 's7-database',
-    getenv('DB_USER') ?: 'extagram_admin',
-    getenv('DB_PASSWORD') ?: 'pass123',
-    getenv('DB_NAME') ?: 'extagram_db'
+    getenv('DB_HOST'),
+    getenv('DB_USER'),
+    getenv('DB_PASSWORD'),
+    getenv('DB_NAME')
     );
     
     if (!$db->connect_error) {
