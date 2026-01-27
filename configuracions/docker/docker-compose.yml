@@ -24,6 +24,11 @@ services:
   s2-php:
     build: ./s2-s3-php
     container_name: extagram-s2-php
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
     volumes:
       - ./s2-s3-php:/var/www/html:ro
     depends_on:
