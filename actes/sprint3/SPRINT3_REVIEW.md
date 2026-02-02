@@ -44,7 +44,7 @@
 | T3.8 | Presentacio | Hamza | |
 | T3.9 | Control versions Git | Hamza | |
 | T3.10 | Proves finals | Tots | |
-| T3.11 | Implementació LDAP | Tots | 2h | Alta |
+| T3.11 | Implementació LDAP | Tots | ✓ | Alta |
 
 ---
 
