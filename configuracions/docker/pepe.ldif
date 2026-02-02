@@ -1,0 +1,5 @@
+dn: cn=pepe,dc=extagram,dc=com
+objectClass: inetOrgPerson
+cn: pepe
+sn: usuario
+userPassword: userpass123

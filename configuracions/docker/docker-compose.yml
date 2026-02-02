@@ -112,6 +112,17 @@ services:
       retries: 5
       start_period: 30s
 
+  s8-ldap:
+    image: osixia/openldap:1.5.0
+    container_name: extagram-s8-ldap
+    environment:
+      LDAP_ORGANISATION: "Extagram"
+      LDAP_DOMAIN: "extagram.com"
+      LDAP_ADMIN_PASSWORD: "rootpass123"
+    networks:
+      - extagram_network
+    restart: unless-stopped
+
 networks:
   extagram_network:
     driver: bridge
@@ -119,3 +130,4 @@ networks:
 volumes:
   db_data:
   uploads_data:
+

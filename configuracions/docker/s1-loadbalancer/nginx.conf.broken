@@ -1,0 +1,84 @@
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log warn;
+pid /var/run/nginx.pid;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    sendfile on;
+    keepalive_timeout 65;
+    client_max_body_size 50M;
+
+    resolver 127.0.0.11 valid=10s;
+    resolver_timeout 5s;
+
+    upstream php_backend {
+        server s2-php:9000;
+        server s3-php:9000;
+    }
+
+    upstream upload_backend {
+        server s4-upload:9000;
+    }
+
+    server {
+        listen 80;
+        server_name localhost;
+        root /var/www/html;
+        index extagram.php;
+
+        location = / {
+            return 301 /extagram.php;
+        }
+
+        location ~ ^/extagram\.php$ {
+            fastcgi_pass php_backend;
+            fastcgi_index extagram.php;
+            fastcgi_param SCRIPT_FILENAME /var/www/html/extagram.php;
+            include fastcgi_params;
+        }
+
+        location ~ ^/upload\.php$ {
+            fastcgi_pass upload_backend;
+            fastcgi_index upload.php;
+            fastcgi_param SCRIPT_FILENAME /var/www/html/upload.php;
+            include fastcgi_params;
+            client_max_body_size 50M;
+        }
+
+        location ~ ^/delete\.php$ {
+            fastcgi_pass upload_backend;
+            fastcgi_index delete.php;
+            fastcgi_param SCRIPT_FILENAME /var/www/html/delete.php;
+            include fastcgi_params;
+        }
+	
+	location ~ ^/recover\.php$ {
+	    fastcgi_pass upload_backend;
+	    fastcgi_index recover.php;
+	    fastcgi_param SCRIPT_FILENAME /var/www/html/recover.php;
+	    include fastcgi_params;
+	}
+        location /uploads/ {
+            proxy_pass http://s5-images;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+
+        location ~ \.(css|svg)$ {
+            proxy_pass http://s6-static;
+        }
+	location = /favicon.ico {
+            access_log off;
+	    log_not_found off;
+	    return 204;
+        }
+
+	}
+    }
+}
