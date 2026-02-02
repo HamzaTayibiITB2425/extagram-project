@@ -582,18 +582,21 @@ ARQUITECTURA EXTAGRAM
 
 | ID | Tasca | Assignat | Estimació | Prioritat | Estat |
 |----|-------|----------|-----------|-----------|-------|
-| T2.1 | Crear Dockerfile per a S2/S3 (PHP-FPM extagram) | Hamza | 2h | Alta | COMPLETAT |
-| T2.2 | Crear Dockerfile per a S4 (PHP-FPM upload) | Hamza | 1.5h | Alta | COMPLETAT |
-| T2.3 | Crear Dockerfile per a S7 (MySQL) | Hamza | 1h | Alta | COMPLETAT |
+| T2.1 | Crear Dockerfile per a S2/S3 (PHP-FPM extagram) | Hamza, Kevin | 2h | Alta | COMPLETAT |
+| T2.2 | Crear Dockerfile per a S4 (PHP-FPM upload) | Hamza, Kevin | 1.5h | Alta | COMPLETAT |
+| T2.3 | Crear Dockerfile per a S7 (MySQL) | Hamza, Kevin | 1h | Alta | COMPLETAT |
 | T2.4 | Configurar NGINX S1 com a Load Balancer | Kevin | 3h | Alta | COMPLETAT |
 | T2.5 | Crear configuració NGINX per a S5 (Images) | Kevin | 1h | Alta | COMPLETAT |
 | T2.6 | Crear configuració NGINX per a S6 (Static) | Kevin | 1h | Alta | COMPLETAT |
 | T2.7 | Crear docker-compose.yml complet | Hamza | 3h | Alta | COMPLETAT |
 | T2.8 | Configurar xarxa Docker interna | Hamza | 1.5h | Alta | COMPLETAT |
 | T2.9 | Configurar volums persistents (DB i uploads) | Hamza | 1h | Alta | COMPLETAT |
-| T2.10 | Proves de balanceig de càrrega Round-Robin | Tots | 2h | Alta | COMPLETAT |
+| T2.10 | Proves de balanceig de càrrega Round-Robin | Hamza, Kevin | 2h | Alta | COMPLETAT |
 | T2.11 | Documentar configuració Docker | Hamza | 2h | Mitjana | COMPLETAT |
-| T2.12 | Preparar Sprint Review | Tots | 1h | Mitjana | COMPLETAT |
+| T2.12 | Preparar Sprint Review | Hamza, Kevin | 1h | Mitjana | COMPLETAT |
+| T2.13 | Implementació BLOB: Emmagatzematge dual d'imatges amb sistema de recuperació | Hamza, Kevin | 1h | Mitjana | COMPLETAT |
+| T2.14 | Implementación de Seguridad: Variables de Entorno y Credenciales | Hamza, Kevin | 1h | Mitjana | COMPLETAT |
+| T2.15 | Configuración de Red AWS: IP Elástica y Security Groups | Hamza, Kevin | 1h | Mitjana | COMPLETAT |
 
 **Total estimat:** 20 hores
 
