@@ -15,7 +15,6 @@
 | Nom | Rol | Assistencia |
 |-----|-----|-------------|
 | Hamza | Product Owner / DevOps Lead | Present |
-| Steven | Backend Developer / DBA | Present |
 | Kevin | Infrastructure / Frontend | Present |
 
 ---
@@ -32,15 +31,16 @@ Completar la integracio del sistema, crear l'esquema de xarxa amb Packet Tracer,
 |----|-------|----------|-----------|-----------|
 | T3.1 | Crear esquema de xarxa amb Packet Tracer | Kevin | 3h | Alta |
 | T3.2 | Documentar arquitectura de xarxa | Kevin | 2h | Alta |
-| T3.3 | Proves de caiguda node S2 | Steven | 1.5h | Alta |
-| T3.4 | Proves de caiguda node S3 | Steven | 1.5h | Alta |
-| T3.5 | Proves de caiguda BBDD | Steven | 2h | Alta |
-| T3.6 | Documentar resultats de proves | Steven | 2h | Alta |
+| T3.3 | Proves de caiguda node S2 | Hamza, Kevin | 1.5h | Alta |
+| T3.4 | Proves de caiguda node S3 | Hamza, Kevin | 1.5h | Alta |
+| T3.5 | Proves de caiguda BBDD | Hamza, Kevin | 2h | Alta |
+| T3.6 | Documentar resultats de proves | Hamza, Kevin | 2h | Alta |
 | T3.7 | Revisar i completar documentacio | Hamza | 3h | Alta |
 | T3.8 | Preparar presentacio | Hamza | 2h | Alta |
 | T3.9 | Revisar control de versions Git | Hamza | 1h | Mitjana |
 | T3.10 | Proves finals integrades | Tots | 2h | Alta |
 | T3.11 | Sprint Review Final | Tots | 2h | Alta |
+| T3.12 | Implementació LDAP | Tots | 2h | Alta |
 
 ---
 
@@ -75,7 +75,6 @@ Completar la integracio del sistema, crear l'esquema de xarxa amb Packet Tracer,
 | Rol | Nom |
 |-----|-----|
 | Product Owner | Hamza | 
-| Developer | Steven |
 | Developer | Kevin |
 
 ---
