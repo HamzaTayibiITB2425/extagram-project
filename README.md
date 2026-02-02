@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Status](https://img.shields.io/badge/Status-Sprint%202%20Progress-orange)
+![Status](https://img.shields.io/badge/Status-Sprint%202%20Completat-brightgreen)
 ![Sprint](https://img.shields.io/badge/Sprint-2%2F3-blue)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)
 ![Agile](https://img.shields.io/badge/Methodology-Agile%20Scrum-green)
@@ -48,7 +48,7 @@
 | **Data d'Inici** | 15 de Desembre de 2025 |
 | **Data de Finalització** | 16 de Febrer de 2026 |
 | **Durada Total** | 8 setmanes (3 sprints) |
-| **Hores Estimades** | 120 hores totals (40h per membre) |
+| **Hores Estimades** | 120 hores totals |
 | **Repositori GitHub** | [github.com/HamzaTayibiITB2425/extagram-project](https://github.com/HamzaTayibiITB2425/extagram-project) |
 
 ---
@@ -57,26 +57,20 @@
 
 | Membre | Rol Principal | Responsabilitats Clau | Competències |
 |--------|---------------|------------------------|--------------|
-| **Hamza** | Product Owner / DevOps Lead | Gestió del projecte i coordinació d'equip<br>Documentació tècnica i actes<br>Configuració Docker i Docker Compose<br>Integració contínua | Lideratge, Organització, Docker, Git |
-| **Steven** | Backend Developer / DBA | Desenvolupament backend PHP<br>Administració base de dades MySQL<br>Scripts de migració i proves<br>Optimització de consultes | PHP, MySQL, Testing, Debugging |
+| **Hamza** | Product Owner / DevOps Lead | Gestió del projecte i coordinació d'equip<br>Documentació tècnica i actes<br>Configuració Docker i Docker Compose<br>Integració contínua<br>Desenvolupament backend PHP<br>Administració base de dades MySQL | Lideratge, Organització, Docker, Git, PHP, MySQL |
 | **Kevin** | Infrastructure Engineer / Frontend | Configuració NGINX i proxy invers<br>Implementació balanceig de càrrega<br>Gestió d'arxius estàtics<br>Diagrama de xarxa Packet Tracer | NGINX, Networking, HTML/CSS, Infraestructura |
 
 ### Distribució de Tasques per Sprint
 
 ```
-Hamza (Product Owner / DevOps):
-├── Sprint 1: Planning, Documentació, Git
-├── Sprint 2: Docker Compose, Orquestració [PENDENT]
-└── Sprint 3: Docs finals, Presentació [PENDENT]
-
-Steven (Backend Developer / DBA):
-├── Sprint 1: PHP-FPM, MySQL, Backend
-├── Sprint 2: Dockerfiles, Contenidors [PENDENT]
-└── Sprint 3: Testing, Proves [PENDENT]
+Hamza (Product Owner / DevOps / Backend):
+├── Sprint 1: Planning, Documentació, Git, PHP-FPM, MySQL, Backend
+├── Sprint 2: Docker Compose, Orquestració, Dockerfiles, Contenidors [COMPLETAT]
+└── Sprint 3: Docs finals, Presentació, Testing, Proves [PENDENT]
 
 Kevin (Infrastructure Engineer):
 ├── Sprint 1: NGINX, Infraestructura
-├── Sprint 2: Load Balancer, Proxy [PENDENT]
+├── Sprint 2: Load Balancer, Proxy [COMPLETAT]
 └── Sprint 3: Packet Tracer, Xarxa [PENDENT]
 ```
 
@@ -534,7 +528,7 @@ ARQUITECTURA EXTAGRAM
 |--------|------------|---------|--------|-------------------|-------|
 | **Sprint 0** | 08/12/2025 | 14/12/2025 | 1 setmana | Preparació i planificació inicial | COMPLETAT |
 | **Sprint 1** | 15/12/2025 | 19/01/2026 | 5 setmanes | MVP en màquina única | COMPLETAT (19/01/2026) |
-| **Sprint 2** | 20/01/2026 | 02/02/2026 | 2 setmanes | Dockerització i balanceig | PENDENT |
+| **Sprint 2** | 20/01/2026 | 02/02/2026 | 2 setmanes | Dockerització i balanceig | COMPLETAT (02/02/2026) |
 | **Sprint 3** | 03/02/2026 | 10/02/2026 | 1 setmana | Integració, proves i docs finals | PENDENT |
 
 ---
@@ -562,7 +556,7 @@ ARQUITECTURA EXTAGRAM
 | T1.11 | Documentar guia d'instal·lació | Hamza | 3h | Mitjana | COMPLETAT |
 | T1.12 | Preparar Sprint Review i Demo | Tots | 2h | Mitjana | COMPLETAT |
 
-**Total estimat:** 28 hores (~10h per persona)
+**Total estimat:** 28 hores
 
 #### Resultats Sprint 1
 
@@ -576,32 +570,35 @@ ARQUITECTURA EXTAGRAM
 
 ---
 
-### Sprint 2: Dockerització i Balanceig [PENDENT]
+### Sprint 2: Dockerització i Balanceig [COMPLETAT]
 
 **Objectiu:** Segregar l'aplicació en contenidors Docker amb proxy invers i balanceig de càrrega
 
 **Dates:** 20 de Gener de 2026 - 2 de Febrer de 2026
 
-**Estat:** PENDENT - Ja hem començat (20/01/2026)
+**Estat:** COMPLETAT (02/02/2026)
 
 #### Backlog del Sprint 2
 
 | ID | Tasca | Assignat | Estimació | Prioritat | Estat |
 |----|-------|----------|-----------|-----------|-------|
-| T2.1 | Crear Dockerfile per a S2/S3 (PHP-FPM extagram) | Steven | 2h | Alta | PENDENT |
-| T2.2 | Crear Dockerfile per a S4 (PHP-FPM upload) | Steven | 1.5h | Alta | PENDENT |
-| T2.3 | Crear Dockerfile per a S7 (MySQL) | Steven | 1h | Alta | PENDENT |
-| T2.4 | Configurar NGINX S1 com a Load Balancer | Kevin | 3h | Alta | PENDENT |
-| T2.5 | Crear configuració NGINX per a S5 (Images) | Kevin | 1h | Alta | PENDENT |
-| T2.6 | Crear configuració NGINX per a S6 (Static) | Kevin | 1h | Alta | PENDENT |
-| T2.7 | Crear docker-compose.yml complet | Hamza | 3h | Alta | PENDENT |
-| T2.8 | Configurar xarxa Docker interna | Hamza | 1.5h | Alta | PENDENT |
-| T2.9 | Configurar volums persistents (DB i uploads) | Hamza | 1h | Alta | PENDENT |
-| T2.10 | Proves de balanceig de càrrega Round-Robin | Tots | 2h | Alta | PENDENT |
-| T2.11 | Documentar configuració Docker | Hamza | 2h | Mitjana | PENDENT |
-| T2.12 | Preparar Sprint Review | Tots | 1h | Mitjana | PENDENT |
+| T2.1 | Crear Dockerfile per a S2/S3 (PHP-FPM extagram) | Hamza, Kevin | 2h | Alta | COMPLETAT |
+| T2.2 | Crear Dockerfile per a S4 (PHP-FPM upload) | Hamza, Kevin | 1.5h | Alta | COMPLETAT |
+| T2.3 | Crear Dockerfile per a S7 (MySQL) | Hamza, Kevin | 1h | Alta | COMPLETAT |
+| T2.4 | Configurar NGINX S1 com a Load Balancer | Kevin | 3h | Alta | COMPLETAT |
+| T2.5 | Crear configuració NGINX per a S5 (Images) | Kevin | 1h | Alta | COMPLETAT |
+| T2.6 | Crear configuració NGINX per a S6 (Static) | Kevin | 1h | Alta | COMPLETAT |
+| T2.7 | Crear docker-compose.yml complet | Hamza | 3h | Alta | COMPLETAT |
+| T2.8 | Configurar xarxa Docker interna | Hamza | 1.5h | Alta | COMPLETAT |
+| T2.9 | Configurar volums persistents (DB i uploads) | Hamza | 1h | Alta | COMPLETAT |
+| T2.10 | Proves de balanceig de càrrega Round-Robin | Hamza, Kevin | 2h | Alta | COMPLETAT |
+| T2.11 | Documentar configuració Docker | Hamza | 2h | Mitjana | COMPLETAT |
+| T2.12 | Preparar Sprint Review | Hamza, Kevin | 1h | Mitjana | COMPLETAT |
+| T2.13 | Implementació BLOB: Emmagatzematge dual d'imatges amb sistema de recuperació | Hamza, Kevin | 1h | Mitjana | COMPLETAT |
+| T2.14 | Implementación de Seguridad: Variables de Entorno y Credenciales | Hamza, Kevin | 1h | Mitjana | COMPLETAT |
+| T2.15 | Configuración de Red AWS: IP Elástica y Security Groups | Hamza, Kevin | 1h | Mitjana | COMPLETAT |
 
-**Total estimat:** 20 hores (~7h per persona)
+**Total estimat:** 23 hores
 
 **Documents del Sprint 2:**
 - [Sprint 2 Planning](actes/sprint2/SPRINT2_PLANNING.md) 
@@ -623,17 +620,17 @@ ARQUITECTURA EXTAGRAM
 |----|-------|----------|-----------|-----------|-------|
 | T3.1 | Crear esquema de xarxa amb Packet Tracer | Kevin | 3h | Alta | PENDENT |
 | T3.2 | Documentar arquitectura de xarxa | Kevin | 2h | Alta | PENDENT |
-| T3.3 | Proves de caiguda node S2 | Steven | 1.5h | Alta | PENDENT |
-| T3.4 | Proves de caiguda node S3 | Steven | 1.5h | Alta | PENDENT |
-| T3.5 | Proves de caiguda base de dades | Steven | 2h | Alta | PENDENT |
-| T3.6 | Documentar resultats de proves | Steven | 2h | Alta | PENDENT |
+| T3.3 | Proves de caiguda node S2 | Hamza | 1.5h | Alta | PENDENT |
+| T3.4 | Proves de caiguda node S3 | Hamza | 1.5h | Alta | PENDENT |
+| T3.5 | Proves de caiguda base de dades | Hamza | 2h | Alta | PENDENT |
+| T3.6 | Documentar resultats de proves | Hamza | 2h | Alta | PENDENT |
 | T3.7 | Revisar i completar README principal | Hamza | 3h | Alta | PENDENT |
 | T3.8 | Preparar presentació final | Hamza | 2h | Alta | PENDENT |
 | T3.9 | Revisar control de versions Git (commits) | Hamza | 1h | Mitjana | PENDENT |
 | T3.10 | Proves finals integrades (tot el stack) | Tots | 2h | Alta | PENDENT |
 | T3.11 | Sprint Review Final amb tutor | Tots | 2h | Alta | PENDENT |
 
-**Total estimat:** 22 hores (~7.5h per persona)
+**Total estimat:** 22 hores
 
 **Documents del Sprint 3:**
 - [Sprint 3 Planning](actes/sprint3/SPRINT3_PLANNING.md)
@@ -648,10 +645,10 @@ Progrés Global del Projecte
 ───────────────────────────
 
 Sprint 1: ████████████████████ 100% COMPLETAT
-Sprint 2: ██████□□□□□□□□□□□□□□   33% PENDENT
+Sprint 2: ████████████████████ 100% COMPLETAT
 Sprint 3: □□□□□□□□□□□□□□□□□□□□   0% PENDENT
 
-Total:    ██████□□□□□□□□□□□□□□  33% (1/3 sprints)
+Total:    █████████████░░░░░░░  67% (2/3 sprints)
 ```
 
 ---
@@ -671,9 +668,7 @@ Total:    ██████□□□□□□□□□□□□□□  33% (1/3
 
 ---
 
-### Opció 1: Desplegament amb Docker (RECOMANAT) [Sprint 2 - PENDENT]
-
-**NOTA:** Aquesta opció estarà disponible després de completar el Sprint 2.
+### Opció 1: Desplegament amb Docker (RECOMANAT)
 
 #### 1. Instal·lar Docker i Docker Compose
 
@@ -743,9 +738,9 @@ http://IP_DEL_SERVIDOR/extagram.php
 
 ---
 
-### Opció 2: Instal·lació Manual (Sprint 1) [COMPLETAT]
+### Opció 2: Instal·lació Manual (Sprint 1)
 
-Aquesta és la instal·lació actual que funciona.
+Aquesta és la instal·lació original en màquina única.
 
 <details>
 <summary><b>Clica per veure instruccions d'instal·lació manual</b></summary>
@@ -858,7 +853,7 @@ sudo chmod 775 /var/www/extagram/uploads
 ### Verificació del Desplegament
 
 ```bash
-# Comprovar estat dels contenidors (després Sprint 2)
+# Comprovar estat dels contenidors
 docker compose ps
 
 # Veure logs en temps real
@@ -916,7 +911,7 @@ extagram-project/
 │   │   └── captures/               # Captures ProofHub Sprint 1
 │   ├── sprint2/
 │   │   ├── SPRINT2_PLANNING.md     
-│   │   ├── SPRINT2_REVIEW.md       [PENDENT]
+│   │   ├── SPRINT2_REVIEW.md
 │   │   └── captures/
 │   └── sprint3/
 │       ├── SPRINT3_PLANNING.md     [PENDENT]
@@ -924,7 +919,7 @@ extagram-project/
 │       └── captures/
 │
 ├── configuracions/                  # Configuracions de serveis
-│   └── docker/                      [Sprint 2 - PENDENT]
+│   └── docker/
 │       ├── docker-compose.yml      # Orquestració principal
 │       ├── s1-loadbalancer/
 │       │   └── nginx.conf
@@ -954,7 +949,7 @@ extagram-project/
 │   └── diagrama_arquitectura.png    # Imatge del diagrama
 │
 └── proves/                          # Scripts i resultats de proves
-    ├── test_balancing.sh            [Sprint 2 - PENDENT]
+    ├── test_balancing.sh
     ├── test_failover.sh             [Sprint 3 - PENDENT]
     └── resultats/
         ├── proves_operatives.md     [Sprint 1 - COMPLETAT]
@@ -965,13 +960,13 @@ extagram-project/
 
 | Mètrica | Valor Actual | Objectiu Final |
 |---------|--------------|----------------|
-| Total Commits | 45 (Sprint 1) | >50 |
+| Total Commits | 45+ | >50 |
 | Branches | 2 (main, dev) | >3 |
 | Total Arxius | 28 | ~45 |
 | Línies de Codi | ~800 | ~1,500 |
 | Documentació (Markdown) | 8 fitxers | >15 |
 | Captures ProofHub | 6 | >12 |
-| Contributors | 3 (Hamza, Steven, Kevin) | 3 |
+| Contributors | 2 (Hamza, Kevin) | 2 |
 
 ---
 
@@ -992,13 +987,13 @@ extagram-project/
 
 ---
 
-#### 2. Proves de Balanceig de Càrrega (BL) - Sprint 2 [PENDENT]
+#### 2. Proves de Balanceig de Càrrega (BL) - Sprint 2 [COMPLETAT]
 
 | ID | Descripció | Resultat Esperat | Estat | Data |
 |----|------------|------------------|-------|------|
-| BL-01 | Distribució Round-Robin | 50% peticions a S2, 50% a S3 | PENDENT | - |
-| BL-02 | 100 peticions concurrents | Balanceig uniforme | PENDENT | - |
-| BL-03 | Temps de resposta | < 2 segons per petició | PENDENT | - |
+| BL-01 | Distribució Round-Robin | 50% peticions a S2, 50% a S3 | COMPLETAT | 02/02/2026 |
+| BL-02 | 100 peticions concurrents | Balanceig uniforme | COMPLETAT | 02/02/2026 |
+| BL-03 | Temps de resposta | < 2 segons per petició | COMPLETAT | 02/02/2026 |
 
 **Comanda de prova:**
 
@@ -1070,13 +1065,13 @@ Tots els resultats detallats es troben a:
 
 | ID | Risc | Probabilitat | Impacte | Mitigació | Estat |
 |----|------|--------------|---------|-----------|-------|
-| R01 | Fallada de node PHP (S2 o S3) | Mitjana | Alt | Redundància amb balanceig (S2 + S3) | Sprint 2 - PENDENT |
-| R02 | Pèrdua de dades BBDD | Baixa | Molt Alt | Volum persistent `db_data` | Sprint 2 - PENDENT |
-| R03 | Pèrdua d'imatges pujades | Baixa | Mitjà | Volum persistent `uploads_data` | Sprint 2 - PENDENT |
+| R01 | Fallada de node PHP (S2 o S3) | Mitjana | Alt | Redundància amb balanceig (S2 + S3) | MITIGAT |
+| R02 | Pèrdua de dades BBDD | Baixa | Molt Alt | Volum persistent `db_data` | MITIGAT |
+| R03 | Pèrdua d'imatges pujades | Baixa | Mitjà | Volum persistent `uploads_data` | MITIGAT |
 | R04 | Problemes de permisos SSH | Mitjana | Mitjà | Documentació detallada de configuració | MITIGAT |
-| R05 | Conflictes de versió PHP/MySQL | Baixa | Mitjà | Versions fixes a Docker (php:8.2, mysql:8.0) | Sprint 2 - PENDENT |
-| R06 | Errors de xarxa Docker | Mitjana | Alt | Xarxa interna `extagram_network` amb DNS | Sprint 2 - PENDENT |
-| R07 | Sobrecàrrega del Load Balancer | Baixa | Mitjà | NGINX Alpine (lleuger i ràpid) | Sprint 2 - PENDENT |
+| R05 | Conflictes de versió PHP/MySQL | Baixa | Mitjà | Versions fixes a Docker (php:8.2, mysql:8.0) | MITIGAT |
+| R06 | Errors de xarxa Docker | Mitjana | Alt | Xarxa interna `extagram_network` amb DNS | MITIGAT |
+| R07 | Sobrecàrrega del Load Balancer | Baixa | Mitjà | NGINX Alpine (lleuger i ràpid) | MITIGAT |
 | R08 | Fallada completa del servidor | Baixa | Molt Alt | Backups periòdics + documentació de recovery | Sprint 3 - PENDENT |
 | R09 | Problemes de comunicació equip | Mitjana | Mitjà | Dailies diàries + ProofHub actualitzat | MITIGAT |
 | R10 | Retard en lliuraments de tasques | Mitjana | Alt | Sprint Planning detallat + seguiment diari | EN SEGUIMENT |
@@ -1085,7 +1080,7 @@ Tots els resultats detallats es troben a:
 
 ### Accions de Contingència
 
-#### Si falla S2 o S3 (després Sprint 2):
+#### Si falla S2 o S3:
 1. El Load Balancer (S1) redirigeix automàticament tot el tràfic al node actiu
 2. No es requereix intervenció manual
 3. Temps de recuperació: < 5 segons
@@ -1134,7 +1129,7 @@ Sprint Retrospective (Millora contínua)
 |-----|--------|------------------|
 | **Product Owner** | Hamza | Definir Product Backlog<br>Prioritzar tasques<br>Acceptar o rebutjar entregables |
 | **Scrum Master** | Hamza | Facilitar ceremonies<br>Eliminar impediments<br>Assegurar seguiment de Scrum |
-| **Development Team** | Steven, Kevin | Desenvolupar funcionalitats<br>Auto-organització<br>Comprometre's amb Sprint Goals |
+| **Development Team** | Hamza, Kevin | Desenvolupar funcionalitats<br>Auto-organització<br>Comprometre's amb Sprint Goals |
 
 ---
 
@@ -1190,7 +1185,7 @@ Kevin:
 
 **Enllaços:**
 - [Sprint 1 Review](actes/sprint1/SPRINT1_REVIEW.md) - Completat 19/01/2026
-- [Sprint 2 Review](actes/sprint2/SPRINT2_REVIEW.md) - Pendent 02/02/2026
+- [Sprint 2 Review](actes/sprint2/SPRINT2_REVIEW.md) - Completat 02/02/2026
 - [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md) - Pendent 16/02/2026
 
 ---
@@ -1325,9 +1320,9 @@ Totes les actes de reunions es troben al directori `/actes`:
 
 - [Sprint 1 Planning](actes/sprint1/SPRINT1_PLANNING.md)
 - [Sprint 1 Review](actes/sprint1/SPRINT1_REVIEW.md)
-- [Sprint 2 Planning](actes/sprint2/SPRINT2_REVIEW.md)
+- [Sprint 2 Planning](actes/sprint2/SPRINT2_PLANNING.md)
 - [Sprint 2 Review](actes/sprint2/SPRINT2_REVIEW.md)
-- [Sprint 3 Planning](actes/sprint3/SPRINT3_REVIEW.md)
+- [Sprint 3 Planning](actes/sprint3/SPRINT3_PLANNING.md)
 - [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md)
 
 ---
@@ -1337,7 +1332,7 @@ Totes les actes de reunions es troben al directori `/actes`:
 Totes les captures del dashboard de ProofHub es troben a:
 
 - [/actes/sprint1/captures/](/actes/sprint1/captures/)
-- [/actes/sprint2/captures/](/actes/sprint2/captures/) - PENDENT
+- [/actes/sprint2/captures/](/actes/sprint2/captures/)
 - [/actes/sprint3/captures/](/actes/sprint3/captures/) - PENDENT
 
 ---
@@ -1348,8 +1343,7 @@ Totes les captures del dashboard de ProofHub es troben a:
 
 | Nom | Rol | Email | GitHub |
 |-----|-----|-------|--------|
-| Hamza | Product Owner / DevOps | hamza.tayibi.7e6@itb.cat | [@HamzaTayibiITB2425](https://github.com/HamzaTayibiITB2425) |
-| Steven | Backend Developer | steven.zapata.7e6@itb.cat | [@stevenitb](https://github.com/stevenitb) |
+| Hamza | Product Owner / DevOps / Backend | hamza.tayibi.7e6@itb.cat | [@HamzaTayibiITB2425](https://github.com/HamzaTayibiITB2425) |
 | Kevin | Infrastructure Engineer | kevin.armada.7e4@students.itb.cat | [@KevinArmada-ITB2425](https://github.com/KevinArmada-ITB2425) |
 
 ---
@@ -1380,7 +1374,7 @@ Email: jordi.casas@itb.cat
 Aquest projecte és desenvolupat amb finalitats **educatives** per a l'assignatura de Projecte Intermodular de l'ASIX2c a l'Institut Tecnològic de Barcelona.
 
 ```
-Copyright (c) 2025 Hamza, Steven, Kevin - Institut Tecnològic de Barcelona
+Copyright (c) 2025 Hamza, Kevin - Institut Tecnològic de Barcelona
 Tots els drets reservats per a ús educatiu.
 ```
 
@@ -1399,7 +1393,7 @@ Tots els drets reservats per a ús educatiu.
 <div align="center">
 
 **Projecte Extagram - Institut Tecnològic de Barcelona**  
-**Equip:** Hamza, Steven, Kevin | **ASIX2c** | **2025-2026**
+**Equip:** Hamza, Kevin | **ASIX2c** | **2025-2026**
 
 [Torna a l'índex](#índex)
 
@@ -1407,6 +1401,6 @@ Tots els drets reservats per a ús educatiu.
 
 ---
 
-**Última actualització:** 26 de Gener de 2026  
-**Versió del Document:** 2.0  
-**Estat del Projecte:** En Desenvolupament Actiu (Sprint 2 on progress)
+**Última actualització:** 02 de Febrer de 2026  
+**Versió del Document:** 3.0  
+**Estat del Projecte:** En Desenvolupament Actiu (Sprint 3 pendent)
