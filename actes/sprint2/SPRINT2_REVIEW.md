@@ -42,7 +42,7 @@ Segregar l'aplicacio en contenidors Docker amb proxy invers i balanceig de carre
 | T2.12 | Preparar Review | Hamza, Kevin | ✓ | Fet |
 | T2.13 | Implementació BLOB | Hamza, Kevin | ✓ | Fet |
 | T2.14 | Implementación de Seguridad | Hamza, Kevin | ✓ | Fet |
-| T2.15 | Configuración de Red AWS | Hamza, Kevin | ✓ | Fet |
+| T2.15 | Configuració de Red AWS | Hamza, Kevin | ✓ | Fet |
 ---
 
 ## 3. Demostracio
