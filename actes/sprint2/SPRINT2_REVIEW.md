@@ -14,7 +14,6 @@
 | Nom | Rol | Assistencia |
 |-----|-----|-------------|
 | Hamza | Product Owner / DevOps Lead | Present |
-| Steven | Backend Developer / DBA | Present |
 | Kevin | Infrastructure / Frontend | Present |
 
 ---
@@ -29,9 +28,9 @@ Segregar l'aplicacio en contenidors Docker amb proxy invers i balanceig de carre
 
 | ID | Tasca | Assignat | Estat | Comentaris |
 |----|-------|----------|-------|------------|
-| T2.1 | Dockerfile S2/S3 | Steven | | |
-| T2.2 | Dockerfile S4 | Steven | | |
-| T2.3 | Dockerfile S7 | Steven | | |
+| T2.1 | Dockerfile S2/S3 | Hamza, Kevin | | |
+| T2.2 | Dockerfile S4 | Hamza, Kevin | | |
+| T2.3 | Dockerfile S7 | Hamza, Kevin | | |
 | T2.4 | Config NGINX S1 | Kevin | | |
 | T2.5 | Dockerfile S5 | Kevin | | |
 | T2.6 | Dockerfile S6 | Kevin | | |
@@ -40,7 +39,7 @@ Segregar l'aplicacio en contenidors Docker amb proxy invers i balanceig de carre
 | T2.9 | Volums persistents | Hamza | | |
 | T2.10 | Proves balanceig | Tots | | |
 | T2.11 | Documentacio | Hamza | | |
-| T2.12 | Preparar Review | Tots | | |
+| T2.12 | Preparar Review | Hamza, Kevin | | |
 
 ---
 
@@ -80,7 +79,6 @@ docker-compose logs -f s1-loadbalancer
 | Rol | Nom |
 |-----|-----|
 | Product Owner | Hamza | 
-| Developer | Steven |
 | Developer | Kevin |
 
 ---
