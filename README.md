@@ -598,7 +598,7 @@ ARQUITECTURA EXTAGRAM
 | T2.14 | Implementación de Seguridad: Variables de Entorno y Credenciales | Hamza, Kevin | 1h | Mitjana | COMPLETAT |
 | T2.15 | Configuración de Red AWS: IP Elástica y Security Groups | Hamza, Kevin | 1h | Mitjana | COMPLETAT |
 
-**Total estimat:** 20 hores
+**Total estimat:** 23 hores
 
 **Documents del Sprint 2:**
 - [Sprint 2 Planning](actes/sprint2/SPRINT2_PLANNING.md) 
