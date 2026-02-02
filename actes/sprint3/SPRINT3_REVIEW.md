@@ -24,8 +24,8 @@
 
 | Sprint | Objectiu | Estat |
 |--------|----------|-------|
-| Sprint 1 | MVP en maquina unica | |
-| Sprint 2 | Dockeritzacio i balanceig | |
+| Sprint 1 | MVP en maquina unica | ✓ |
+| Sprint 2 | Dockeritzacio i balanceig | ✓ |
 | Sprint 3 | Integracio i proves | |
 
 ---
