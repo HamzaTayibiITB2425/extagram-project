@@ -14,7 +14,6 @@
 | Nom | Rol | Assistencia |
 |-----|-----|-------------|
 | Hamza | Product Owner / DevOps Lead | Present |
-| Steven | Backend Developer / DBA | Present |
 | Kevin | Infrastructure / Frontend | Present |
 
 ---
@@ -37,14 +36,15 @@
 |----|-------|----------|-------|
 | T3.1 | Esquema Packet Tracer | Kevin | |
 | T3.2 | Doc. arquitectura xarxa | Kevin | |
-| T3.3 | Proves caiguda S2 | Steven | |
-| T3.4 | Proves caiguda S3 | Steven | |
-| T3.5 | Proves caiguda BBDD | Steven | |
-| T3.6 | Doc. proves | Steven | |
+| T3.3 | Proves caiguda S2 | Hamza, Kevin | |
+| T3.4 | Proves caiguda S3 | Hamza, Kevin | |
+| T3.5 | Proves caiguda BBDD | Hamza, Kevin | |
+| T3.6 | Doc. proves | Hamza, Kevin | |
 | T3.7 | Revisio documentacio | Hamza | |
 | T3.8 | Presentacio | Hamza | |
 | T3.9 | Control versions Git | Hamza | |
 | T3.10 | Proves finals | Tots | |
+| T3.11 | Implementació LDAP | Tots | 2h | Alta |
 
 ---
 
@@ -103,7 +103,6 @@
 | Membre | Contribucions Principals |
 |--------|-------------------------|
 | Hamza | Gestio projecte, Docker Compose, Documentacio |
-| Steven | PHP-FPM, MySQL, Proves |
 | Kevin | NGINX, Balanceig, Packet Tracer |
 
 ---
@@ -113,7 +112,6 @@
 | Rol | Nom | 
 |-----|-----|
 | Product Owner | Hamza |
-| Developer | Steven | 
 | Developer | Kevin | 
 ---
 
