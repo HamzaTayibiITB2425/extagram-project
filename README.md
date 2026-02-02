@@ -548,9 +548,9 @@ ARQUITECTURA EXTAGRAM
 | T1.3 | Documentar anàlisi del projecte | Hamza | 4h | Alta | COMPLETAT |
 | T1.4 | Instal·lar i configurar NGINX | Kevin | 3h | Alta | COMPLETAT |
 | T1.5 | Configurar virtual host per Extagram | Kevin | 2h | Alta | COMPLETAT |
-| T1.6 | Configurar PHP-FPM amb extensions | Hamza | 3h | Alta | COMPLETAT |
-| T1.7 | Instal·lar i configurar MySQL Server | Hamza | 2h | Alta | COMPLETAT |
-| T1.8 | Crear base de dades i taula posts | Hamza | 1h | Alta | COMPLETAT |
+| T1.6 | Configurar PHP-FPM amb extensions | Steven | 3h | Alta | COMPLETAT |
+| T1.7 | Instal·lar i configurar MySQL Server | Steven | 2h | Alta | COMPLETAT |
+| T1.8 | Crear base de dades i taula posts | Steven | 1h | Alta | COMPLETAT |
 | T1.9 | Desplegar fitxers de l'aplicació | Kevin | 2h | Mitjana | COMPLETAT |
 | T1.10 | Proves de funcionament complet | Tots | 3h | Alta | COMPLETAT |
 | T1.11 | Documentar guia d'instal·lació | Hamza | 3h | Mitjana | COMPLETAT |
