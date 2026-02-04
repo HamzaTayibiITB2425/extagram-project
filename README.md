@@ -1358,12 +1358,7 @@ Tota la documentació es troba al directori `/docs`:
 | Document | Descripció | Enllaç |
 |----------|------------|--------|
 | **README.md** | Documentació principal (aquest fitxer) | [README.md](README.md) |
-| **ANALISI_PROJECTE.md** | Anàlisi exhaustiu del projecte | [docs/ANALISI_PROJECTE.md](docs/ANALISI_PROJECTE.md) |
 | **GUIA_INSTALACIO.md** | Guia pas a pas d'instal·lació | [docs/GUIA_INSTALACIO.md](docs/GUIA_INSTALACIO.md) |
-| **ARQUITECTURA.md** | Arquitectura tècnica detallada | [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md) |
-| **PROVES.md** | Pla de proves i resultats | [docs/PROVES.md](docs/PROVES.md) |
-| **MANTENIMENT.md** | Guia de manteniment i troubleshooting | [docs/MANTENIMENT.md](docs/MANTENIMENT.md) |
-
 ---
 
 ### Actes de Sprints
