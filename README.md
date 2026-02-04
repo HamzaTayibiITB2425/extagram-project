@@ -22,17 +22,18 @@
 2. [Equip de Treball](#equip-de-treball)
 3. [Objectius del Projecte](#objectius-del-projecte)
 4. [Arquitectura del Sistema](#arquitectura-del-sistema)
-5. [Tecnologies Utilitzades](#tecnologies-utilitzades)
+5. [Proves de Segmentació de Xarxa](#proves-de-segmentació-de-xarxa)
+6. [Tecnologies Utilitzades](#tecnologies-utilitzades)
    - [Comparativa de Tecnologies](#comparativa-i-justificació-de-tecnologies)
-6. [Planificació de Sprints](#planificació-de-sprints)
-7. [Guia d'Instal·lació Ràpida](#guia-dinstal·lació-ràpida)
-8. [Estructura del Repositori](#estructura-del-repositori)
-9. [Proves i Validació](#proves-i-validació)
-10. [Documentació](#documentació)
-11. [Gestió de Riscos](#gestió-de-riscos)
-12. [Metodologia Agile](#metodologia-agile)
-13. [Control de Versions](#control-de-versions)
-14. [Contacte i Suport](#contacte-i-suport)
+7. [Planificació de Sprints](#planificació-de-sprints)
+8. [Guia d'Instal·lació Ràpida](#guia-dinstal·lació-ràpida)
+9. [Estructura del Repositori](#estructura-del-repositori)
+10. [Proves i Validació](#proves-i-validació)
+11. [Documentació](#documentació)
+12. [Gestió de Riscos](#gestió-de-riscos)
+13. [Metodologia Agile](#metodologia-agile)
+14. [Control de Versions](#control-de-versions)
+15. [Contacte i Suport](#contacte-i-suport)
 
 ---
 
@@ -57,21 +58,20 @@
 
 | Membre | Rol Principal | Responsabilitats Clau | Competències |
 |--------|---------------|------------------------|--------------|
-| **Hamza** | Product Owner / DevOps Lead | Gestió del projecte i coordinació d'equip<br>Documentació tècnica i actes<br>Configuració Docker i Docker Compose<br>Integració contínua<br>Desenvolupament backend PHP<br>Administració base de dades MySQL | Lideratge, Organització, Docker, Git, PHP, MySQL |
-| **Kevin** | Infrastructure Engineer / Frontend | Configuració NGINX i proxy invers<br>Implementació balanceig de càrrega<br>Gestió d'arxius estàtics<br>Diagrama de xarxa Packet Tracer | NGINX, Networking, HTML/CSS, Infraestructura |
+| **Hamza** | Product Owner / DevOps Lead | Gestió del projecte i coordinació d'equip<br>Documentació tècnica i actes<br>Configuració Docker i Docker Compose<br>Integració contínua<br>Desenvolupament backend PHP<br>Administració base de dades MySQL i LDAP | Lideratge, Organització, Docker, Git, PHP, MySQL, LDAP |
+| **Kevin** | Infrastructure Engineer / Frontend | Configuració NGINX i proxy invers<br>Implementació balanceig de càrrega<br>Gestió d'arxius estàtics<br>Diagrama de xarxa interactiu<br>Segmentació de xarxa | NGINX, Networking, HTML/CSS, Infraestructura |
 
 ### Distribució de Tasques per Sprint
-
 ```
 Hamza (Product Owner / DevOps / Backend):
 ├── Sprint 1: Planning, Documentació, Git, PHP-FPM, MySQL, Backend
-├── Sprint 2: Docker Compose, Orquestració, Dockerfiles, Contenidors [COMPLETAT]
+├── Sprint 2: Docker Compose, Orquestració, Dockerfiles, LDAP, Segmentació [COMPLETAT]
 └── Sprint 3: Docs finals, Presentació, Testing, Proves [PENDENT]
 
 Kevin (Infrastructure Engineer):
 ├── Sprint 1: NGINX, Infraestructura
-├── Sprint 2: Load Balancer, Proxy [COMPLETAT]
-└── Sprint 3: Packet Tracer, Xarxa [PENDENT]
+├── Sprint 2: Load Balancer, Proxy, Segmentació de Xarxa [COMPLETAT]
+└── Sprint 3: Packet Tracer, Diagrames, Documentació [PENDENT]
 ```
 
 ---
@@ -80,18 +80,19 @@ Kevin (Infrastructure Engineer):
 
 ### Objectiu General
 
-Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una **arquitectura d'alta disponibilitat** basada en microserveis containeritzats, implementant **balanceig de càrrega** i **redundància de serveis** per garantir la continuïtat del servei davant fallades de components individuals.
+Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una **arquitectura d'alta disponibilitat** basada en microserveis containeritzats, implementant **balanceig de càrrega**, **redundància de serveis** i **segmentació de xarxa en 3 capes** per garantir la continuïtat del servei i la seguretat davant fallades o compromisos de components individuals.
 
 ### Objectius Específics
 
 #### Objectius Tècnics
 
-- Implementar una arquitectura de **7 serveis independents** (S1-S7)
+- Implementar una arquitectura de **8 serveis independents** (S1-S8)
 - Configurar **balanceig de càrrega Round-Robin** entre nodes PHP
 - Establir **separació de responsabilitats** (SoC - Separation of Concerns)
 - Garantir **persistència de dades** amb volums Docker
 - Implementar **proxy invers** per a gestió centralitzada de peticions
-- Configurar **xarxa interna Docker** per a comunicació segura entre contenidors
+- Configurar **segmentació de xarxa en 3 capes** aïllades (front, services, data)
+- Implementar **autenticació LDAP** per a gestió d'usuaris
 
 #### Objectius d'Alta Disponibilitat
 
@@ -99,6 +100,13 @@ Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una
 - **Tolerància a fallades** - El sistema continua operant amb la caiguda d'un node PHP
 - **Recuperació automàtica** de contenidors amb `restart: unless-stopped`
 - **Escalabilitat horitzontal** - Capacitat d'afegir més nodes PHP si cal
+
+#### Objectius de Seguretat
+
+- **Aïllament de la capa de dades** - S7 (MySQL) i S8 (LDAP) NO accessibles des d'Internet
+- **Segmentació de xarxa** - 3 xarxes separades amb regles de firewall
+- **Principi de mínim privilegi** - Serveis estàtics NO tenen accés a base de dades
+- **Xarxa interna** - `extagram_data` configurada com `internal: true`
 
 #### Objectius de Gestió de Projecte
 
@@ -113,6 +121,8 @@ Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una
 - Aprendre i aplicar **Docker i Docker Compose** per a orquestració
 - Dominar configuració de **NGINX** com a load balancer i proxy invers
 - Entendre arquitectures de **microserveis** i les seves avantatges
+- Implementar **segmentació de xarxa** per a seguretat
+- Configurar **OpenLDAP** per a autenticació centralitzada
 - Desenvolupar habilitats de **treball en equip** i **comunicació tècnica**
 - Adquirir experiència en **documentació tècnica professional**
 
@@ -122,109 +132,169 @@ Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una
 
 ### Diagrama d'Arquitectura
 
+El sistema Extagram està organitzat en **8 contenidors Docker** distribuïts en **3 xarxes segmentades** per garantir l'aïllament i seguretat de les capes de l'aplicació.
+
+![Diagrama d'Arquitectura Extagram](docs/imagenes/arquitectura/diagrama_completo.png)
+
+### Components del Sistema
+
+| Servei | Nom | Imatge Docker | Port | Funció | Xarxes | Adreces IP |
+|--------|-----|---------------|------|--------|--------|------------|
+| **S1** | Load Balancer | `nginx:alpine` | 80 | Proxy invers i balanceig Round-Robin | `extagram_front`<br>`extagram_services` | 172.20.0.2<br>172.19.0.7 |
+| **S2** | PHP Backend 1 | `php:8.2-fpm-alpine` | 9000 | Execució lògica aplicació (Redundància) | `extagram_services`<br>`extagram_data` | 172.19.0.6<br>172.21.0.6 |
+| **S3** | PHP Backend 2 | `php:8.2-fpm-alpine` | 9000 | Execució lògica aplicació (Redundància) | `extagram_services`<br>`extagram_data` | 172.19.0.4<br>172.21.0.4 |
+| **S4** | Upload Service | `php:8.2-fpm-alpine` | 9000 | Gestió de pujada i eliminació d'arxius | `extagram_services`<br>`extagram_data` | 172.19.0.5<br>172.21.0.5 |
+| **S5** | Image Server | `nginx:alpine` | 80 | Servir imatges pujades (read-only) | `extagram_services` | 172.19.0.3 |
+| **S6** | Static Server | `nginx:alpine` | 80 | Servir CSS, SVG i favicon | `extagram_services` | 172.19.0.2 |
+| **S7** | Database | `mysql:8.0` | 3306 | Emmagatzematge de posts i metadata | `extagram_data` (internal) | 172.21.0.2 |
+| **S8** | LDAP Server | `osixia/openldap:1.5.0` | 389/636 | Autenticació d'usuaris (Hamza, Kevin) | `extagram_data` (internal) | 172.21.0.3 |
+
+### Segmentació de Xarxa
+
+El sistema implementa una arquitectura de **3 capes de xarxa** per maximitzar la seguretat:
 ```
-                         INTERNET
-                             |
-                             v
-                   ┌─────────────────┐
-                   │   Browser       │
-                   │   (Client)      │
-                   └────────┬────────┘
-                            │ HTTP (Port 80)
-                            v
-              ┌─────────────────────────┐
-              │    S1: Load Balancer    │
-              │    nginx:alpine         │
-              │  - Proxy Invers         │
-              │  - Balanceig Round-Robin│
-              └──────────┬──────────────┘
-                         │
-         ┌───────────────┼───────────────┬──────────────┐
-         │               │               │              │
-         v               v               v              v
-    ┌────────┐      ┌────────┐     ┌─────────┐    ┌─────────┐
-    │   S2   │      │   S3   │     │   S4    │    │  S5/S6  │
-    │ PHP-FPM│      │ PHP-FPM│     │ PHP-FPM │    │  NGINX  │
-    │extagram│      │extagram│     │ upload  │    │ Static/ │
-    │  .php  │      │  .php  │     │  .php   │    │ Images  │
-    └───┬────┘      └───┬────┘     └────┬────┘    └─────────┘
-        │               │               │
-        └───────┬───────┴───────────────┘
-                │
-                v
-        ┌───────────────┐
-        │      S7       │
-        │   MySQL 8.0   │
-        │  extagram_db  │
-        │  - posts      │
-        └───────────────┘
-                │
-                v
-        ┌───────────────┐
-        │ Docker Volume │
-        │   db_data     │
-        └───────────────┘
+extagram_front (172.20.0.x)
+   └── S1: Load Balancer (exposat a Internet via port 80)
+
+extagram_services (172.19.0.x)
+   └── S1, S2, S3, S4, S5, S6 (comunicació interna aplicació)
+
+extagram_data (172.21.0.x - INTERNAL)
+   └── S2, S3, S4, S7, S8 (capa de dades aïllada del món exterior)
 ```
+
+**Característiques de Seguretat:**
+- S7 (MySQL) i S8 (LDAP) NO són accessibles des d'Internet
+- S5 i S6 (servidors estàtics) NO poden accedir a la base de dades ni LDAP
+- Només S2, S3, S4 (PHP amb lògica de negoci) tenen accés a S7 i S8
+- Xarxa `extagram_data` configurada com `internal: true` (sense gateway)
+- S1 NO pot accedir directament a S7 ni S8 (només S2/S3/S4 fan de pont)
+
+### Volums Persistents
+
+| Volum | Servei | Funció | Mode |
+|-------|--------|--------|------|
+| **db_data** | S7 (MySQL) | Persistència de base de dades `extagram_db` | Read-Write |
+| **uploads_data** | S4 (write)<br>S5 (read) | Emmagatzematge d'imatges pujades pels usuaris | S4: RW<br>S5: RO |
 
 ### Flux de Peticions
 
 #### 1. Petició de Visualització (GET /extagram.php)
-
 ```
-Browser → S1 (nginx) → [S2 o S3] (PHP-FPM) → S7 (MySQL) → Resposta
+Browser → S1 (nginx) → [S2 o S3] (PHP-FPM) → S7 (MySQL) + S8 (LDAP) → Resposta
                 ↓
          Balanceig Round-Robin
           (50% S2, 50% S3)
 ```
 
 #### 2. Petició de Pujada d'Imatge (POST /upload.php)
-
 ```
 Browser → S1 → S4 (upload.php) → Guarda imatge → S7 (MySQL) → Redirect
                         ↓
-                  uploads/ (Volume)
+                  uploads_data (Volume)
 ```
 
 #### 3. Petició d'Arxius Estàtics (GET /style.css, /preview.svg)
-
 ```
 Browser → S1 → S6 (nginx static) → Resposta directa
 ```
 
 #### 4. Petició d'Imatges Pujades (GET /uploads/img_xyz.jpg)
-
 ```
-Browser → S1 → S5 (nginx images) → Volume uploads/ → Resposta
-```
-
-### Components del Sistema
-
-| Servei | Nom | Imatge Docker | Port | Funció | Volums |
-|--------|-----|---------------|------|--------|--------|
-| **S1** | Load Balancer | `nginx:alpine` | 80 | Proxy invers i balanceig | Config NGINX |
-| **S2** | PHP Backend 1 | `php:8.2-fpm-alpine` | 9000 | Execució extagram.php (Redundància) | extagram.php |
-| **S3** | PHP Backend 2 | `php:8.2-fpm-alpine` | 9000 | Execució extagram.php (Redundància) | extagram.php |
-| **S4** | Upload Service | `php:8.2-fpm-alpine` | 9000 | Processament de pujades | upload.php + uploads/ |
-| **S5** | Image Server | `nginx:alpine` | 80 | Servir imatges pujades | uploads/ (read-only) |
-| **S6** | Static Server | `nginx:alpine` | 80 | Servir CSS i SVG | style.css, preview.svg |
-| **S7** | Database | `mysql:8.0` | 3306 | Emmagatzematge de posts | db_data (persistent) |
-
-### Configuració de Xarxa Docker
-
-```yaml
-networks:
-  extagram_network:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.20.0.0/16
+Browser → S1 → S5 (nginx images) → Volume uploads_data (read-only) → Resposta
 ```
 
-**Avantatges de la xarxa interna:**
-- Aïllament de tràfic entre contenidors
-- Comunicació per nom de servei (DNS intern Docker)
-- Seguretat millorada - S7 no exposat a l'exterior
-- Facilitat de manteniment i escalabilitat
+#### 5. Autenticació d'Usuaris (POST /login_ldap.php)
+```
+Browser → S1 → [S2 o S3] (login_ldap.php) → S8 (LDAP) → Validació → Resposta
+```
+
+---
+
+## Proves de Segmentació de Xarxa
+
+### Verificació de Connectivitat
+
+El sistema implementa una **segmentació de xarxa en 3 capes** per garantir que només els serveis autoritzats puguin comunicar-se entre ells. A continuació es mostren les proves de connectivitat realitzades per validar l'aïllament correcte.
+
+---
+
+### Connexions Permeses - Capa de Dades
+
+Els serveis PHP (S2, S3, S4) poden accedir a la capa de dades (S7, S8) perquè necessiten consultar la base de dades i autenticar usuaris via LDAP.
+
+![Connexions Permeses - PHP a Base de Dades i LDAP](docs/imagenes/pruebas/conexion_permitida_1.png)
+
+**Proves realitzades:**
+- S2 → S7 (MySQL 172.21.0.2): CORRECTE - S2 executa consultes SQL
+- S3 → S7 (MySQL 172.21.0.2): CORRECTE - S3 executa consultes SQL  
+- S4 → S7 (MySQL 172.21.0.2): CORRECTE - S4 guarda metadata d'imatges
+- S2 → S8 (LDAP 172.21.0.3): CORRECTE - S2 autentica usuaris
+- S3 → S8 (LDAP 172.21.0.3): CORRECTE - S3 autentica usuaris
+
+---
+
+### Connexions Permeses - Load Balancer
+
+El Load Balancer (S1) pot accedir a tots els serveis de la capa `extagram_services` per distribuir peticions HTTP.
+
+![Connexions Permeses - Load Balancer a Serveis](docs/imagenes/pruebas/conexion_permitida_2.png)
+
+**Proves realitzades:**
+- S1 → S2 (PHP s2-php): CORRECTE - Balanceig Round-Robin
+- S1 → S3 (PHP s3-php): CORRECTE - Balanceig Round-Robin
+- S1 → S4 (Upload s4-upload): CORRECTE - Proxy de pujades
+- S1 → S5 (Images s5-images): CORRECTE - Proxy d'imatges
+- S1 → S6 (Static s6-static): CORRECTE - Proxy de CSS/SVG
+
+---
+
+### Connexions Bloquejades - Seguretat
+
+Els servidors estàtics (S5, S6) NO poden accedir a la base de dades ni a LDAP, garantint que un compromís d'aquests serveis no exposi dades sensibles. Tampoc S1 (load balancer) pot accedir directament a la capa de dades.
+
+![Connexions Bloquejades per Seguretat](docs/imagenes/pruebas/conexion_bloqueada.png)
+
+**Proves realitzades:**
+- S5 → S7 (MySQL 172.21.0.2): BLOQUEADO - S5 no necessita accés a BD
+- S5 → S8 (LDAP 172.21.0.3): BLOQUEADO - S5 només serveix imatges
+- S6 → S7 (MySQL 172.21.0.2): BLOQUEADO - S6 no necessita accés a BD
+- S6 → S8 (LDAP 172.21.0.3): BLOQUEADO - S6 només serveix CSS/SVG
+- S1 → S7 (MySQL s7-database): BLOQUEADO - S1 no accedeix directament a BD
+- S1 → S8 (LDAP s8-ldap): BLOQUEADO - S1 no autentica, només fa proxy
+
+---
+
+### Comandes de Verificació
+
+Aquestes són les comandes utilitzades per verificar la segmentació de xarxa:
+```bash
+# Connexions permeses (han de funcionar)
+docker exec extagram-s2-php ping -c 2 -W 2 172.21.0.2       # S2 → S7
+docker exec extagram-s3-php ping -c 2 -W 2 172.21.0.3       # S3 → S8
+docker exec extagram-s4-upload ping -c 2 -W 2 172.21.0.2    # S4 → S7
+docker exec extagram-s1-loadbalancer ping -c 2 -W 2 s2-php  # S1 → S2
+docker exec extagram-s1-loadbalancer ping -c 2 -W 2 s6-static # S1 → S6
+
+# Connexions bloquejades (han de fallar)
+docker exec extagram-s5-images ping -c 2 -W 2 172.21.0.2    # S5 → S7
+docker exec extagram-s6-static ping -c 2 -W 2 172.21.0.3    # S6 → S8
+docker exec extagram-s1-loadbalancer ping -c 2 -W 2 s7-database  # S1 → S7
+```
+
+Per executar totes les proves automàticament:
+```bash
+cd ~/extagram-project/configuracions/docker
+bash ../../proves/test_network_segmentation.sh
+```
+
+### Resultats de Seguretat
+
+La segmentació de xarxa garanteix:
+- **Cap servei estàtic** (S5, S6) pot accedir a dades sensibles
+- **El load balancer** (S1) no pot saltar-se la lògica de negoci per accedir directament a BD
+- **La capa de dades** (extagram_data) està completament aïllada d'Internet
+- **Només els serveis PHP** (S2, S3, S4) fan de pont autoritzat entre capes
 
 ---
 
@@ -239,9 +309,10 @@ networks:
 | **Proxy Invers / LB** | NGINX | Alpine (Latest) | S1, S5, S6 |
 | **Backend** | PHP-FPM | 8.2-Alpine | S2, S3, S4 |
 | **Base de Dades** | MySQL | 8.0 | S7 - Persistència |
+| **Autenticació** | OpenLDAP | 1.5.0 | S8 - Gestió usuaris |
 | **Control de Versions** | Git + GitHub | - | Repositori central |
 | **Gestió de Projecte** | ProofHub | - | Backlog, Kanban, Sprints |
-| **Diagrames de Xarxa** | Cisco Packet Tracer | 8.x | Esquema d'arquitectura |
+| **Diagrames de Xarxa** | HTML/CSS/SVG | - | Diagrama interactiu |
 | **Documentació** | Markdown | - | Tots els docs al repo |
 | **Sistema Operatiu** | Ubuntu Server | 22.04 LTS | Sistema host |
 
@@ -462,10 +533,34 @@ A continuació es presenta una anàlisi detallada de les tecnologies seleccionad
 
 ---
 
+#### 8. Autenticació: OpenLDAP vs Active Directory vs OAuth2
+
+| Criteri | **OpenLDAP** (SELECCIONAT) | Active Directory | OAuth2 |
+|---------|----------------------------|------------------|--------|
+| **Tipus** | LDAP Protocol | LDAP + Kerberos | Token-based |
+| **Open Source** | Sí | No (Microsoft) | Depèn |
+| **Docker oficial** | Sí | No | N/A |
+| **Simplicitat** | Mitjana | Baixa | Alta |
+| **Cas d'ús** | Autenticació interna | Enterprise Windows | APIs, SSO |
+| **Cost** | Gratuït | Llicència Windows Server | Gratuït/Pagament |
+
+**Decisió: OpenLDAP 1.5.0**
+
+**Justificació:**
+- **Open Source**: Gratuït i codi obert
+- **Estàndard**: Protocol LDAP universal
+- **Docker**: Imatge oficial `osixia/openldap` amb 100M+ downloads
+- **Simplicitat**: Gestió d'usuaris centralitzada sense dependencies de Windows
+- **Aprenentatge**: LDAP és estàndard en entorns corporatius
+
+**Referències:**
+- OpenLDAP Documentation: https://www.openldap.org/doc/
+
+---
+
 ### Resum de Decisions Tecnològiques
 
 #### Decisions Finals
-
 ```
 ARQUITECTURA EXTAGRAM
 │
@@ -488,6 +583,11 @@ ARQUITECTURA EXTAGRAM
 │   └── MySQL 8.0 [SELECCIONAT]
 │       ├── Alternativa 1: PostgreSQL [REBUTJAT - Features innecessàries]
 │       └── Alternativa 2: MongoDB [REBUTJAT - NoSQL no adequat]
+│
+├── AUTENTICACIÓ
+│   └── OpenLDAP [SELECCIONAT]
+│       ├── Alternativa 1: Active Directory [REBUTJAT - Propietari]
+│       └── Alternativa 2: OAuth2 [REBUTJAT - Massa complex]
 │
 ├── ORQUESTRACIÓ
 │   └── Docker Compose [SELECCIONAT]
@@ -513,10 +613,11 @@ ARQUITECTURA EXTAGRAM
 2. **NGINX Official Docs** - https://nginx.org/en/docs/
 3. **PHP Manual** - https://www.php.net/manual/en/
 4. **MySQL Documentation** - https://dev.mysql.com/doc/
-5. **Stack Overflow Annual Survey 2024** - https://survey.stackoverflow.co/2024/
-6. **W3Techs Technology Surveys** - https://w3techs.com/
-7. **CNCF Cloud Native Survey 2024** - https://www.cncf.io/reports/
-8. **DB-Engines Database Rankings** - https://db-engines.com/en/ranking
+5. **OpenLDAP Documentation** - https://www.openldap.org/doc/
+6. **Stack Overflow Annual Survey 2024** - https://survey.stackoverflow.co/2024/
+7. **W3Techs Technology Surveys** - https://w3techs.com/
+8. **CNCF Cloud Native Survey 2024** - https://www.cncf.io/reports/
+9. **DB-Engines Database Rankings** - https://db-engines.com/en/ranking
 
 ---
 
@@ -528,7 +629,7 @@ ARQUITECTURA EXTAGRAM
 |--------|------------|---------|--------|-------------------|-------|
 | **Sprint 0** | 08/12/2025 | 14/12/2025 | 1 setmana | Preparació i planificació inicial | COMPLETAT |
 | **Sprint 1** | 15/12/2025 | 19/01/2026 | 5 setmanes | MVP en màquina única | COMPLETAT (19/01/2026) |
-| **Sprint 2** | 20/01/2026 | 02/02/2026 | 2 setmanes | Dockerització i balanceig | COMPLETAT (02/02/2026) |
+| **Sprint 2** | 20/01/2026 | 02/02/2026 | 2 setmanes | Dockerització, balanceig i segmentació | COMPLETAT (02/02/2026) |
 | **Sprint 3** | 03/02/2026 | 10/02/2026 | 1 setmana | Integració, proves i docs finals | PENDENT |
 
 ---
@@ -548,9 +649,9 @@ ARQUITECTURA EXTAGRAM
 | T1.3 | Documentar anàlisi del projecte | Hamza | 4h | Alta | COMPLETAT |
 | T1.4 | Instal·lar i configurar NGINX | Kevin | 3h | Alta | COMPLETAT |
 | T1.5 | Configurar virtual host per Extagram | Kevin | 2h | Alta | COMPLETAT |
-| T1.6 | Configurar PHP-FPM amb extensions | Steven | 3h | Alta | COMPLETAT |
-| T1.7 | Instal·lar i configurar MySQL Server | Steven | 2h | Alta | COMPLETAT |
-| T1.8 | Crear base de dades i taula posts | Steven | 1h | Alta | COMPLETAT |
+| T1.6 | Configurar PHP-FPM amb extensions | Hamza | 3h | Alta | COMPLETAT |
+| T1.7 | Instal·lar i configurar MySQL Server | Hamza | 2h | Alta | COMPLETAT |
+| T1.8 | Crear base de dades i taula posts | Hamza | 1h | Alta | COMPLETAT |
 | T1.9 | Desplegar fitxers de l'aplicació | Kevin | 2h | Mitjana | COMPLETAT |
 | T1.10 | Proves de funcionament complet | Tots | 3h | Alta | COMPLETAT |
 | T1.11 | Documentar guia d'instal·lació | Hamza | 3h | Mitjana | COMPLETAT |
@@ -572,7 +673,7 @@ ARQUITECTURA EXTAGRAM
 
 ### Sprint 2: Dockerització i Balanceig [COMPLETAT]
 
-**Objectiu:** Segregar l'aplicació en contenidors Docker amb proxy invers i balanceig de càrrega
+**Objectiu:** Segregar l'aplicació en contenidors Docker amb proxy invers, balanceig de càrrega i segmentació de xarxa
 
 **Dates:** 20 de Gener de 2026 - 2 de Febrer de 2026
 
@@ -584,21 +685,21 @@ ARQUITECTURA EXTAGRAM
 |----|-------|----------|-----------|-----------|-------|
 | T2.1 | Crear Dockerfile per a S2/S3 (PHP-FPM extagram) | Hamza, Kevin | 2h | Alta | COMPLETAT |
 | T2.2 | Crear Dockerfile per a S4 (PHP-FPM upload) | Hamza, Kevin | 1.5h | Alta | COMPLETAT |
-| T2.3 | Crear Dockerfile per a S7 (MySQL) | Hamza, Kevin | 1h | Alta | COMPLETAT |
+| T2.3 | Crear imatge MySQL amb init.sql | Hamza, Kevin | 1h | Alta | COMPLETAT |
 | T2.4 | Configurar NGINX S1 com a Load Balancer | Kevin | 3h | Alta | COMPLETAT |
 | T2.5 | Crear configuració NGINX per a S5 (Images) | Kevin | 1h | Alta | COMPLETAT |
 | T2.6 | Crear configuració NGINX per a S6 (Static) | Kevin | 1h | Alta | COMPLETAT |
 | T2.7 | Crear docker-compose.yml complet | Hamza | 3h | Alta | COMPLETAT |
-| T2.8 | Configurar xarxa Docker interna | Hamza | 1.5h | Alta | COMPLETAT |
+| T2.8 | Configurar segmentació de xarxa (3 capes) | Hamza, Kevin | 2h | Alta | COMPLETAT |
 | T2.9 | Configurar volums persistents (DB i uploads) | Hamza | 1h | Alta | COMPLETAT |
-| T2.10 | Proves de balanceig de càrrega Round-Robin | Hamza, Kevin | 2h | Alta | COMPLETAT |
-| T2.11 | Documentar configuració Docker | Hamza | 2h | Mitjana | COMPLETAT |
-| T2.12 | Preparar Sprint Review | Hamza, Kevin | 1h | Mitjana | COMPLETAT |
-| T2.13 | Implementació BLOB: Emmagatzematge dual d'imatges amb sistema de recuperació | Hamza, Kevin | 1h | Mitjana | COMPLETAT |
-| T2.14 | Implementación de Seguridad: Variables de Entorno y Credenciales | Hamza, Kevin | 1h | Mitjana | COMPLETAT |
-| T2.15 | Configuración de Red AWS: IP Elástica y Security Groups | Hamza, Kevin | 1h | Mitjana | COMPLETAT |
+| T2.10 | Implementar S8 OpenLDAP amb usuaris | Hamza | 2h | Alta | COMPLETAT |
+| T2.11 | Proves de balanceig de càrrega Round-Robin | Hamza, Kevin | 2h | Alta | COMPLETAT |
+| T2.12 | Proves de segmentació de xarxa | Hamza, Kevin | 2h | Alta | COMPLETAT |
+| T2.13 | Documentar configuració Docker | Hamza | 2h | Mitjana | COMPLETAT |
+| T2.14 | Crear diagrama interactiu HTML | Kevin | 3h | Mitjana | COMPLETAT |
+| T2.15 | Preparar Sprint Review | Hamza, Kevin | 1h | Mitjana | COMPLETAT |
 
-**Total estimat:** 23 hores
+**Total estimat:** 28 hores
 
 **Documents del Sprint 2:**
 - [Sprint 2 Planning](actes/sprint2/SPRINT2_PLANNING.md) 
@@ -639,16 +740,14 @@ ARQUITECTURA EXTAGRAM
 ---
 
 ### Gràfic de Progrés del Projecte
-
 ```
 Progrés Global del Projecte
-───────────────────────────
 
-Sprint 1: ████████████████████ 100% COMPLETAT
-Sprint 2: ████████████████████ 100% COMPLETAT
-Sprint 3: □□□□□□□□□□□□□□□□□□□□   0% PENDENT
+Sprint 1: [####################] 100% COMPLETAT
+Sprint 2: [####################] 100% COMPLETAT
+Sprint 3: [....................] 0% PENDENT
 
-Total:    █████████████░░░░░░░  67% (2/3 sprints)
+Total:    [#############.......] 67% (2/3 sprints)
 ```
 
 ---
@@ -668,10 +767,9 @@ Total:    █████████████░░░░░░░  67% (2/3
 
 ---
 
-### Opció 1: Desplegament amb Docker (RECOMANAT)
+### Desplegament amb Docker
 
 #### 1. Instal·lar Docker i Docker Compose
-
 ```bash
 # Actualitzar repositoris
 sudo apt update && sudo apt upgrade -y
@@ -691,17 +789,24 @@ docker compose version
 ```
 
 #### 2. Clonar el Repositori
-
 ```bash
-git clone git@github.com:usuari/extagram-project.git
+git clone https://github.com/HamzaTayibiITB2425/extagram-project.git
 cd extagram-project
 ```
 
-#### 3. Desplegar l'Aplicació
-
+#### 3. Configurar Variables d'Entorn
 ```bash
 cd configuracions/docker
 
+# Crear fitxer .env amb les credencials
+cp .env.example .env
+
+# Editar amb les teves contrasenyes
+nano .env
+```
+
+#### 4. Desplegar l'Aplicació
+```bash
 # Aixecar tots els serveis
 docker compose up -d --build
 
@@ -710,7 +815,6 @@ docker compose ps
 ```
 
 **Sortida esperada:**
-
 ```
 NAME                       STATUS              PORTS
 extagram-s1-loadbalancer   Up 30 seconds       0.0.0.0:80->80/tcp
@@ -719,139 +823,25 @@ extagram-s3-php            Up 30 seconds       9000/tcp
 extagram-s4-upload         Up 30 seconds       9000/tcp
 extagram-s5-images         Up 30 seconds       80/tcp
 extagram-s6-static         Up 30 seconds       80/tcp
-extagram-s7-database       Up 30 seconds       3306/tcp
+extagram-s7-database       Up 30 seconds (healthy)  3306/tcp
+extagram-s8-ldap           Up 30 seconds       389/tcp, 636/tcp
 ```
 
-#### 4. Accedir a l'Aplicació
+#### 5. Accedir a l'Aplicació
 
 Obrir navegador web:
-
 ```
 http://localhost/extagram.php
 ```
 
 o
-
 ```
 http://IP_DEL_SERVIDOR/extagram.php
 ```
 
 ---
 
-### Opció 2: Instal·lació Manual (Sprint 1)
-
-Aquesta és la instal·lació original en màquina única.
-
-<details>
-<summary><b>Clica per veure instruccions d'instal·lació manual</b></summary>
-
-#### 1. Instal·lar NGINX
-
-```bash
-sudo apt install -y nginx
-sudo systemctl enable nginx
-sudo systemctl start nginx
-```
-
-#### 2. Instal·lar PHP-FPM
-
-```bash
-sudo apt install -y php-fpm php-mysql php-gd php-curl php-mbstring
-sudo systemctl enable php8.1-fpm
-sudo systemctl start php8.1-fpm
-```
-
-#### 3. Instal·lar MySQL
-
-```bash
-sudo apt install -y mysql-server
-sudo mysql_secure_installation
-```
-
-#### 4. Configurar Base de Dades
-
-```bash
-sudo mysql
-```
-
-```sql
-CREATE DATABASE extagram_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
-CREATE USER 'extagram_admin'@'localhost' IDENTIFIED BY 'pass123';
-
-GRANT ALL PRIVILEGES ON extagram_db.* TO 'extagram_admin'@'localhost';
-
-FLUSH PRIVILEGES;
-
-USE extagram_db;
-
-CREATE TABLE posts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    post TEXT NOT NULL,
-    photourl VARCHAR(255) DEFAULT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO posts (post, photourl) VALUES ('Benvinguts a Extagram!', NULL);
-
-EXIT;
-```
-
-#### 5. Configurar NGINX
-
-```bash
-sudo nano /etc/nginx/sites-available/extagram
-```
-
-Enganxa:
-
-```nginx
-server {
-    listen 80;
-    server_name localhost;
-    root /var/www/extagram;
-    index extagram.php;
-    client_max_body_size 50M;
-    
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
-    }
-    
-    location /uploads/ {
-        alias /var/www/extagram/uploads/;
-        expires 30d;
-    }
-    
-    location ~ \.(css|svg)$ {
-        expires 7d;
-    }
-}
-```
-
-```bash
-sudo ln -s /etc/nginx/sites-available/extagram /etc/nginx/sites-enabled/
-sudo rm /etc/nginx/sites-enabled/default
-sudo nginx -t
-sudo systemctl restart nginx
-```
-
-#### 6. Desplegar Fitxers
-
-```bash
-sudo mkdir -p /var/www/extagram/uploads
-sudo cp -r src/* /var/www/extagram/
-sudo chown -R www-data:www-data /var/www/extagram
-sudo chmod -R 755 /var/www/extagram
-sudo chmod 775 /var/www/extagram/uploads
-```
-
-</details>
-
----
-
 ### Verificació del Desplegament
-
 ```bash
 # Comprovar estat dels contenidors
 docker compose ps
@@ -864,12 +854,17 @@ docker compose logs -f s1-loadbalancer
 
 # Comprovar balanceig entre S2 i S3
 docker compose logs -f s2-php s3-php
+
+# Verificar usuaris LDAP
+docker exec extagram-s8-ldap ldapsearch -x -H ldap://localhost \
+  -D "cn=admin,dc=extagram,dc=com" \
+  -w rootpass123 \
+  -b "dc=extagram,dc=com" "(objectClass=inetOrgPerson)"
 ```
 
 ---
 
 ### Gestió de l'Aplicació
-
 ```bash
 # Parar tots els serveis
 docker compose down
@@ -883,14 +878,14 @@ docker compose restart s2-php
 # Veure ús de recursos
 docker stats
 
-# Escalar nodes PHP (afegir més instàncies)
-docker compose up -d --scale s2-php=3
+# Rebuild d'un servei
+docker compose build --no-cache s8-ldap
+docker compose up -d s8-ldap
 ```
 
 ---
 
 ## Estructura del Repositori
-
 ```
 extagram-project/
 │
@@ -898,6 +893,13 @@ extagram-project/
 ├── .gitignore                       # Arxius a ignorar per Git
 │
 ├── docs/                            # Documentació tècnica
+│   ├── imagenes/
+│   │   ├── arquitectura/
+│   │   │   └── diagrama_completo.png
+│   │   └── pruebas/
+│   │       ├── conexion_permitida_1.png
+│   │       ├── conexion_permitida_2.png
+│   │       └── conexion_bloqueada.png
 │   ├── ANALISI_PROJECTE.md         # Anàlisi exhaustiu del projecte
 │   ├── GUIA_INSTALACIO.md          # Guia pas a pas d'instal·lació
 │   ├── ARQUITECTURA.md             # Detalls de l'arquitectura
@@ -921,22 +923,35 @@ extagram-project/
 ├── configuracions/                  # Configuracions de serveis
 │   └── docker/
 │       ├── docker-compose.yml      # Orquestració principal
+│       ├── .env                    # Variables d'entorn (NO al repo)
+│       ├── .env.example            # Plantilla de variables
 │       ├── s1-loadbalancer/
 │       │   └── nginx.conf
 │       ├── s2-s3-php/
 │       │   ├── Dockerfile
-│       │   └── extagram.php
+│       │   ├── extagram.php
+│       │   ├── login_ldap.php
+│       │   └── login.php
 │       ├── s4-upload/
 │       │   ├── Dockerfile
-│       │   └── upload.php
+│       │   ├── upload.php
+│       │   ├── delete.php
+│       │   └── recover.php
 │       ├── s5-images/
+│       │   ├── Dockerfile
 │       │   └── nginx.conf
 │       ├── s6-static/
+│       │   ├── Dockerfile
 │       │   ├── nginx.conf
 │       │   ├── style.css
+│       │   ├── favicon.ico
 │       │   └── preview.svg
-│       └── s7-mysql/
-│           └── init.sql
+│       ├── s7-mysql/
+│       │   └── init.sql
+│       └── s8-ldap/
+│           ├── Dockerfile
+│           ├── start.sh
+│           └── .env.example
 │
 ├── src/                             # Codi font original (Sprint 1)
 │   ├── extagram.php
@@ -944,15 +959,18 @@ extagram-project/
 │   ├── style.css
 │   └── preview.svg
 │
-├── xarxa/                           # Diagrama de xarxa [Sprint 3 - PENDENT]
-│   ├── esquema_xarxa.pkt           # Fitxer Packet Tracer
-│   └── diagrama_arquitectura.png    # Imatge del diagrama
+├── xarxa/                           # Diagrames de xarxa
+│   ├── extagram-architecture.html  # Diagrama interactiu
+│   ├── esquema_xarxa.pkt           # Fitxer Packet Tracer [Sprint 3]
+│   └── diagrama_arquitectura.png    # Exportació del diagrama
 │
 └── proves/                          # Scripts i resultats de proves
     ├── test_balancing.sh
+    ├── test_network_segmentation.sh
     ├── test_failover.sh             [Sprint 3 - PENDENT]
     └── resultats/
         ├── proves_operatives.md     [Sprint 1 - COMPLETAT]
+        ├── proves_segmentacio.md    [Sprint 2 - COMPLETAT]
         └── proves_caiguda.md        [Sprint 3 - PENDENT]
 ```
 
@@ -960,12 +978,12 @@ extagram-project/
 
 | Mètrica | Valor Actual | Objectiu Final |
 |---------|--------------|----------------|
-| Total Commits | 45+ | >50 |
+| Total Commits | 50+ | >60 |
 | Branches | 2 (main, dev) | >3 |
-| Total Arxius | 28 | ~45 |
-| Línies de Codi | ~800 | ~1,500 |
-| Documentació (Markdown) | 8 fitxers | >15 |
-| Captures ProofHub | 6 | >12 |
+| Total Arxius | 35 | ~50 |
+| Línies de Codi | ~1,200 | ~2,000 |
+| Documentació (Markdown) | 10 fitxers | >18 |
+| Captures ProofHub | 8 | >15 |
 | Contributors | 2 (Hamza, Kevin) | 2 |
 
 ---
@@ -978,7 +996,7 @@ extagram-project/
 
 | ID | Descripció | Resultat Esperat | Estat | Data |
 |----|------------|------------------|-------|------|
-| OP-01 | Accedir a http://107.21.188.16 | Pàgina carrega correctament amb formulari | COMPLETAT | 19/01/2026 |
+| OP-01 | Accedir a http://IP_SERVIDOR | Pàgina carrega correctament amb formulari | COMPLETAT | 19/01/2026 |
 | OP-02 | Publicar post sense imatge | Post apareix a la llista | COMPLETAT | 19/01/2026 |
 | OP-03 | Publicar post amb imatge | Post i imatge visibles | COMPLETAT | 19/01/2026 |
 | OP-04 | Verificar CSS carrega | Estils aplicats correctament | COMPLETAT | 19/01/2026 |
@@ -996,7 +1014,6 @@ extagram-project/
 | BL-03 | Temps de resposta | < 2 segons per petició | COMPLETAT | 02/02/2026 |
 
 **Comanda de prova:**
-
 ```bash
 for i in {1..20}; do curl -s http://localhost/extagram.php > /dev/null; done
 docker compose logs --tail=20 s2-php s3-php | grep "GET /extagram.php"
@@ -1004,7 +1021,40 @@ docker compose logs --tail=20 s2-php s3-php | grep "GET /extagram.php"
 
 ---
 
-#### 3. Proves de Caiguda de Nodes (CD) - Sprint 3 [PENDENT]
+#### 3. Proves de Segmentació de Xarxa (SX) - Sprint 2 [COMPLETAT]
+
+| ID | Descripció | Resultat Esperat | Estat | Data |
+|----|------------|------------------|-------|------|
+| SX-01 | S2 → S7 (MySQL) | Connexió exitosa | COMPLETAT | 02/02/2026 |
+| SX-02 | S3 → S8 (LDAP) | Connexió exitosa | COMPLETAT | 02/02/2026 |
+| SX-03 | S5 → S7 (MySQL) | Connexió bloquejada | COMPLETAT | 02/02/2026 |
+| SX-04 | S6 → S8 (LDAP) | Connexió bloquejada | COMPLETAT | 02/02/2026 |
+| SX-05 | S1 → S7 (MySQL) | Connexió bloquejada | COMPLETAT | 02/02/2026 |
+
+**Comandes de prova:**
+```bash
+# Connexions permeses
+docker exec extagram-s2-php ping -c 2 172.21.0.2
+docker exec extagram-s3-php ping -c 2 172.21.0.3
+
+# Connexions bloquejades
+docker exec extagram-s5-images ping -c 2 172.21.0.2  # Ha de fallar
+docker exec extagram-s6-static ping -c 2 172.21.0.3  # Ha de fallar
+```
+
+---
+
+#### 4. Proves d'Autenticació LDAP (AL) - Sprint 2 [COMPLETAT]
+
+| ID | Descripció | Resultat Esperat | Estat | Data |
+|----|------------|------------------|-------|------|
+| AL-01 | Login amb usuari Hamza | Accés concedit | COMPLETAT | 02/02/2026 |
+| AL-02 | Login amb usuari Kevin | Accés concedit | COMPLETAT | 02/02/2026 |
+| AL-03 | Login amb credencials incorrectes | Accés denegat | COMPLETAT | 02/02/2026 |
+
+---
+
+#### 5. Proves de Caiguda de Nodes (CD) - Sprint 3 [PENDENT]
 
 | ID | Descripció | Resultat Esperat | Estat | Data |
 |----|------------|------------------|-------|------|
@@ -1015,7 +1065,6 @@ docker compose logs --tail=20 s2-php s3-php | grep "GET /extagram.php"
 | CD-05 | Parar S7 (MySQL) | Errors de connexió a DB | PENDENT | - |
 
 **Comandes de prova:**
-
 ```bash
 # CD-01: Parar S2
 docker compose stop s2-php
@@ -1035,7 +1084,7 @@ docker compose start s2-php s3-php
 
 ---
 
-#### 4. Proves de Rendiment (PR) - Sprint 3 [PENDENT]
+#### 6. Proves de Rendiment (PR) - Sprint 3 [PENDENT]
 
 | ID | Descripció | Eina | Resultat Esperat | Estat |
 |----|------------|------|------------------|-------|
@@ -1044,7 +1093,6 @@ docker compose start s2-php s3-php
 | PR-03 | Throughput (req/s) | Apache Bench | > 100 req/s | PENDENT |
 
 **Comanda de prova:**
-
 ```bash
 ab -n 100 -c 10 http://localhost/extagram.php
 ```
@@ -1068,9 +1116,9 @@ Tots els resultats detallats es troben a:
 | R01 | Fallada de node PHP (S2 o S3) | Mitjana | Alt | Redundància amb balanceig (S2 + S3) | MITIGAT |
 | R02 | Pèrdua de dades BBDD | Baixa | Molt Alt | Volum persistent `db_data` | MITIGAT |
 | R03 | Pèrdua d'imatges pujades | Baixa | Mitjà | Volum persistent `uploads_data` | MITIGAT |
-| R04 | Problemes de permisos SSH | Mitjana | Mitjà | Documentació detallada de configuració | MITIGAT |
-| R05 | Conflictes de versió PHP/MySQL | Baixa | Mitjà | Versions fixes a Docker (php:8.2, mysql:8.0) | MITIGAT |
-| R06 | Errors de xarxa Docker | Mitjana | Alt | Xarxa interna `extagram_network` amb DNS | MITIGAT |
+| R04 | Compromís de servidors estàtics | Mitjana | Alt | Segmentació de xarxa - S5/S6 sense accés a BD | MITIGAT |
+| R05 | Atac directe a base de dades | Baixa | Molt Alt | Xarxa internal - S7/S8 no exposats a Internet | MITIGAT |
+| R06 | Errors de xarxa Docker | Mitjana | Alt | Xarxes segmentades amb DNS intern | MITIGAT |
 | R07 | Sobrecàrrega del Load Balancer | Baixa | Mitjà | NGINX Alpine (lleuger i ràpid) | MITIGAT |
 | R08 | Fallada completa del servidor | Baixa | Molt Alt | Backups periòdics + documentació de recovery | Sprint 3 - PENDENT |
 | R09 | Problemes de comunicació equip | Mitjana | Mitjà | Dailies diàries + ProofHub actualitzat | MITIGAT |
@@ -1090,6 +1138,11 @@ Tots els resultats detallats es troben a:
 2. Recuperar el contenidor: `docker compose restart s7-database`
 3. Les dades es mantenen al volum `db_data`
 
+#### Si es compromet S5 o S6:
+1. L'atacant NO pot accedir a S7 (MySQL) ni S8 (LDAP) per segmentació de xarxa
+2. Només pot servir arxius estàtics
+3. Reiniciar contenidor: `docker compose restart s5-images`
+
 #### Si es perden dades:
 1. Restaurar des de backup
 2. Reconstruir base de dades amb `init.sql`
@@ -1106,7 +1159,6 @@ El projecte Extagram s'ha desenvolupat seguint el framework **Scrum**, una metod
 #### Estructura de Sprints
 
 Cada sprint segueix aquest cicle:
-
 ```
 Sprint Planning
       ↓
@@ -1160,16 +1212,15 @@ Sprint Retrospective (Millora contínua)
   - Tinc algun bloqueig?
 
 **Daily:**
-
 ```
 Daily Standup - 26/01/2026
 
 Hamza:
-- Avui: Començaré a crear docker-compose.yml (Sprint 2)
+- Avui: Implementar S8 OpenLDAP amb usuaris Hamza i Kevin
 - Bloquejos: Cap
 
 Kevin:
-- Avui: Configuració del balanceig Round-Robin (Sprint 2)
+- Avui: Crear diagrama interactiu amb segmentació de xarxa
 - Bloquejos: Cap
 ```
 
@@ -1201,23 +1252,22 @@ Kevin:
   - Què podria millorar?
   - Accions de millora per al proper sprint
 
-**Exemple Sprint 1 Retrospective:**
-
+**Exemple Sprint 2 Retrospective:**
 ```
 Què ha anat bé:
-- Excel·lent col·laboració entre membres
-- Resolució ràpida de problemes tècnics
-- Documentació al dia
+- Implementació exitosa de segmentació de xarxa
+- Excel·lent coordinació en proves de connectivitat
+- LDAP funcionant a la primera
 
 Què podria millorar:
-- Més puntualitat en les dailies
-- Millor estimació de temps de tasques
-- Més commits petits i freqüents
+- Documentar decisions tècniques en temps real
+- Fer més commits atòmics
+- Planificar millor temps per a diagrames
 
-Accions de millora per Sprint 2:
-- Establir hora fixa per dailies (15:30h)
-- Usar Planning Poker per estimar tasques
-- Commits cada cop que es completa una subtasca
+Accions de millora per Sprint 3:
+- Documentar arquitectura abans de implementar
+- Commits cada funcionalitat completada
+- Assignar temps específic per a documentació
 ```
 
 ---
@@ -1225,7 +1275,6 @@ Accions de millora per Sprint 2:
 ### Convencions de Commits
 
 Seguim el format **Conventional Commits** per a claredat:
-
 ```
 <tipus>(<abast>): <descripció curta>
 
@@ -1245,18 +1294,17 @@ Seguim el format **Conventional Commits** per a claredat:
 - `chore:` Tasques de manteniment
 
 **Exemples:**
-
 ```bash
-git commit -m "feat(docker): afegir docker-compose.yml amb 7 serveis"
-git commit -m "fix(nginx): corregir configuració balanceig Round-Robin"
-git commit -m "docs(readme): afegir secció de comparativa de tecnologies"
-git commit -m "test(balancing): afegir proves de distribució de càrrega"
+git commit -m "feat(docker): afegir S8 OpenLDAP per autenticació d'usuaris"
+git commit -m "feat(network): implementar segmentació de xarxa en 3 capes"
+git commit -m "fix(nginx): corregir balanceig Round-Robin entre S2 i S3"
+git commit -m "docs(readme): actualitzar arquitectura amb 8 serveis i IPs"
+git commit -m "test(security): afegir proves de segmentació de xarxa"
 ```
 
 ---
 
 ### Flux de Treball
-
 ```bash
 # 1. Crear nova branca per a funcionalitat
 git checkout -b feature/nom-funcionalitat
@@ -1272,8 +1320,8 @@ git push origin feature/nom-funcionalitat
 
 # 5. Revisió de codi per un company
 
-# 6. Merge a dev (després de review)
-git checkout dev
+# 6. Merge a main (després de review)
+git checkout main
 git merge feature/nom-funcionalitat
 
 # 7. Esborrar branca temporal
@@ -1283,7 +1331,6 @@ git branch -d feature/nom-funcionalitat
 ---
 
 ### Estadístiques de Git
-
 ```bash
 # Veure historial de commits
 git log --oneline --graph --all
@@ -1354,7 +1401,7 @@ Totes les captures del dashboard de ProofHub es troben a:
 Carrer d'Aiguablava, 121, Nou Barris, 08033 Barcelona  
 Web: [www.itb.cat](https://www.itb.cat)
 
-**Tutor del Projecte:** [Jordi Casas]  
+**Tutor del Projecte:** Jordi Casas  
 Email: jordi.casas@itb.cat
 
 ---
@@ -1365,6 +1412,7 @@ Email: jordi.casas@itb.cat
 - [Documentació NGINX](https://nginx.org/en/docs/)
 - [Documentació PHP](https://www.php.net/docs.php)
 - [Documentació MySQL](https://dev.mysql.com/doc/)
+- [Documentació OpenLDAP](https://www.openldap.org/doc/)
 - [Guia Scrum](https://scrumguides.org/)
 
 ---
@@ -1372,7 +1420,6 @@ Email: jordi.casas@itb.cat
 ## Llicència
 
 Aquest projecte és desenvolupat amb finalitats **educatives** per a l'assignatura de Projecte Intermodular de l'ASIX2c a l'Institut Tecnològic de Barcelona.
-
 ```
 Copyright (c) 2025 Hamza, Kevin - Institut Tecnològic de Barcelona
 Tots els drets reservats per a ús educatiu.
@@ -1383,9 +1430,10 @@ Tots els drets reservats per a ús educatiu.
 ## Agraïments
 
 - **Institut Tecnològic de Barcelona** per proporcionar la infraestructura i suport
-- **Professors [Jordi, Isaac]** per la tutoria i guia durant el projecte
+- **Professor Jordi Casas** per la tutoria i guia durant el projecte
 - **Comunitat Docker** per l'excel·lent documentació
 - **Comunitat NGINX** per les millors pràctiques
+- **OpenLDAP Project** per l'autenticació centralitzada
 - **Stack Overflow** per resoldre dubtes tècnics
 
 ---
@@ -1401,6 +1449,6 @@ Tots els drets reservats per a ús educatiu.
 
 ---
 
-**Última actualització:** 02 de Febrer de 2026  
-**Versió del Document:** 3.0  
+**Última actualització:** 04 de Febrer de 2026  
+**Versió del Document:** 4.0  
 **Estat del Projecte:** En Desenvolupament Actiu (Sprint 3 pendent)
