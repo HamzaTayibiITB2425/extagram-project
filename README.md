@@ -903,16 +903,16 @@ extagram-project/
 ├── docs/                            # Documentació tècnica
 │   ├── imagenes/
 │   │   ├── arquitectura/
-│   │   │   └── diagrama_completo.png
+│   │   │   └── diagrama_completo.jpg
 │   │   └── pruebas/
 │   │       ├── conexion_permitida_1.png
 │   │       ├── conexion_permitida_2.png
 │   │       └── conexion_bloqueada.png
-│   ├── ANALISI_PROJECTE.md         # Anàlisi exhaustiu del projecte
-│   ├── GUIA_INSTALACIO.md          # Guia pas a pas d'instal·lació
-│   ├── ARQUITECTURA.md             # Detalls de l'arquitectura
-│   ├── PROVES.md                   # Document de proves i resultats
-│   └── MANTENIMENT.md              # Guia de manteniment i troubleshooting
+│   └── GUIA_INSTALACIO.md          # Guia pas a pas d'instal·lació
+│   
+│   
+│   
+│   
 │
 ├── actes/                           # Actes de reunions Agile
 │   ├── sprint1/
@@ -1109,15 +1109,6 @@ docker compose start s7-database
 ```bash
 ab -n 100 -c 10 http://localhost/extagram.php
 ```
-
----
-
-### Resultats de Proves
-
-Tots els resultats detallats es troben a:
-- [docs/PROVES.md](docs/PROVES.md)
-- [proves/resultats/proves_caiguda_s7.md](proves/resultats/proves_caiguda_s7.md)
-
 ---
 
 ## Gestió de Riscos
