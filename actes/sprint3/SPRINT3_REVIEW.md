@@ -41,10 +41,9 @@
 | T3.5 | Proves caiguda BBDD | Hamza, Kevin | ✓ |
 | T3.6 | Doc. proves | Hamza, Kevin | ✓ |
 | T3.7 | Revisio documentacio | Hamza | ✓ |
-| T3.8 | Presentacio | Hamza | ✓ |
-| T3.9 | Control versions Git | Hamza | ✓ |
-| T3.10 | Proves finals | Tots | ✓ |
-| T3.11 | Implementació LDAP | Tots | ✓ | Alta |
+| T3.8 | Control versions Git | Hamza | ✓ |
+| T3.9 | Proves finals | Tots | ✓ |
+| T3.10 | Implementació LDAP | Tots | ✓ | Alta |
 
 ---
 
