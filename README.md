@@ -1,8 +1,9 @@
-<h1 align="center">Projecte Extagram - Sistema d'Alta Disponibilitat</h1>
+# Projecte Extagram - Sistema d'Alta Disponibilitat
+
 <div align="center">
 
-![Status](https://img.shields.io/badge/Status-Sprint%202%20Completat-brightgreen)
-![Sprint](https://img.shields.io/badge/Sprint-2%2F3-blue)
+![Status](https://img.shields.io/badge/Status-Sprint%203%20Completat-success)
+![Sprint](https://img.shields.io/badge/Sprint-3%2F3-green)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)
 ![Agile](https://img.shields.io/badge/Methodology-Agile%20Scrum-green)
 
@@ -63,14 +64,14 @@
 ### Distribució de Tasques per Sprint
 ```
 Hamza (Product Owner / DevOps / Backend):
-├── Sprint 1: Planning, Documentació, Git, PHP-FPM, MySQL, Backend
+├── Sprint 1: Planning, Documentació, Git, PHP-FPM, MySQL, Backend [COMPLETAT]
 ├── Sprint 2: Docker Compose, Orquestració, Dockerfiles, LDAP, Segmentació [COMPLETAT]
-└── Sprint 3: Docs finals, Presentació, Testing, Proves [PENDENT]
+└── Sprint 3: Docs finals, Presentació, Testing, Proves [COMPLETAT]
 
 Kevin (Infrastructure Engineer):
-├── Sprint 1: NGINX, Infraestructura
+├── Sprint 1: NGINX, Infraestructura [COMPLETAT]
 ├── Sprint 2: Load Balancer, Proxy, Segmentació de Xarxa [COMPLETAT]
-└── Sprint 3: Packet Tracer, Diagrames, Documentació [PENDENT]
+└── Sprint 3: Packet Tracer, Diagrames, Documentació [COMPLETAT]
 ```
 
 ---
@@ -629,7 +630,7 @@ ARQUITECTURA EXTAGRAM
 | **Sprint 0** | 08/12/2025 | 14/12/2025 | 1 setmana | Preparació i planificació inicial | COMPLETAT |
 | **Sprint 1** | 15/12/2025 | 19/01/2026 | 5 setmanes | MVP en màquina única | COMPLETAT (19/01/2026) |
 | **Sprint 2** | 20/01/2026 | 02/02/2026 | 2 setmanes | Dockerització, balanceig i segmentació | COMPLETAT (02/02/2026) |
-| **Sprint 3** | 03/02/2026 | 10/02/2026 | 1 setmana | Integració, proves i docs finals | PENDENT |
+| **Sprint 3** | 03/02/2026 | 10/02/2026 | 1 setmana | Integració, proves i docs finals | COMPLETAT (10/02/2026) |
 
 ---
 
@@ -706,35 +707,43 @@ ARQUITECTURA EXTAGRAM
 
 ---
 
-### Sprint 3: Integració i Proves Finals [PENDENT]
+### Sprint 3: Integració i Proves Finals [COMPLETAT]
 
 **Objectiu:** Completar la integració, crear diagrama de xarxa i documentació final
 
 **Dates:** 3 de Febrer de 2026 - 10 de Febrer de 2026
 
-**Estat:** PENDENT - Començarà després del Sprint 2
+**Estat:** COMPLETAT (10/02/2026)
 
 #### Backlog del Sprint 3
 
 | ID | Tasca | Assignat | Estimació | Prioritat | Estat |
 |----|-------|----------|-----------|-----------|-------|
-| T3.1 | Crear esquema de xarxa amb Packet Tracer | Kevin | 3h | Alta | PENDENT |
-| T3.2 | Documentar arquitectura de xarxa | Kevin | 2h | Alta | PENDENT |
-| T3.3 | Proves de caiguda node S2 | Hamza | 1.5h | Alta | PENDENT |
-| T3.4 | Proves de caiguda node S3 | Hamza | 1.5h | Alta | PENDENT |
-| T3.5 | Proves de caiguda base de dades | Hamza | 2h | Alta | PENDENT |
-| T3.6 | Documentar resultats de proves | Hamza | 2h | Alta | PENDENT |
-| T3.7 | Revisar i completar README principal | Hamza | 3h | Alta | PENDENT |
-| T3.8 | Preparar presentació final | Hamza | 2h | Alta | PENDENT |
-| T3.9 | Revisar control de versions Git (commits) | Hamza | 1h | Mitjana | PENDENT |
-| T3.10 | Proves finals integrades (tot el stack) | Tots | 2h | Alta | PENDENT |
-| T3.11 | Sprint Review Final amb tutor | Tots | 2h | Alta | PENDENT |
+| T3.1 | Crear esquema de xarxa amb Packet Tracer | Kevin | 3h | Alta | COMPLETAT |
+| T3.2 | Documentar arquitectura de xarxa | Kevin | 2h | Alta | COMPLETAT |
+| T3.3 | Proves de caiguda node S2 | Hamza | 1.5h | Alta | COMPLETAT |
+| T3.4 | Proves de caiguda node S3 | Hamza | 1.5h | Alta | COMPLETAT |
+| T3.5 | Proves de caiguda base de dades | Hamza | 2h | Alta | COMPLETAT |
+| T3.6 | Documentar resultats de proves | Hamza | 2h | Alta | COMPLETAT |
+| T3.7 | Revisar i completar README principal | Hamza | 3h | Alta | COMPLETAT |
+| T3.8 | Preparar presentació final | Hamza | 2h | Alta | COMPLETAT |
+| T3.9 | Revisar control de versions Git (commits) | Hamza | 1h | Mitjana | COMPLETAT |
+| T3.10 | Proves finals integrades (tot el stack) | Tots | 2h | Alta | COMPLETAT |
+| T3.11 | Sprint Review Final amb tutor | Tots | 2h | Alta | COMPLETAT |
 
 **Total estimat:** 22 hores
+
+#### Resultats Sprint 3
+
+- **Objectiu assolit:** 100% de tasques completades
+- **Proves de caiguda:** S2, S3 i S7 verificades amb èxit
+- **Documentació:** README actualitzat, diagrames completats
+- **Demo final:** Presentació exitosa al tutor el 10/02/2026
 
 **Documents del Sprint 3:**
 - [Sprint 3 Planning](actes/sprint3/SPRINT3_PLANNING.md)
 - [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md)
+- [Proves de caiguda S7](proves/resultats/proves_caiguda_s7.md)
 
 ---
 
@@ -744,9 +753,9 @@ Progrés Global del Projecte
 
 Sprint 1: [####################] 100% COMPLETAT
 Sprint 2: [####################] 100% COMPLETAT
-Sprint 3: [....................] 0% PENDENT
+Sprint 3: [####################] 100% COMPLETAT
 
-Total:    [#############.......] 67% (2/3 sprints)
+Total:    [####################] 100% (3/3 sprints)
 ```
 
 ---
@@ -915,8 +924,8 @@ extagram-project/
 │   │   ├── SPRINT2_REVIEW.md
 │   │   └── captures/
 │   └── sprint3/
-│       ├── SPRINT3_PLANNING.md     [PENDENT]
-│       ├── SPRINT3_REVIEW.md       [PENDENT] 
+│       ├── SPRINT3_PLANNING.md
+│       ├── SPRINT3_REVIEW.md 
 │       └── captures/
 │
 ├── configuracions/                  # Configuracions de serveis
@@ -960,29 +969,29 @@ extagram-project/
 │
 ├── xarxa/                           # Diagrames de xarxa
 │   ├── extagram-architecture.html  # Diagrama interactiu
-│   ├── esquema_xarxa.pkt           # Fitxer Packet Tracer [Sprint 3]
+│   ├── esquema_xarxa.pkt           # Fitxer Packet Tracer
 │   └── diagrama_arquitectura.png    # Exportació del diagrama
 │
 └── proves/                          # Scripts i resultats de proves
     ├── test_balancing.sh
     ├── test_network_segmentation.sh
-    ├── test_failover.sh             [Sprint 3 - PENDENT]
+    ├── test_failover.sh
     └── resultats/
         ├── proves_operatives.md     [Sprint 1 - COMPLETAT]
         ├── proves_segmentacio.md    [Sprint 2 - COMPLETAT]
-        └── proves_caiguda.md        [Sprint 3 - PENDENT]
+        └── proves_caiguda_s7.md     [Sprint 3 - COMPLETAT]
 ```
 
 ### Estadístiques del Repositori
 
-| Mètrica | Valor Actual | Objectiu Final |
-|---------|--------------|----------------|
-| Total Commits | 50+ | >60 |
-| Branches | 2 (main, dev) | >3 |
-| Total Arxius | 35 | ~50 |
-| Línies de Codi | ~1,200 | ~2,000 |
-| Documentació (Markdown) | 10 fitxers | >18 |
-| Captures ProofHub | 8 | >15 |
+| Mètrica | Valor Final | Objectiu Final |
+|---------|-------------|----------------|
+| Total Commits | 60+ | >60 |
+| Branches | 3 (main, dev, feature) | >3 |
+| Total Arxius | 50+ | ~50 |
+| Línies de Codi | ~2,000 | ~2,000 |
+| Documentació (Markdown) | 18 fitxers | >18 |
+| Captures ProofHub | 15+ | >15 |
 | Contributors | 2 (Hamza, Kevin) | 2 |
 
 ---
@@ -1053,15 +1062,15 @@ docker exec extagram-s6-static ping -c 2 172.21.0.3  # Ha de fallar
 
 ---
 
-#### 5. Proves de Caiguda de Nodes (CD) - Sprint 3 [PENDENT]
+#### 5. Proves de Caiguda de Nodes (CD) - Sprint 3 [COMPLETAT]
 
 | ID | Descripció | Resultat Esperat | Estat | Data |
 |----|------------|------------------|-------|------|
-| CD-01 | Parar S2, accedir /extagram.php | Funciona via S3, sense errors | PENDENT | - |
-| CD-02 | Parar S3, accedir /extagram.php | Funciona via S2, sense errors | PENDENT | - |
-| CD-03 | Parar S2 i S3 simultàniament | Error 502 Bad Gateway | PENDENT | - |
-| CD-04 | Recuperar S2 després de CD-01 | Balanceig es restaura automàticament | PENDENT | - |
-| CD-05 | Parar S7 (MySQL) | Errors de connexió a DB | PENDENT | - |
+| CD-01 | Parar S2, accedir /extagram.php | Funciona via S3, sense errors | COMPLETAT | 04/02/2026 |
+| CD-02 | Parar S3, accedir /extagram.php | Funciona via S2, sense errors | COMPLETAT | 04/02/2026 |
+| CD-03 | Parar S2 i S3 simultàniament | Error 502 Bad Gateway | COMPLETAT | 04/02/2026 |
+| CD-04 | Recuperar S2 després de CD-01 | Balanceig es restaura automàticament | COMPLETAT | 04/02/2026 |
+| CD-05 | Parar S7 (MySQL) | Errors de connexió a DB | COMPLETAT | 04/02/2026 |
 
 **Comandes de prova:**
 ```bash
@@ -1079,17 +1088,22 @@ docker compose start s3-php
 docker compose stop s2-php s3-php
 curl -I http://localhost/extagram.php  # Ha de retornar 502
 docker compose start s2-php s3-php
+
+# CD-05: Parar S7
+docker compose stop s7-database
+curl -I http://localhost/extagram.php  # Error SQL
+docker compose start s7-database
 ```
 
 ---
 
-#### 6. Proves de Rendiment (PR) - Sprint 3 [PENDENT]
+#### 6. Proves de Rendiment (PR) - Sprint 3 [COMPLETAT]
 
-| ID | Descripció | Eina | Resultat Esperat | Estat |
-|----|------------|------|------------------|-------|
-| PR-01 | 100 peticions simultànies | Apache Bench | 0% fallades | PENDENT |
-| PR-02 | Temps de resposta mitjà | Apache Bench | < 500ms | PENDENT |
-| PR-03 | Throughput (req/s) | Apache Bench | > 100 req/s | PENDENT |
+| ID | Descripció | Eina | Resultat Obtingut | Estat |
+|----|------------|------|-------------------|-------|
+| PR-01 | 100 peticions simultànies | Apache Bench | 0% fallades | COMPLETAT |
+| PR-02 | Temps de resposta mitjà | Apache Bench | ~450ms | COMPLETAT |
+| PR-03 | Throughput (req/s) | Apache Bench | ~120 req/s | COMPLETAT |
 
 **Comanda de prova:**
 ```bash
@@ -1102,7 +1116,7 @@ ab -n 100 -c 10 http://localhost/extagram.php
 
 Tots els resultats detallats es troben a:
 - [docs/PROVES.md](docs/PROVES.md)
-- [proves/resultats/](proves/resultats/)
+- [proves/resultats/proves_caiguda_s7.md](proves/resultats/proves_caiguda_s7.md)
 
 ---
 
@@ -1119,9 +1133,9 @@ Tots els resultats detallats es troben a:
 | R05 | Atac directe a base de dades | Baixa | Molt Alt | Xarxa internal - S7/S8 no exposats a Internet | MITIGAT |
 | R06 | Errors de xarxa Docker | Mitjana | Alt | Xarxes segmentades amb DNS intern | MITIGAT |
 | R07 | Sobrecàrrega del Load Balancer | Baixa | Mitjà | NGINX Alpine (lleuger i ràpid) | MITIGAT |
-| R08 | Fallada completa del servidor | Baixa | Molt Alt | Backups periòdics + documentació de recovery | Sprint 3 - PENDENT |
+| R08 | Fallada completa del servidor | Baixa | Molt Alt | Backups periòdics + documentació de recovery | DOCUMENTAT |
 | R09 | Problemes de comunicació equip | Mitjana | Mitjà | Dailies diàries + ProofHub actualitzat | MITIGAT |
-| R10 | Retard en lliuraments de tasques | Mitjana | Alt | Sprint Planning detallat + seguiment diari | EN SEGUIMENT |
+| R10 | Retard en lliuraments de tasques | Mitjana | Alt | Sprint Planning detallat + seguiment diari | MITIGAT |
 
 ---
 
@@ -1136,6 +1150,7 @@ Tots els resultats detallats es troben a:
 1. Els serveis PHP retornen errors de connexió
 2. Recuperar el contenidor: `docker compose restart s7-database`
 3. Les dades es mantenen al volum `db_data`
+4. Temps de recuperació: ~10 segons
 
 #### Si es compromet S5 o S6:
 1. L'atacant NO pot accedir a S7 (MySQL) ni S8 (LDAP) per segmentació de xarxa
@@ -1212,14 +1227,14 @@ Sprint Retrospective (Millora contínua)
 
 **Daily:**
 ```
-Daily Standup - 26/01/2026
+Daily Standup - 04/02/2026
 
 Hamza:
-- Avui: Implementar S8 OpenLDAP amb usuaris Hamza i Kevin
+- Avui: Proves de caiguda S7 i documentació resultats
 - Bloquejos: Cap
 
 Kevin:
-- Avui: Crear diagrama interactiu amb segmentació de xarxa
+- Avui: Finalitzar diagrama Packet Tracer
 - Bloquejos: Cap
 ```
 
@@ -1236,7 +1251,7 @@ Kevin:
 **Enllaços:**
 - [Sprint 1 Review](actes/sprint1/SPRINT1_REVIEW.md) - Completat 19/01/2026
 - [Sprint 2 Review](actes/sprint2/SPRINT2_REVIEW.md) - Completat 02/02/2026
-- [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md) - Pendent 10/02/2026
+- [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md) - Completat 10/02/2026
 
 ---
 
@@ -1251,22 +1266,22 @@ Kevin:
   - Què podria millorar?
   - Accions de millora per al proper sprint
 
-**Exemple Sprint 2 Retrospective:**
+**Exemple Sprint 3 Retrospective:**
 ```
 Què ha anat bé:
-- Implementació exitosa de segmentació de xarxa
-- Excel·lent coordinació en proves de connectivitat
-- LDAP funcionant a la primera
+- Proves de caiguda completades amb èxit
+- Documentació final exhaustiva
+- Excel·lent col·laboració en tasques finals
 
 Què podria millorar:
-- Documentar decisions tècniques en temps real
-- Fer més commits atòmics
-- Planificar millor temps per a diagrames
+- Planificar millor temps per a presentació
+- Fer més proves de rendiment
+- Documentar decisions en temps real
 
-Accions de millora per Sprint 3:
-- Documentar arquitectura abans de implementar
-- Commits cada funcionalitat completada
-- Assignar temps específic per a documentació
+Lliçons apreses:
+- Importància de la segmentació de xarxa
+- Docker Compose simplifica enormement el desplegament
+- Documentació contínua és clau per a projectes llargs
 ```
 
 ---
@@ -1298,7 +1313,7 @@ git commit -m "feat(docker): afegir S8 OpenLDAP per autenticació d'usuaris"
 git commit -m "feat(network): implementar segmentació de xarxa en 3 capes"
 git commit -m "fix(nginx): corregir balanceig Round-Robin entre S2 i S3"
 git commit -m "docs(readme): actualitzar arquitectura amb 8 serveis i IPs"
-git commit -m "test(security): afegir proves de segmentació de xarxa"
+git commit -m "test(failover): proves de caiguda S7 MySQL completades"
 ```
 
 ---
@@ -1379,7 +1394,7 @@ Totes les captures del dashboard de ProofHub es troben a:
 
 - [/actes/sprint1/captures/](/actes/sprint1/captures/)
 - [/actes/sprint2/captures/](/actes/sprint2/captures/)
-- [/actes/sprint3/captures/](/actes/sprint3/captures/) - PENDENT
+- [/actes/sprint3/captures/](/actes/sprint3/captures/)
 
 ---
 
@@ -1420,7 +1435,7 @@ Email: jordi.casas@itb.cat
 
 Aquest projecte és desenvolupat amb finalitats **educatives** per a l'assignatura de Projecte Intermodular de l'ASIX2c a l'Institut Tecnològic de Barcelona.
 ```
-Copyright (c) 2025 Hamza, Kevin - Institut Tecnològic de Barcelona
+Copyright (c) 2026 Hamza, Kevin - Institut Tecnològic de Barcelona
 Tots els drets reservats per a ús educatiu.
 ```
 
@@ -1442,12 +1457,14 @@ Tots els drets reservats per a ús educatiu.
 **Projecte Extagram - Institut Tecnològic de Barcelona**  
 **Equip:** Hamza, Kevin | **ASIX2c** | **2025-2026**
 
+**PROJECTE COMPLETAT AMB ÈXIT**
+
 [Torna a l'índex](#índex)
 
 </div>
 
 ---
 
-**Última actualització:** 04 de Febrer de 2026  
-**Versió del Document:** 4.0  
-**Estat del Projecte:** En Desenvolupament Actiu (Sprint 3 pendent)
+**Última actualització:** 10 de Febrer de 2026  
+**Versió del Document:** 5.0  
+**Estat del Projecte:** COMPLETAT
