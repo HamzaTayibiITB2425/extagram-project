@@ -4,7 +4,7 @@
 
 | Camp | Valor |
 |------|-------|
-| Data | 16/02/2026 |
+| Data | 10/02/2026 |
 | Hora | 16:00 - 16:30 |
 | Lloc | Aula ASIX |
 | Sprint | Sprint 3 |

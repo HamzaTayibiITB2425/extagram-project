@@ -46,7 +46,7 @@
 | **Curs** | ASIX2c (Administració de Sistemes Informàtics en Xarxa) |
 | **Tutor del Projecte** | Jordi Casas |
 | **Data d'Inici** | 15 de Desembre de 2025 |
-| **Data de Finalització** | 16 de Febrer de 2026 |
+| **Data de Finalització** | 10 de Febrer de 2026 |
 | **Durada Total** | 8 setmanes (3 sprints) |
 | **Hores Estimades** | 120 hores totals |
 | **Repositori GitHub** | [github.com/HamzaTayibiITB2425/extagram-project](https://github.com/HamzaTayibiITB2425/extagram-project) |
@@ -1186,7 +1186,7 @@ Kevin:
 **Enllaços:**
 - [Sprint 1 Review](actes/sprint1/SPRINT1_REVIEW.md) - Completat 19/01/2026
 - [Sprint 2 Review](actes/sprint2/SPRINT2_REVIEW.md) - Completat 02/02/2026
-- [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md) - Pendent 16/02/2026
+- [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md) - Pendent 10/02/2026
 
 ---
 
