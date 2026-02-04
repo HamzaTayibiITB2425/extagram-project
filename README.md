@@ -1353,7 +1353,7 @@ git log --stat
 
 ### Documents del Projecte
 
-Tota la documentació es troba al directori `/docs`:
+Tota la documentació es troba en aquest **README.md**:
 
 | Document | Descripció | Enllaç |
 |----------|------------|--------|
