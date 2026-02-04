@@ -2,11 +2,6 @@ services:
   s1-loadbalancer:
     image: nginx:alpine
     container_name: extagram-s1-loadbalancer
-    environment:
-      - DB_HOST=${DB_HOST}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
     ports:
       - "80:80"
     volumes:
@@ -18,7 +13,8 @@ services:
       - s5-images
       - s6-static
     networks:
-      - extagram_network
+      - extagram_front
+      - extagram_services
     restart: unless-stopped
 
   s2-php:
@@ -35,7 +31,8 @@ services:
       s7-database:
         condition: service_healthy
     networks:
-      - extagram_network
+      - extagram_services
+      - extagram_data
     restart: unless-stopped
 
   s3-php:
@@ -52,7 +49,8 @@ services:
       s7-database:
         condition: service_healthy
     networks:
-      - extagram_network
+      - extagram_services
+      - extagram_data
     restart: unless-stopped
 
   s4-upload:
@@ -72,7 +70,8 @@ services:
       s7-database:
         condition: service_healthy
     networks:
-      - extagram_network
+      - extagram_services
+      - extagram_data
     restart: unless-stopped
 
   s5-images:
@@ -81,14 +80,14 @@ services:
     volumes:
       - uploads_data:/var/www/html/uploads:ro
     networks:
-      - extagram_network
+      - extagram_services
     restart: unless-stopped
 
   s6-static:
     build: ./s6-static
     container_name: extagram-s6-static
     networks:
-      - extagram_network
+      - extagram_services
     restart: unless-stopped
 
   s7-database:
@@ -103,7 +102,7 @@ services:
       - db_data:/var/lib/mysql
       - ./s7-mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
-      - extagram_network
+      - extagram_data
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
@@ -113,21 +112,26 @@ services:
       start_period: 30s
 
   s8-ldap:
-    image: osixia/openldap:1.5.0
+    build: ./s8-ldap
     container_name: extagram-s8-ldap
     environment:
-      LDAP_ORGANISATION: "Extagram"
-      LDAP_DOMAIN: "extagram.com"
-      LDAP_ADMIN_PASSWORD: "rootpass123"
+      LDAP_ORGANISATION: ${LDAP_ORGANISATION}
+      LDAP_DOMAIN: ${LDAP_DOMAIN}
+      LDAP_ADMIN_PASSWORD: ${LDAP_ADMIN_PASSWORD}
+      LDAP_USER_PASSWORD: ${LDAP_USER_PASSWORD}
     networks:
-      - extagram_network
+      - extagram_data
     restart: unless-stopped
 
 networks:
-  extagram_network:
+  extagram_front:
     driver: bridge
+  extagram_services:
+    driver: bridge
+  extagram_data:
+    driver: bridge
+    internal: true
 
 volumes:
   db_data:
   uploads_data:
-
