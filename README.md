@@ -1,5 +1,4 @@
-# Projecte Extagram - Sistema d'Alta Disponibilitat
-
+<h1 align="center">Projecte Extagram - Sistema d'Alta Disponibilitat</h1>
 <div align="center">
 
 ![Status](https://img.shields.io/badge/Status-Sprint%202%20Completat-brightgreen)
