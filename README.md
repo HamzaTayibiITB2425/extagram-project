@@ -134,7 +134,7 @@ Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una
 
 El sistema Extagram està organitzat en **8 contenidors Docker** distribuïts en **3 xarxes segmentades** per garantir l'aïllament i seguretat de les capes de l'aplicació.
 
-![Diagrama d'Arquitectura Extagram](docs/imagenes/arquitectura/diagrama_completo.png)
+![Diagrama d'Arquitectura Extagram](docs/imagenes/arquitectura/diagrama_completo.jpg)
 
 ### Components del Sistema
 
