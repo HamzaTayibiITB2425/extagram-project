@@ -1,4 +1,6 @@
-# Projecte Extagram - Sistema d'Alta Disponibilitat
+<div align="center">
+  <h1>Projecte Extagram - Sistema d'Alta Disponibilitat</h1>
+</div>
 
 <div align="center">
 
