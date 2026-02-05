@@ -745,7 +745,6 @@ ARQUITECTURA EXTAGRAM
 **Documents del Sprint 3:**
 - [Sprint 3 Planning](actes/sprint3/SPRINT3_PLANNING.md)
 - [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md)
-- [Proves de caiguda S7](proves/resultats/proves_caiguda_s7.md)
 
 ---
 
@@ -964,24 +963,12 @@ extagram-project/
 │           └── .env.example
 │
 ├── src/                             # Codi font original (Sprint 1)
-│   ├── extagram.php
-│   ├── upload.php
-│   ├── style.css
-│   └── preview.svg
-│
-├── xarxa/                           # Diagrames de xarxa
-│   ├── extagram-architecture.html  # Diagrama interactiu
-│   ├── esquema_xarxa.pkt           # Fitxer Packet Tracer
-│   └── diagrama_arquitectura.png    # Exportació del diagrama
-│
-└── proves/                          # Scripts i resultats de proves
-    ├── test_balancing.sh
-    ├── test_network_segmentation.sh
-    ├── test_failover.sh
-    └── resultats/
-        ├── proves_operatives.md     [Sprint 1 - COMPLETAT]
-        ├── proves_segmentacio.md    [Sprint 2 - COMPLETAT]
-        └── proves_caiguda_s7.md     [Sprint 3 - COMPLETAT]
+    ├── extagram.php
+    ├── upload.php
+    ├── style.css
+    └── preview.svg
+
+
 ```
 
 ### Estadístiques del Repositori
@@ -1223,7 +1210,7 @@ Sprint Retrospective (Millora contínua)
 Daily Standup - 04/02/2026
 
 Hamza:
-- Avui: Proves de caiguda S7 i documentació resultats
+- Avui: Proves de caiguda S7 
 - Bloquejos: Cap
 
 Kevin:
