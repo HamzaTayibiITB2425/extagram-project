@@ -2,20 +2,24 @@ services:
   s1-loadbalancer:
     image: nginx:alpine
     container_name: extagram-s1-loadbalancer
+    restart: unless-stopped
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./s1-loadbalancer/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/certbot:/var/www/certbot:ro
+      - /etc/nginx/ssl:/etc/nginx/ssl:ro
+    networks:
+      - extagram_front
+      - extagram_services
     depends_on:
       - s2-php
       - s3-php
       - s4-upload
       - s5-images
       - s6-static
-    networks:
-      - extagram_front
-      - extagram_services
-    restart: unless-stopped
 
   s2-php:
     build: ./s2-s3-php
