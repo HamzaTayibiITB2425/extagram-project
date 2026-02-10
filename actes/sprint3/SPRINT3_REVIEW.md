@@ -5,7 +5,7 @@
 | Camp | Valor |
 |------|-------|
 | Data | 10/02/2026 |
-| Hora | 16:00 - 16:30 |
+| Hora | 15:00 - 15:30 |
 | Lloc | Aula ASIX |
 | Sprint | Sprint 3 |
 
@@ -74,20 +74,20 @@
 
 ### Que ha anat be?
 
-1.
-2.
-3.
+1. **Planificació amb Sprints i ProofHub** - La divisió del projecte en 3 sprints amb seguiment detallat a ProofHub ens va permetre mantenir el control de tasques, deadlines i progrés de l'equip de manera ordenada i professional.
+2. **Arquitectura de microserveis amb Docker Compose** - La implementació dels 8 serveis independents (Load Balancer, 2 PHP backends, Upload, Images, Static, MySQL, LDAP) va funcionar molt bé, demostrant escalabilitat i facilitat de manteniment.
+3. **Seguretat implementada correctament** - HTTPS amb Let's Encrypt, autenticació LDAP, segmentació de xarxa en 3 capes i domini públic amb DuckDNS van aportar un nivell de seguretat professional al projecte.
 
 ### Que podria millorar?
 
-1.
-2.
+1. **Proves de càrrega més exhaustives** - Només vam fer proves bàsiques de fallada (S2, S3, S7). Hauríem d'haver implementat proves de càrrega amb eines com Apache Bench o JMeter per validar realment l'alta disponibilitat sota estrès.
+2. **Documentació incremental durant el desenvolupament** - Tot i tenir documentació completa al final, crear-la progressivament durant cada sprint hauria estalviat temps i evitat haver de recordar detalls tècnics a posteriori.
 
 ### Llicons Apreses
 
-1.
-2.
-3.
+1. **La importància de la documentació tècnica clara** - Un README ben estructurat amb diagrames de xarxa, instruccions d'instal·lació i troubleshooting és essencial. Facilita tant la comprensió del projecte per tercers com el manteniment futur.
+2. **Treball en equip amb Git i branques** - Utilitzar branques (main, dev, feature) i fer commits descriptius va millorar la col·laboració i va permetre revertir canvis quan era necessari sense afectar la branca principal.
+3. **Adaptació davant canvis en l'equip** - Quan un membre de l'equip va marxar, inicialment vam pensar que el projecte es ressenteria i no podríem complir els deadlines. Però ens vam reorganitzar, redistribuir tasques i vam descobrir que amb bona comunicació i compromís podíem tirar endavant i fins i tot completar totes les funcionalitats planificades.
 
 ---
 
