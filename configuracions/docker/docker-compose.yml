@@ -97,6 +97,17 @@ services:
   s7-database:
     image: mysql:8
     container_name: extagram-s7-database
+    command: >
+      sh -c "
+      docker-entrypoint.sh mysqld --general-log=1 --general-log-file=/var/log/mysql/general.log &
+      MYSQL_PID=\$$!;
+      sleep 8;
+      tail -f /var/log/mysql/general.log | 
+      tr -cd '\\11\\12\\15\\40-\\176' | 
+      grep --line-buffered -E '(Connect|Query|INSERT|SELECT|UPDATE|DELETE|Prepare|Execute|Close|Quit)' | 
+      sed -u 's/VALUES ([^,]*, [^,]*, .*/VALUES (caption, image_path, [BLOB_OMITIDO])/' &
+      wait \$$MYSQL_PID
+      "
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
