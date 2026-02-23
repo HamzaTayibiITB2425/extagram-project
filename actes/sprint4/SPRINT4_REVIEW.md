@@ -36,8 +36,8 @@ Implementar firewall davant de S1 i Implementar hardening web (WAF), de sistema 
 
 | ID | Tasca | Assignat | Estat | Comentaris |
 |----|-------|----------|-------|------------|
-| T1.1 | Implementar Firewall delante de S1 | Kevin | ✓ | Fet |
-| T1.2 | Implementar hardening web (WAF), de sistema operatiu i de BBDD | Hamza | ✓ | Fet |
+| T4.1 | Implementar Firewall delante de S1 | Kevin | ✓ | Fet |
+| T4.2 | Implementar hardening web (WAF), de sistema operatiu i de BBDD | Hamza | ✓ | Fet |
 
 
 ---
