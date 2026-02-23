@@ -833,7 +833,7 @@ ARQUITECTURA EXTAGRAM
 | **Sprint 1** | 15/12/2025 | 19/01/2026 | 5 setmanes | MVP en màquina única | COMPLETAT (19/01/2026) |
 | **Sprint 2** | 20/01/2026 | 02/02/2026 | 2 setmanes | Dockerització, balanceig i segmentació | COMPLETAT (02/02/2026) |
 | **Sprint 3** | 03/02/2026 | 10/02/2026 | 1 setmana | Integració, proves i docs finals | COMPLETAT (10/02/2026) |
-| **Sprint 4** | 17/02/2026 | 23/02/2026 | 1 setmana | Seguretat (WAF, Hardening, Firewall) | ✅ COMPLETAT (23/02/2026) |
+| **Sprint 4** | 17/02/2026 | 23/02/2026 | 1 setmana | Seguretat (WAF, Hardening, Firewall) | COMPLETAT (23/02/2026) |
 | **Sprint 5** | 02/03/2026 | 10/03/2026 | 1 setmana | Monitoratge (Grafana, Loki, Prometheus) | PENDENT |
 | **Presentació** | 16-17/03/2026 | - | 2 dies | Defensa del projecte | PENDENT |
 
@@ -951,28 +951,28 @@ ARQUITECTURA EXTAGRAM
 
 ---
 
-### Sprint 4: Seguretat [✅ COMPLETAT]
+### Sprint 4: Seguretat [COMPLETAT]
 
 **Objectiu:** Implementar WAF, Hardening de sistema operatiu i base de dades, Firewall perimetral
 
 **Dates:** 17 de Febrer de 2026 - 23 de Febrer de 2026
 
-**Estat:** ✅ COMPLETAT (23/02/2026)
+**Estat:** COMPLETAT (23/02/2026)
 
 #### Backlog del Sprint 4
 
 | ID | Tasca | Assignat | Estimació | Prioritat | Estat |
 |----|-------|----------|-----------|-----------|-------|
-| T4.1 | Implementar WAF NGINX natiu amb regex | Hamza | 4h | Alta | ✅ COMPLETAT |
-| T4.2 | Configurar regles SQL Injection, XSS, Path Traversal | Hamza | 2h | Alta | ✅ COMPLETAT |
-| T4.3 | Implementar Rate Limiting (10 req/s) | Hamza | 1h | Alta | ✅ COMPLETAT |
-| T4.4 | Hardening contenidors (no-new-privileges, cap_drop) | Hamza | 3h | Alta | ✅ COMPLETAT |
-| T4.5 | Hardening MySQL (usuaris mínims, privilegis restringits) | Hamza | 2h | Alta | ✅ COMPLETAT |
-| T4.6 | Crear hardening.sql amb configuració segura | Hamza | 1h | Alta | ✅ COMPLETAT |
-| T4.7 | Implementar firewall iptables davant S1 | Kevin | 3h | Alta | ✅ COMPLETAT |
-| T4.8 | Proves de seguretat WAF (SQL, XSS, Path Traversal) | Hamza, Kevin | 2h | Alta | ✅ COMPLETAT |
-| T4.9 | Documentar Sprint 4 Seguretat | Hamza | 2h | Mitjana | ✅ COMPLETAT |
-| T4.10 | Sprint Review amb tutor | Tots | 1h | Mitjana | ✅ COMPLETAT |
+| T4.1 | Implementar WAF NGINX natiu amb regex | Hamza | 4h | Alta | COMPLETAT |
+| T4.2 | Configurar regles SQL Injection, XSS, Path Traversal | Hamza | 2h | Alta | COMPLETAT |
+| T4.3 | Implementar Rate Limiting (10 req/s) | Hamza | 1h | Alta | COMPLETAT |
+| T4.4 | Hardening contenidors (no-new-privileges, cap_drop) | Hamza | 3h | Alta | COMPLETAT |
+| T4.5 | Hardening MySQL (usuaris mínims, privilegis restringits) | Hamza | 2h | Alta | COMPLETAT |
+| T4.6 | Crear hardening.sql amb configuració segura | Hamza | 1h | Alta | COMPLETAT |
+| T4.7 | Implementar firewall iptables davant S1 | Kevin | 3h | Alta | COMPLETAT |
+| T4.8 | Proves de seguretat WAF (SQL, XSS, Path Traversal) | Hamza, Kevin | 2h | Alta | COMPLETAT |
+| T4.9 | Documentar Sprint 4 Seguretat | Hamza | 2h | Mitjana | COMPLETAT |
+| T4.10 | Sprint Review amb tutor | Tots | 1h | Mitjana | COMPLETAT |
 
 **Total estimat:** 21 hores
 
@@ -984,19 +984,6 @@ ARQUITECTURA EXTAGRAM
 - **Firewall iptables**: Protecció perimetral implementada
 - **Proves exitoses**: Tots els atacs bloquejats correctament
 - **Demo final**: Presentació exitosa al tutor el 23/02/2026
-
-**Mètriques de Seguretat:**
-
-| Mètrica | Abans Sprint 4 | Després Sprint 4 | Millora |
-|---------|----------------|------------------|---------|
-| Atacs SQL Injection bloqueats | 0% | 100% | +100% |
-| Atacs XSS bloqueats | 0% | 100% | +100% |
-| Path Traversal bloqueats | 0% | 100% | +100% |
-| Security Headers | 0/4 | 4/4 | +100% |
-| Rate Limiting | ❌ No | ✅ Sí (10 req/s) | ✅ |
-| Contenidors hardened | 0/8 | 8/8 | +100% |
-| MySQL fortificat | ❌ No | ✅ Sí | ✅ |
-| Firewall perimetral | ❌ No | ✅ iptables | ✅ |
 
 **Documents del Sprint 4:**
 - [Sprint 4 Planning](actes/sprint4/SPRINT4_PLANNING.md)
@@ -1053,7 +1040,7 @@ Progrés Global del Projecte
 Sprint 1: [####################] 100% COMPLETAT
 Sprint 2: [####################] 100% COMPLETAT
 Sprint 3: [####################] 100% COMPLETAT
-Sprint 4: [####################] 100% COMPLETAT ✅
+Sprint 4: [####################] 100% COMPLETAT
 Sprint 5: [                    ]   0% PENDENT
 
 Total:    [################    ]  80% (4/5 sprints)
@@ -1070,7 +1057,7 @@ Total:    [################    ]  80% (4/5 sprints)
 **Projecte Extagram - Institut Tecnològic de Barcelona**  
 **Equip:** Hamza, Kevin | **ASIX2c** | **2025-2026**
 
-**SPRINT 4: ✅ COMPLETAT | SPRINT 5: PENDENT**
+**SPRINT 4: COMPLETAT | SPRINT 5: PENDENT**
 
 [Torna a l'índex](#índex)
 
@@ -1081,4 +1068,4 @@ Total:    [################    ]  80% (4/5 sprints)
 **Última actualització:** 23 de Febrer de 2026  
 **Versió del Document:** 7.0  
 **Estat del Projecte:** EN DESENVOLUPAMENT (80% completat)  
-**Proper Sprint:** Sprint 5 (Monitoratge amb Grafana + Loki + Prometheus)
+**Proper Sprint:** Sprint 5 (Monitoratge amb Grafana + Elastic)
