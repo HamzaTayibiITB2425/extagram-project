@@ -1067,4 +1067,4 @@ Total:    [################    ]  80% (4/5 sprints)
 **Última actualització:** 23 de Febrer de 2026  
 **Versió del Document:** 7.0  
 **Estat del Projecte:** EN DESENVOLUPAMENT (80% completat)  
-**Proper Sprint:** Sprint 5 (Monitoratge amb Grafana + Elastic)
+**Proper Sprint:** Sprint 5 (Monitoratge amb Grafana + Loki + Prometheus)
