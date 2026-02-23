@@ -988,7 +988,6 @@ ARQUITECTURA EXTAGRAM
 **Documents del Sprint 4:**
 - [Sprint 4 Planning](actes/sprint4/SPRINT4_PLANNING.md)
 - [Sprint 4 Review](actes/sprint4/SPRINT4_REVIEW.md)
-- [Documentació Seguretat](docs/SPRINT4_SEGURIDAD.md)
 
 ---
 
