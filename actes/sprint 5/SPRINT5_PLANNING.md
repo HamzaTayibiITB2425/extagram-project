@@ -32,10 +32,10 @@ CD.
 
 | ID | Tasca | Assignat | Estimacio | Prioritat |
 |----|-------|----------|-----------|-----------|
-| T1.1 | Centralització de logs: Grafana, Elastic o Nagios | Hamza | 3h | Alta |
-| T1.2 | Proves d'estrès | Kevin | 3h | Alta |
-| T1.3 | Dashboard de rendiment | Hamza, Kevin | 2h | Alta |
-| T1.4 | automatització de la posada a producció del desplegament amb Ansible. | Hamza, Kevin | 3h | Alta |
+| T5.1 | Centralització de logs: Grafana, Elastic o Nagios | Hamza | 3h | Alta |
+| T5.2 | Proves d'estrès | Kevin | 3h | Alta |
+| T5.3 | Dashboard de rendiment | Hamza, Kevin | 2h | Alta |
+| T5.4 | automatització de la posada a producció del desplegament amb Ansible. | Hamza, Kevin | 3h | Alta |
 
 Total estimat: 11 hores 
 
