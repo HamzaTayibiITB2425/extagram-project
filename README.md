@@ -177,26 +177,6 @@ El sistema Extagram està organitzat en **8 contenidors Docker** distribuïts en
 | **S7** | Database (Hardened) | `mysql:8.0` | 3306 | Emmagatzematge de posts i metadata | `extagram_data` (internal) | 172.21.0.2 |
 | **S8** | LDAP Server | `osixia/openldap:1.5.0` | 389/636 | Autenticació d'usuaris (Hamza, Kevin) | `extagram_data` (internal) | 172.21.0.3 |
 
-### Components de Seguretat (Sprint 4) - ✅ COMPLETAT
-
-| Component | Tecnologia | Funció | Estat |
-|-----------|------------|--------|-------|
-| **WAF** | NGINX nati
-
-u + Regex Rules | Protecció SQL Injection, XSS, Path Traversal, Rate Limit | ✅ IMPLEMENTAT |
-| **Hardening OS** | Docker security_opt, cap_drop, read_only | Contenidors immutables, mínim privilegi | ✅ IMPLEMENTAT |
-| **Hardening MySQL** | Usuaris segurs, privilegis mínims | Base de dades fortificada | ✅ IMPLEMENTAT |
-| **Firewall** | iptables | Protecció perimetral davant S1 | ✅ IMPLEMENTAT |
-
-### Components de Monitoratge (Sprint 5) - ⏳ PENDENT
-
-| Component | Tecnologia | Port | Funció |
-|-----------|------------|------|--------|
-| **Grafana** | Grafana OSS | 3000 | Visualització de logs i mètriques |
-| **Loki** | Grafana Loki | 3100 | Agregació i indexació de logs |
-| **Promtail** | Promtail | 9080 | Recopilació de logs Docker |
-| **Prometheus** | Prometheus | 9090 | Monitoratge de mètriques |
-
 ### Segmentació de Xarxa
 
 El sistema implementa una arquitectura de **3 capes de xarxa** per maximitzar la seguretat:
