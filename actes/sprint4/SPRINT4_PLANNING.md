@@ -31,8 +31,8 @@ Implementar firewall davant de S1 i Implementar hardening web (WAF), de sistema 
 
 | ID | Tasca | Assignat | Estimacio | Prioritat |
 |----|-------|----------|-----------|-----------|
-| T1.1 | Implementar Firewall delante de S1 | Kevin | 3h | Alta |
-| T1.2 | Implementar hardening web (WAF), de sistema operatiu i de BBDD | Hamza | 3h | Alta |
+| T4.1 | Implementar Firewall delante de S1 | Kevin | 3h | Alta |
+| T4.2 | Implementar hardening web (WAF), de sistema operatiu i de BBDD | Hamza | 3h | Alta |
 
 Total estimat: 6 hores 
 
