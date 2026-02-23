@@ -890,26 +890,12 @@ ARQUITECTURA EXTAGRAM
 
 #### Backlog del Sprint 4
 
-| ID | Tasca | Assignat | Estimació | Prioritat | Estat |
-|----|-------|----------|-----------|-----------|-------|
-| T4.1 | Crear Dockerfile NGINX + ModSecurity | Hamza | 2h | Alta | EN CURS |
-| T4.2 | Configurar OWASP Core Rule Set | Hamza | 2h | Alta | PENDENT |
-| T4.3 | Proves WAF: SQL Injection | Hamza | 1h | Alta | PENDENT |
-| T4.4 | Proves WAF: XSS (Cross-Site Scripting) | Hamza | 1h | Alta | PENDENT |
-| T4.5 | Proves WAF: Path Traversal | Hamza | 0.5h | Alta | PENDENT |
-| T4.6 | Proves WAF: Rate Limiting (anti-DDoS) | Hamza | 0.5h | Alta | PENDENT |
-| T4.7 | Aplicar hardening contenidors (security_opt, cap_drop) | Hamza | 2h | Alta | PENDENT |
-| T4.8 | Configurar filesystem read-only per a S2, S3, S4 | Hamza | 1h | Alta | PENDENT |
-| T4.9 | Crear script hardening MySQL (hardening.sql) | Hamza | 1.5h | Alta | PENDENT |
-| T4.10 | Eliminar usuaris anònims MySQL | Hamza | 0.5h | Alta | PENDENT |
-| T4.11 | Configurar privilegis mínims usuari extagram_admin | Hamza | 1h | Alta | PENDENT |
-| T4.12 | Implementar Firewall perimetral davant S1 | Kevin | 3h | Alta | PENDENT |
-| T4.13 | Configurar regles iptables / pfSense | Kevin | 2h | Alta | PENDENT |
-| T4.14 | Proves de seguretat integrades | Tots | 2h | Alta | PENDENT |
-| T4.15 | Documentar configuració seguretat (SPRINT4-SEGURIDAD.md) | Hamza | 2h | Mitjana | PENDENT |
-| T4.16 | Preparar Sprint Review Seguretat | Tots | 1h | Mitjana | PENDENT |
+| ID | Tasca | Assignat | Estimacio | Prioritat |
+|----|-------|----------|-----------|-----------|
+| T4.1 | Implementar Firewall delante de S1 | Kevin | 3h | Alta |
+| T4.2 | Implementar hardening web (WAF), de sistema operatiu i de BBDD | Hamza | 3h | Alta |
 
-**Total estimat:** 23 hores
+**Total estimat:** 6 hores
 
 #### Objectius del Sprint 4
 
@@ -918,19 +904,11 @@ ARQUITECTURA EXTAGRAM
 - **Hardening MySQL:** Eliminar usuaris anònims, privilegis mínims, configuració segura
 - **Firewall perimetral:** Protecció davant de S1 amb iptables/pfSense
 
-**Proves de Seguretat:**
-- SQL Injection → Bloqueig WAF
-- XSS → Bloqueig WAF
-- Path Traversal → Bloqueig WAF
-- Rate Limiting → Anti-DDoS
-- Escalada de privilegis → Previngut per hardening
-- Accés no autoritzat MySQL → Denegat per privilegis mínims
-
 ---
 
 ### Sprint 5: Monitoratge [PENDENT]
 
-**Objectiu:** Implementar sistema de monitoratge centralitzat amb Grafana, Loki i Prometheus
+**Objectiu:** Implementar sistema de monitoratge centralitzat amb Grafana, Elastic.
 
 **Dates:** 2 de Març de 2026 - 10 de Març de 2026
 
@@ -938,31 +916,18 @@ ARQUITECTURA EXTAGRAM
 
 #### Backlog del Sprint 5
 
-| ID | Tasca | Assignat | Estimació | Prioritat | Estat |
-|----|-------|----------|-----------|-----------|-------|
-| T5.1 | Crear docker-compose-monitoring.yml | Hamza | 2h | Alta | PENDENT |
-| T5.2 | Configurar Loki per agregació logs | Hamza | 1.5h | Alta | PENDENT |
-| T5.3 | Configurar Promtail per capturar logs Docker | Hamza | 1.5h | Alta | PENDENT |
-| T5.4 | Configurar Prometheus per mètriques | Hamza | 1.5h | Alta | PENDENT |
-| T5.5 | Configurar Grafana amb datasources (Loki + Prometheus) | Hamza | 1h | Alta | PENDENT |
-| T5.6 | Crear Dashboard: Logs en temps real | Hamza | 2h | Alta | PENDENT |
-| T5.7 | Crear Dashboard: Mètriques de rendiment (CPU, RAM) | Hamza | 2h | Alta | PENDENT |
-| T5.8 | Crear Dashboard: Requests per segon i latència | Hamza | 1.5h | Mitjana | PENDENT |
-| T5.9 | Configurar alertes Grafana (errors, caigudes) | Hamza | 1.5h | Mitjana | PENDENT |
-| T5.10 | Instal·lar Apache Bench per proves d'estrès | Kevin | 0.5h | Alta | PENDENT |
-| T5.11 | Executar proves d'estrès: 100 req/s | Kevin | 1h | Alta | PENDENT |
-| T5.12 | Executar proves d'estrès: 500 req/s | Kevin | 1h | Alta | PENDENT |
-| T5.13 | Executar proves d'estrès: 1000 req/s | Kevin | 1h | Alta | PENDENT |
-| T5.14 | Analitzar resultats proves d'estrès | Kevin | 1.5h | Alta | PENDENT |
-| T5.15 | Documentar sistema monitoratge (SPRINT5-MONITORATGE.md) | Hamza | 2h | Mitjana | PENDENT |
-| T5.16 | Documentar resultats proves d'estrès | Kevin | 1.5h | Mitjana | PENDENT |
-| T5.17 | Preparar Sprint Review Monitoratge | Tots | 1h | Mitjana | PENDENT |
+| ID | Tasca | Assignat | Estimacio | Prioritat |
+|----|-------|----------|-----------|-----------|
+| T5.1 | Centralització de logs: Grafana, Elastic o Nagios | Hamza | 3h | Alta |
+| T5.2 | Proves d'estrès | Kevin | 3h | Alta |
+| T5.3 | Dashboard de rendiment | Hamza, Kevin | 2h | Alta |
+| T5.4 | automatització de la posada a producció del desplegament amb Ansible. | Hamza, Kevin | 3h | Alta |
 
-**Total estimat:** 24 hores
+Total estimat: 11 hores 
 
 #### Objectius del Sprint 5
 
-- **Centralització de logs:** Grafana + Loki + Promtail per visualització unificada
+- **Centralització de logs:** Grafana, Elastic
 - **Monitoratge de mètriques:** Prometheus per CPU, RAM, requests/s, latència
 - **Dashboard de rendiment:** Visualització temps real de l'aplicació
 - **Proves d'estrès:** Apache Bench amb 100, 500, 1000 requests/s
