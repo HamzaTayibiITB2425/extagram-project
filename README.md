@@ -195,7 +195,6 @@ El sistema implementa una **segmentació de xarxa en 3 capes** per garantir que 
 | **Autenticació** | OpenLDAP | 1.5.0 | S8 - Gestió usuaris |
 | **Monitoratge** | Grafana + Loki + Prometheus | Latest | Logs i mètriques |
 
-[Veure comparativa completa de tecnologies →](#comparativa-i-justificació-de-tecnologies)
 
 [↑ Torna a l'índex](#índex)
 
