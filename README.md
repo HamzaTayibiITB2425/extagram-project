@@ -155,8 +155,6 @@ El sistema Extagram està organitzat en **8 contenidors Docker** distribuïts en
 | **S7** | Database | `mysql:8.0` | 3306 | Emmagatzematge de posts i metadata | `extagram_data` (internal) |
 | **S8** | LDAP Server | `osixia/openldap:1.5.0` | 389/636 | Autenticació d'usuaris | `extagram_data` (internal) |
 
-[Veure arquitectura completa →](docs/ARQUITECTURA.md)
-
 [↑ Torna a l'índex](#índex)
 
 ---
