@@ -244,7 +244,6 @@ El sistema implementa una **segmentació de xarxa en 3 capes** per garantir que 
 **Documents del Sprint 1:**
 -  [Sprint Planning](actes/sprint1/SPRINT1_PLANNING.md)
 -  [Sprint Review](actes/sprint1/SPRINT1_REVIEW.md)
--  [Retrospectiva](actes/sprint1/SPRINT1_RETROSPECTIVA.md)
 
 [↑ Torna als sprints](#planificació-de-sprints)
 
@@ -281,7 +280,6 @@ El sistema implementa una **segmentació de xarxa en 3 capes** per garantir que 
 **Documents del Sprint 2:**
 -  [Sprint Planning](actes/sprint2/SPRINT2_PLANNING.md)
 -  [Sprint Review](actes/sprint2/SPRINT2_REVIEW.md)
--  [Retrospectiva](actes/sprint2/SPRINT2_RETROSPECTIVA.md)
 
 [↑ Torna als sprints](#planificació-de-sprints)
 
@@ -314,7 +312,6 @@ El sistema implementa una **segmentació de xarxa en 3 capes** per garantir que 
 **Documents del Sprint 3:**
 -  [Sprint Planning](actes/sprint3/SPRINT3_PLANNING.md)
 -  [Sprint Review](actes/sprint3/SPRINT3_REVIEW.md)
--  [Retrospectiva](actes/sprint3/SPRINT3_RETROSPECTIVA.md)
 
 [↑ Torna als sprints](#planificació-de-sprints)
 
@@ -349,7 +346,6 @@ El sistema implementa una **segmentació de xarxa en 3 capes** per garantir que 
 **Documents del Sprint 4:**
 -  [Sprint Planning](actes/sprint4/SPRINT4_PLANNING.md)
 -  [Sprint Review](actes/sprint4/SPRINT4_REVIEW.md)
--  [Retrospectiva](actes/sprint4/SPRINT4_RETROSPECTIVA.md)
   
 [↑ Torna als sprints](#planificació-de-sprints)
 
