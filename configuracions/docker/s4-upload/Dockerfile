@@ -1,15 +1,20 @@
 FROM php:8.2-fpm-alpine
 
+# Instalar extensiones MySQL
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-RUN echo "upload_max_filesize = 50M" > /usr/local/etc/php/conf.d/uploads.ini && \
-    echo "post_max_size = 50M" >> /usr/local/etc/php/conf.d/uploads.ini
+# Copiar archivos PHP
+COPY upload.php /var/www/html/
+COPY delete.php /var/www/html/
+COPY recover.php /var/www/html/
 
-WORKDIR /var/www/html
+# Crear directorio uploads y dar permisos a www-data
 RUN mkdir -p /var/www/html/uploads && \
-    chown -R www-data:www-data /var/www/html/uploads
+    chown -R www-data:www-data /var/www/html/uploads && \
+    chmod -R 755 /var/www/html/uploads
 
-RUN sed -i 's/listen = 127.0.0.1:9000/listen = 0.0.0.0:9000/' /usr/local/etc/php-fpm.d/www.conf
+# Cambiar al usuario www-data
+USER www-data
 
 EXPOSE 9000
 
