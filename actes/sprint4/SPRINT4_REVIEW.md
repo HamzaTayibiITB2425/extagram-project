@@ -48,13 +48,13 @@ Implementar firewall davant de S1 i Implementar hardening web (WAF), de sistema 
 
 ### Que ha anat be?
 
-1. 
-2. 
+1. Implementació WAF NGINX i Firewall: Hem aconseguit implementar un WAF natiu amb NGINX utilitzant regex patterns que bloqueja SQL Injection, XSS i Path Traversal. El Kevin ha configurat el firewall iptables davant del LoadBalancer per protecció perimetral. Tots els tests mostren que funciona correctament (403 Forbidden als atacs). 
+2. Hardening complert de tot el sistema: Hem aplicat hardening tant a nivell de contenidors Docker (no-new-privileges, cap_drop: ALL, read_only filesystem) com a MySQL (root només localhost, privilegis mínims per extagram_admin, eliminació d'usuaris anònims). La col·laboració ha estat clau per verificar que tot funcionava correctament.
 
 ### Que podria millorar?
 
-1. 
-2. 
+1. Coordinació en troubleshooting: Hem perdut temps resolvint problemes amb el proxy_pass de les imatges i els permisos d'escriptura de S4-upload de forma separada. Hauríem pogut comunicar-nos millor per detectar els problemes més ràpid.
+2. Planificació inicial del hardening: No vam preveure que aplicar read_only:true als contenidors PHP trencaria els uploads. Hauríem d'haver planificat millor quins serveis necessitaven escriptura i quins no des del principi del sprint.
 
 ---
 
