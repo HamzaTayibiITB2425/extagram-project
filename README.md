@@ -174,7 +174,6 @@ El sistema implementa una **segmentació de xarxa en 3 capes** per garantir que 
 - S5/S6 → S7/S8 (Seguretat)
 - S1 → S7/S8 (No accés directe a BD)
 
-[Veure proves detallades →](docs/PROVES_XARXA.md)
 
 [↑ Torna a l'índex](#índex)
 
