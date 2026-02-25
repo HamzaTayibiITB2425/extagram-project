@@ -204,20 +204,23 @@ El sistema implementa una **segmentació de xarxa en 3 capes** per garantir que 
 
 ### Cronograma General
 
-| Sprint | Data Inici | Data Fi | Durada | Objectiu Principal | Estat | Documents |
+| Sprint | Data Inici | Data Fi | Durada | Objectiu Principal | Estat | 
 |--------|------------|---------|--------|--------------------|-------|-----------|
 | **Sprint 0** | 08/12/2025 | 14/12/2025 | 1 setmana | Preparació i planificació inicial |  COMPLETAT | - |
-| **[Sprint 1](#sprint-1-mvp---màquina-única-completat)** | 15/12/2025 | 19/01/2026 | 5 setmanes | MVP en màquina única |  COMPLETAT | [Planning](actes/sprint1/SPRINT1_PLANNING.md) • [Review](actes/sprint1/SPRINT1_REVIEW.md) • [Retrospectiva](actes/sprint1/SPRINT1_RETROSPECTIVA.md) |
-| **[Sprint 2](#sprint-2-dockerització-i-balanceig-completat)** | 20/01/2026 | 02/02/2026 | 2 setmanes | Dockerització, balanceig i segmentació |  COMPLETAT | [Planning](actes/sprint2/SPRINT2_PLANNING.md) • [Review](actes/sprint2/SPRINT2_REVIEW.md) • [Retrospectiva](actes/sprint2/SPRINT2_RETROSPECTIVA.md) |
-| **[Sprint 3](#sprint-3-integració-i-proves-finals-completat)** | 03/02/2026 | 10/02/2026 | 1 setmana | Integració, proves i docs finals |  COMPLETAT | [Planning](actes/sprint3/SPRINT3_PLANNING.md) • [Review](actes/sprint3/SPRINT3_REVIEW.md) • [Retrospectiva](actes/sprint3/SPRINT3_RETROSPECTIVA.md) |
-| **[Sprint 4](#sprint-4-seguretat-completat)** | 17/02/2026 | 23/02/2026 | 1 setmana | Seguretat (WAF, Hardening, Firewall) |  COMPLETAT | [Planning](actes/sprint4/SPRINT4_PLANNING.md) • [Review](actes/sprint4/SPRINT4_REVIEW.md) • [Retrospectiva](actes/sprint4/SPRINT4_RETROSPECTIVA.md) |
-| **[Sprint 5](#sprint-5-monitoratge-pendent)** | 02/03/2026 | 10/03/2026 | 1 setmana | Monitoratge (Grafana, Loki, Prometheus) |  PENDENT | - |
-| **Presentació** | 16-17/03/2026 | - | 2 dies | Defensa del projecte |  PENDENT | - |
-
+| **[Sprint 1](#sprint-1-mvp---màquina-única-completat)** | 15/12/2025 | 19/01/2026 | 5 setmanes | MVP en màquina única |  COMPLETAT |
+| **[Sprint 2](#sprint-2-dockerització-i-balanceig-completat)** | 20/01/2026 | 02/02/2026 | 2 setmanes | Dockerització, balanceig i segmentació |  COMPLETAT | 
+| **[Sprint 3](#sprint-3-integració-i-proves-finals-completat)** | 03/02/2026 | 10/02/2026 | 1 setmana | Integració, proves i docs finals |  COMPLETAT | 
+| **[Sprint 4](#sprint-4-seguretat-completat)** | 17/02/2026 | 23/02/2026 | 1 setmana | Seguretat (WAF, Hardening, Firewall) |  COMPLETAT | 
+| **[Sprint 5](#sprint-5-monitoratge-pendent)** | 02/03/2026 | 10/03/2026 | 1 setmana | Monitoratge (Grafana, Loki, Prometheus) |  PENDENT | 
+| **Presentació** | 16-17/03/2026 | - | 2 dies | Defensa del projecte |  PENDENT |
 ---
 
 ### Sprint 1: MVP - Màquina Única [COMPLETAT]
 
+**Documents del Sprint 1:**
+-  [Sprint Planning](actes/sprint1/SPRINT1_PLANNING.md)
+-  [Sprint Review](actes/sprint1/SPRINT1_REVIEW.md)
+  
 **Objectiu:** Servidor web funcional amb NGINX, PHP i MySQL en una sola màquina
 
 **Dates:** 15 de Desembre de 2025 - 19 de Gener de 2026
@@ -241,15 +244,15 @@ El sistema implementa una **segmentació de xarxa en 3 capes** per garantir que 
 
 **Total estimat:** 28 hores
 
-**Documents del Sprint 1:**
--  [Sprint Planning](actes/sprint1/SPRINT1_PLANNING.md)
--  [Sprint Review](actes/sprint1/SPRINT1_REVIEW.md)
-
 [↑ Torna als sprints](#planificació-de-sprints)
 
 ---
 
 ### Sprint 2: Dockerització i Balanceig [COMPLETAT]
+
+**Documents del Sprint 2:**
+-  [Sprint Planning](actes/sprint2/SPRINT2_PLANNING.md)
+-  [Sprint Review](actes/sprint2/SPRINT2_REVIEW.md)
 
 **Objectiu:** Segregar l'aplicació en contenidors Docker amb proxy invers, balanceig de càrrega i segmentació de xarxa
 
@@ -277,15 +280,15 @@ El sistema implementa una **segmentació de xarxa en 3 capes** per garantir que 
 
 **Total estimat:** 28 hores
 
-**Documents del Sprint 2:**
--  [Sprint Planning](actes/sprint2/SPRINT2_PLANNING.md)
--  [Sprint Review](actes/sprint2/SPRINT2_REVIEW.md)
-
 [↑ Torna als sprints](#planificació-de-sprints)
 
 ---
 
 ### Sprint 3: Integració i Proves Finals [COMPLETAT]
+
+**Documents del Sprint 3:**
+-  [Sprint Planning](actes/sprint3/SPRINT3_PLANNING.md)
+-  [Sprint Review](actes/sprint3/SPRINT3_REVIEW.md)
 
 **Objectiu:** Completar la integració, crear diagrama de xarxa i documentació final
 
@@ -309,15 +312,15 @@ El sistema implementa una **segmentació de xarxa en 3 capes** per garantir que 
 
 **Total estimat:** 22 hores
 
-**Documents del Sprint 3:**
--  [Sprint Planning](actes/sprint3/SPRINT3_PLANNING.md)
--  [Sprint Review](actes/sprint3/SPRINT3_REVIEW.md)
-
 [↑ Torna als sprints](#planificació-de-sprints)
 
 ---
 
 ### Sprint 4: Seguretat [COMPLETAT]
+
+**Documents del Sprint 4:**
+-  [Sprint Planning](actes/sprint4/SPRINT4_PLANNING.md)
+-  [Sprint Review](actes/sprint4/SPRINT4_REVIEW.md)
 
 **Objectiu:** Implementar WAF, Hardening de sistema operatiu i base de dades, Firewall perimetral
 
@@ -339,13 +342,6 @@ El sistema implementa una **segmentació de xarxa en 3 capes** per garantir que 
 | T4.10 | Sprint Review amb tutor | Tots | 1h | Mitjana | FET |
 
 **Total estimat:** 21 hores
-
-#### Resultats Sprint 4
-
-
-**Documents del Sprint 4:**
--  [Sprint Planning](actes/sprint4/SPRINT4_PLANNING.md)
--  [Sprint Review](actes/sprint4/SPRINT4_REVIEW.md)
   
 [↑ Torna als sprints](#planificació-de-sprints)
 
