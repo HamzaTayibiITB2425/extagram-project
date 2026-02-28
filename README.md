@@ -408,6 +408,10 @@ La segmentació de xarxa garanteix:
 
 ### Sprint 1: MVP - Màquina Única [COMPLETAT]
 
+**Documents del Sprint 1:**
+- [Sprint 1 Planning](actes/sprint1/SPRINT1_PLANNING.md)
+- [Sprint 1 Review](actes/sprint1/SPRINT1_REVIEW.md)
+
 **Objectiu:** Servidor web funcional amb NGINX, PHP i MySQL en una sola màquina
 
 **Dates:** 15 de Desembre de 2025 - 19 de Gener de 2026
@@ -437,13 +441,13 @@ La segmentació de xarxa garanteix:
 - **Demo exitosa:** Aplicació funcional demostrada al tutor el 19/01/2026
 - **Retrospectiva:** Identificats punts de millora en comunicació
 
-**Documents del Sprint 1:**
-- [Sprint 1 Planning](actes/sprint1/SPRINT1_PLANNING.md)
-- [Sprint 1 Review](actes/sprint1/SPRINT1_REVIEW.md)
-
 ---
 
 ### Sprint 2: Dockerització i Balanceig [COMPLETAT]
+
+**Documents del Sprint 2:**
+- [Sprint 2 Planning](actes/sprint2/SPRINT2_PLANNING.md) 
+- [Sprint 2 Review](actes/sprint2/SPRINT2_REVIEW.md) 
 
 **Objectiu:** Segregar l'aplicació en contenidors Docker amb proxy invers, balanceig de càrrega i segmentació de xarxa
 
@@ -473,13 +477,13 @@ La segmentació de xarxa garanteix:
 
 **Total estimat:** 28 hores
 
-**Documents del Sprint 2:**
-- [Sprint 2 Planning](actes/sprint2/SPRINT2_PLANNING.md) 
-- [Sprint 2 Review](actes/sprint2/SPRINT2_REVIEW.md) 
-
 ---
 
 ### Sprint 3: Integració i Proves Finals [COMPLETAT]
+
+**Documents del Sprint 3:**
+- [Sprint 3 Planning](actes/sprint3/SPRINT3_PLANNING.md)
+- [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md)
 
 **Objectiu:** Completar la integració, crear diagrama de xarxa i documentació final
 
@@ -512,13 +516,13 @@ La segmentació de xarxa garanteix:
 - **Documentació:** README actualitzat, diagrames completats
 - **Demo final:** Presentació exitosa al tutor el 10/02/2026
 
-**Documents del Sprint 3:**
-- [Sprint 3 Planning](actes/sprint3/SPRINT3_PLANNING.md)
-- [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md)
-
 ---
 
 ### Sprint 4: Seguretat [COMPLETAT]
+
+**Documents del Sprint 4:**
+- [Sprint 4 Planning](actes/sprint4/SPRINT4_PLANNING.md)
+- [Sprint 4 Review](actes/sprint4/SPRINT4_REVIEW.md)
 
 **Objectiu:** Implementar WAF, Hardening de sistema operatiu i base de dades, Firewall perimetral
 
@@ -564,11 +568,6 @@ La segmentació de xarxa garanteix:
 | Contenidors hardened | 0/8 | 8/8 | +100% |
 | MySQL fortificat | No | Si | Implementat |
 | Firewall perimetral | No | iptables | Implementat |
-
-**Documents del Sprint 4:**
-- [Sprint 4 Planning](actes/sprint4/SPRINT4_PLANNING.md)
-- [Sprint 4 Review](actes/sprint4/SPRINT4_REVIEW.md)
-- [Sprint 4 Retrospectiva](actes/sprint4/SPRINT4_RETROSPECTIVA.md)
 
 ---
 
