@@ -784,16 +784,12 @@ docker exec extagram-s7-database mysql -u extagram_admin -p -e "CREATE DATABASE 
 
 ## Documentació
 
-### Documents Tècnics
-
-- [Documentació de Seguretat Sprint 4](docs/SPRINT4_SEGURIDAD.md)
-
 ### Actes de Sprints
 
 - **Sprint 1:** [Planning](actes/sprint1/SPRINT1_PLANNING.md) • [Review](actes/sprint1/SPRINT1_REVIEW.md)
 - **Sprint 2:** [Planning](actes/sprint2/SPRINT2_PLANNING.md) • [Review](actes/sprint2/SPRINT2_REVIEW.md)
 - **Sprint 3:** [Planning](actes/sprint3/SPRINT3_PLANNING.md) • [Review](actes/sprint3/SPRINT3_REVIEW.md)
-- **Sprint 4:** [Planning](actes/sprint4/SPRINT4_PLANNING.md) • [Review](actes/sprint4/SPRINT4_REVIEW.md) • [Retrospectiva](actes/sprint4/SPRINT4_RETROSPECTIVA.md)
+- **Sprint 4:** [Planning](actes/sprint4/SPRINT4_PLANNING.md) • [Review](actes/sprint4/SPRINT4_REVIEW.md) 
 
 ---
 
