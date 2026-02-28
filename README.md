@@ -436,8 +436,6 @@ docker compose ps
 # Navegador: https://extagram-grup3.duckdns.org
 ```
 
-[Veure guia d'instal·lació completa →](docs/INSTALACION.md)
-
 [↑ Torna a l'índex](#índex)
 
 ---
