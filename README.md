@@ -13,13 +13,11 @@
 **Aplicació web de xarxes socials amb arquitectura de microserveis**  
 *Institut Tecnològic de Barcelona - ASIX2c*
 
-[Documentació](#documentació) • [Instal·lació](#guia-dinstal·lació-ràpida) • [Equip](#equip-de-treball) • [Planificació](#planificació-de-sprints)
-
 </div>
 
 ---
 
-## Índex
+## Taula de Continguts
 
 1. [Informació del Projecte](#informació-del-projecte)
 2. [Equip de Treball](#equip-de-treball)
@@ -27,16 +25,12 @@
 4. [Arquitectura del Sistema](#arquitectura-del-sistema)
 5. [Proves de Segmentació de Xarxa](#proves-de-segmentació-de-xarxa)
 6. [Tecnologies Utilitzades](#tecnologies-utilitzades)
-   - [Comparativa de Tecnologies](#comparativa-i-justificació-de-tecnologies)
 7. [Planificació de Sprints](#planificació-de-sprints)
-8. [Guia d'Instal·lació Ràpida](#guia-dinstal·lació-ràpida)
-9. [Estructura del Repositori](#estructura-del-repositori)
-10. [Proves i Validació](#proves-i-validació)
-11. [Documentació](#documentació)
-12. [Gestió de Riscos](#gestió-de-riscos)
-13. [Metodologia Agile](#metodologia-agile)
-14. [Control de Versions](#control-de-versions)
-15. [Contacte i Suport](#contacte-i-suport)
+8. [Guia d'Instal·lació](#guia-dinstal·lació)
+9. [Proves i Validació](#proves-i-validació)
+10. [Documentació](#documentació)
+11. [Control de Versions](#control-de-versions)
+12. [Contacte](#contacte)
 
 ---
 
@@ -55,35 +49,30 @@
 | **Hores Estimades** | 180 hores totals |
 | **Repositori GitHub** | [github.com/HamzaTayibiITB2425/extagram-project](https://github.com/HamzaTayibiITB2425/extagram-project) |
 
-[↑ Torna a l'índex](#índex)
-
 ---
 
 ## Equip de Treball
 
-| Membre | Rol Principal | Responsabilitats Clau | Competències |
-|--------|---------------|------------------------|--------------|
-| **Hamza** | Product Owner / DevOps Lead | Gestió del projecte i coordinació d'equip<br>Documentació tècnica i actes<br>Configuració Docker i Docker Compose<br>Integració contínua<br>Desenvolupament backend PHP<br>Administració base de dades MySQL i LDAP<br>Implementació WAF i Hardening<br>Sistema de monitoratge centralitzat | Lideratge, Organització, Docker, Git, PHP, MySQL, LDAP, Seguretat, Grafana |
-| **Kevin** | Infrastructure Engineer / Security | Configuració NGINX i proxy invers<br>Implementació balanceig de càrrega<br>Gestió d'arxius estàtics<br>Diagrama de xarxa interactiu<br>Segmentació de xarxa<br>Implementació Firewall<br>Proves d'estrès i rendiment | NGINX, Networking, HTML/CSS, Infraestructura, Firewall, Testing |
+| Membre | Rol Principal | Responsabilitats Clau |
+|--------|---------------|------------------------|
+| **Hamza** | Product Owner / DevOps Lead | Gestió del projecte, Docker, PHP, MySQL, LDAP, WAF, Hardening, Monitoratge |
+| **Kevin** | Infrastructure Engineer | NGINX, Load Balancer, Segmentació de xarxa, Firewall, Proves d'estrès |
 
 ### Distribució de Tasques per Sprint
-```
-Hamza (Product Owner / DevOps / Backend / Security):
-├── Sprint 1: Planning, Documentació, Git, PHP-FPM, MySQL, Backend [COMPLETAT]
-├── Sprint 2: Docker Compose, Orquestració, Dockerfiles, LDAP, Segmentació [COMPLETAT]
-├── Sprint 3: Docs finals, Presentació, Testing, Proves [COMPLETAT]
-├── Sprint 4: WAF NGINX, Hardening OS, Hardening MySQL [COMPLETAT]
-└── Sprint 5: Grafana, Loki, Prometheus, Dashboard [PENDENT]
 
-Kevin (Infrastructure Engineer / Security):
-├── Sprint 1: NGINX, Infraestructura [COMPLETAT]
-├── Sprint 2: Load Balancer, Proxy, Segmentació de Xarxa [COMPLETAT]
-├── Sprint 3: Packet Tracer, Diagrames, Documentació [COMPLETAT]
-├── Sprint 4: Firewall iptables davant S1, Proves seguretat [COMPLETAT]
-└── Sprint 5: Proves d'estrès, Dashboard rendiment [PENDENT]
-```
+**Hamza:**
+- Sprint 1: Planning, Documentació, Git, PHP-FPM, MySQL, Backend
+- Sprint 2: Docker Compose, Orquestració, Dockerfiles, LDAP, Segmentació
+- Sprint 3: Documentació final, Testing, Proves
+- Sprint 4: WAF NGINX, Hardening OS, Hardening MySQL
+- Sprint 5: Grafana, Loki, Prometheus, Dashboard
 
-[↑ Torna a l'índex](#índex)
+**Kevin:**
+- Sprint 1: NGINX, Infraestructura
+- Sprint 2: Load Balancer, Proxy, Segmentació de Xarxa
+- Sprint 3: Packet Tracer, Diagrames
+- Sprint 4: Firewall iptables, Proves de seguretat
+- Sprint 5: Proves d'estrès, Dashboard rendiment
 
 ---
 
@@ -91,293 +80,209 @@ Kevin (Infrastructure Engineer / Security):
 
 ### Objectiu General
 
-Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una **arquitectura d'alta disponibilitat** basada en microserveis containeritzats, implementant **balanceig de càrrega**, **redundància de serveis**, **segmentació de xarxa en 3 capes**, **seguretat amb WAF i hardening**, i **sistema de monitoratge centralitzat** per garantir la continuïtat del servei, seguretat i observabilitat davant fallades o compromisos de components individuals.
+Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una **arquitectura d'alta disponibilitat** basada en microserveis containeritzats, implementant **balanceig de càrrega**, **redundància de serveis**, **segmentació de xarxa en 3 capes**, **seguretat amb WAF i hardening**, i **sistema de monitoratge centralitzat**.
 
 ### Objectius Específics
 
-#### Objectius Tècnics
+**Objectius Tècnics:**
+- Implementar arquitectura de 8 serveis independents (S1-S8)
+- Configurar balanceig de càrrega Round-Robin entre nodes PHP
+- Garantir persistència de dades amb volums Docker
+- Configurar segmentació de xarxa en 3 capes aïllades
+- Implementar autenticació LDAP
+- Desplegar WAF NGINX natiu
+- Aplicar hardening a contenidors i base de dades
+- Implementar firewall iptables
+- Centralitzar logs amb Grafana + Loki
+- Monitoritzar mètriques amb Prometheus
 
-- Implementar una arquitectura de **8 serveis independents** (S1-S8)
-- Configurar **balanceig de càrrega Round-Robin** entre nodes PHP
-- Establir **separació de responsabilitats** (SoC - Separation of Concerns)
-- Garantir **persistència de dades** amb volums Docker
-- Implementar **proxy invers** per a gestió centralitzada de peticions
-- Configurar **segmentació de xarxa en 3 capes** aïllades (front, services, data)
-- Implementar **autenticació LDAP** per a gestió d'usuaris
-- Desplegar **WAF NGINX natiu** per protecció contra atacs web
-- Aplicar **hardening** a contenidors i base de dades
-- Implementar **firewall iptables** per protecció perimetral
-- Centralitzar **logs amb Grafana + Loki**
-- Monitoritzar **mètriques amb Prometheus**
+**Objectius d'Alta Disponibilitat:**
+- Redundància de nodes d'aplicació (S2 i S3)
+- Tolerància a fallades
+- Recuperació automàtica de contenidors
+- Escalabilitat horitzontal
 
-[Veure tots els objectius detallats ↓](#objectius-dalta-disponibilitat)
-
-#### Objectius d'Alta Disponibilitat
-
-- **Redundància de nodes d'aplicació** (S2 i S3 funcionant en paral·lel)
-- **Tolerància a fallades** - El sistema continua operant amb la caiguda d'un node PHP
-- **Recuperació automàtica** de contenidors amb `restart: unless-stopped`
-- **Escalabilitat horitzontal** - Capacitat d'afegir més nodes PHP si cal
-
-#### Objectius de Seguretat
-
-- **Aïllament de la capa de dades** - S7 (MySQL) i S8 (LDAP) NO accessibles des d'Internet
-- **Segmentació de xarxa** - 3 xarxes separades amb regles de firewall
-- **Principi de mínim privilegi** - Serveis estàtics NO tenen accés a base de dades
-- **Xarxa interna** - `extagram_data` configurada com `internal: true`
-- **WAF NGINX** - Protecció contra SQL Injection, XSS, Path Traversal, Rate Limiting
-- **Hardening de contenidors** - `no-new-privileges`, `cap_drop: ALL`, `read_only` filesystem
-- **Hardening de MySQL** - Usuaris mínims, privilegis restringits, configuració segura
-- **Firewall iptables** - Protecció perimetral davant de S1-LoadBalancer
-
-[↑ Torna a l'índex](#índex)
+**Objectius de Seguretat:**
+- Aïllament de la capa de dades
+- Segmentació de xarxa (3 xarxes separades)
+- Principi de mínim privilegi
+- WAF NGINX (SQL Injection, XSS, Path Traversal, Rate Limiting)
+- Hardening de contenidors (no-new-privileges, cap_drop, read_only)
+- Hardening de MySQL (usuaris mínims, privilegis restringits)
+- Firewall iptables perimetral
 
 ---
 
 ## Arquitectura del Sistema
 
-### Diagrama d'Arquitectura
-
-El sistema Extagram està organitzat en **8 contenidors Docker** distribuïts en **3 xarxes segmentades** per garantir l'aïllament i seguretat de les capes de l'aplicació.
-
-![Diagrama d'Arquitectura Extagram](docs/imagenes/arquitectura/diagrama_completo.jpg)
-
 ### Components del Sistema
 
 | Servei | Nom | Imatge Docker | Port | Funció | Xarxes |
 |--------|-----|---------------|------|--------|--------|
-| **S1** | Load Balancer + WAF | `nginx:alpine` | 80, 443 | Proxy invers, balanceig Round-Robin i WAF | `extagram_front`<br>`extagram_services` |
-| **S2** | PHP Backend 1 | `php:8.2-fpm-alpine` | 9000 | Execució lògica aplicació (Redundància) | `extagram_services`<br>`extagram_data` |
-| **S3** | PHP Backend 2 | `php:8.2-fpm-alpine` | 9000 | Execució lògica aplicació (Redundància) | `extagram_services`<br>`extagram_data` |
-| **S4** | Upload Service | `php:8.2-fpm-alpine` | 9000 | Gestió de pujada i eliminació d'arxius | `extagram_services`<br>`extagram_data` |
-| **S5** | Image Server | `nginx:alpine` | 80 | Servir imatges pujades (read-only) | `extagram_services` |
-| **S6** | Static Server | `nginx:alpine` | 80 | Servir CSS, SVG i favicon | `extagram_services` |
-| **S7** | Database | `mysql:8.0` | 3306 | Emmagatzematge de posts i metadata | `extagram_data` (internal) |
-| **S8** | LDAP Server | `osixia/openldap:1.5.0` | 389/636 | Autenticació d'usuaris | `extagram_data` (internal) |
+| **S1** | Load Balancer + WAF | nginx:alpine | 80, 443 | Proxy invers, balanceig Round-Robin i WAF | extagram_front, extagram_services |
+| **S2** | PHP Backend 1 | php:8.2-fpm-alpine | 9000 | Execució lògica aplicació (Redundància) | extagram_services, extagram_data |
+| **S3** | PHP Backend 2 | php:8.2-fpm-alpine | 9000 | Execució lògica aplicació (Redundància) | extagram_services, extagram_data |
+| **S4** | Upload Service | php:8.2-fpm-alpine | 9000 | Gestió de pujada i eliminació d'arxius | extagram_services, extagram_data |
+| **S5** | Image Server | nginx:alpine | 80 | Servir imatges pujades (read-only) | extagram_services |
+| **S6** | Static Server | nginx:alpine | 80 | Servir CSS, SVG i favicon | extagram_services |
+| **S7** | Database | mysql:8.0 | 3306 | Emmagatzematge de posts i metadata | extagram_data (internal) |
+| **S8** | LDAP Server | osixia/openldap:1.5.0 | 389/636 | Autenticació d'usuaris | extagram_data (internal) |
 
-[↑ Torna a l'índex](#índex)
+### Segmentació de Xarxa
+```
+extagram_front (172.20.0.x)
+   └── S1: Load Balancer + WAF (exposat a Internet via port 80/443)
+
+extagram_services (172.19.0.x)
+   └── S1, S2, S3, S4, S5, S6 (comunicació interna aplicació)
+
+extagram_data (172.21.0.x - INTERNAL)
+   └── S2, S3, S4, S7, S8 (capa de dades aïllada)
+```
 
 ---
 
 ## Proves de Segmentació de Xarxa
 
-### Verificació de Connectivitat
+### Connexions Permeses
 
-El sistema implementa una **segmentació de xarxa en 3 capes** per garantir que només els serveis autoritzats puguin comunicar-se entre ells.
+**Capa de Dades (S2/S3/S4 → S7/S8):**
 
-**Connexions Permeses:**
-- S2/S3/S4 → S7 (MySQL) 
-- S2/S3/S4 → S8 (LDAP) 
-- S1 → S2/S3/S4/S5/S6 
+Els serveis PHP poden accedir a MySQL i LDAP:
+```bash
+# S2 → S7 (MySQL)
+docker exec extagram-s2-php ping -c 2 -W 2 172.21.0.2
+# Resultat: CORRECTE - 2 packets transmitted, 2 received
 
-**Connexions Bloquejades:**
-- S5/S6 → S7/S8 (Seguretat)
-- S1 → S7/S8 (No accés directe a BD)
+# S3 → S7 (MySQL)
+docker exec extagram-s3-php ping -c 2 -W 2 172.21.0.2
+# Resultat: CORRECTE - 2 packets transmitted, 2 received
 
+# S4 → S7 (MySQL)
+docker exec extagram-s4-upload ping -c 2 -W 2 172.21.0.2
+# Resultat: CORRECTE - 2 packets transmitted, 2 received
 
-[↑ Torna a l'índex](#índex)
+# S2 → S8 (LDAP)
+docker exec extagram-s2-php ping -c 2 -W 2 172.21.0.3
+# Resultat: CORRECTE - 2 packets transmitted, 2 received
+
+# S3 → S8 (LDAP)
+docker exec extagram-s3-php ping -c 2 -W 2 172.21.0.3
+# Resultat: CORRECTE - 2 packets transmitted, 2 received
+```
+
+**Load Balancer (S1 → S2/S3/S4/S5/S6):**
+
+El Load Balancer pot accedir a tots els serveis d'aplicació:
+```bash
+# S1 → S2
+docker exec extagram-s1-loadbalancer ping -c 2 -W 2 s2-php
+# Resultat: CORRECTE
+
+# S1 → S3
+docker exec extagram-s1-loadbalancer ping -c 2 -W 2 s3-php
+# Resultat: CORRECTE
+
+# S1 → S4
+docker exec extagram-s1-loadbalancer ping -c 2 -W 2 s4-upload
+# Resultat: CORRECTE
+
+# S1 → S5
+docker exec extagram-s1-loadbalancer ping -c 2 -W 2 s5-images
+# Resultat: CORRECTE
+
+# S1 → S6
+docker exec extagram-s1-loadbalancer ping -c 2 -W 2 s6-static
+# Resultat: CORRECTE
+```
+
+### Connexions Bloquejades
+
+**Servidors estàtics (S5/S6) NO poden accedir a base de dades:**
+```bash
+# S5 → S7 (MySQL)
+docker exec extagram-s5-images ping -c 2 -W 2 172.21.0.2
+# Resultat: BLOQUEADO - Network unreachable
+
+# S5 → S8 (LDAP)
+docker exec extagram-s5-images ping -c 2 -W 2 172.21.0.3
+# Resultat: BLOQUEADO - Network unreachable
+
+# S6 → S7 (MySQL)
+docker exec extagram-s6-static ping -c 2 -W 2 172.21.0.2
+# Resultat: BLOQUEADO - Network unreachable
+
+# S6 → S8 (LDAP)
+docker exec extagram-s6-static ping -c 2 -W 2 172.21.0.3
+# Resultat: BLOQUEADO - Network unreachable
+```
+
+**Load Balancer (S1) NO pot accedir directament a base de dades:**
+```bash
+# S1 → S7 (MySQL)
+docker exec extagram-s1-loadbalancer ping -c 2 -W 2 s7-database
+# Resultat: BLOQUEADO - Name or service not known
+
+# S1 → S8 (LDAP)
+docker exec extagram-s1-loadbalancer ping -c 2 -W 2 s8-ldap
+# Resultat: BLOQUEADO - Name or service not known
+```
+
+### Resum de Seguretat
+
+La segmentació de xarxa garanteix:
+- Cap servei estàtic (S5, S6) pot accedir a dades sensibles
+- El load balancer (S1) no pot saltar-se la lògica de negoci
+- La capa de dades (extagram_data) està completament aïllada
+- Només els serveis PHP (S2, S3, S4) fan de pont autoritzat
 
 ---
 
 ## Tecnologies Utilitzades
 
-### Stack Tecnològic Principal
-
-| Component | Tecnologia | Versió | Ús al Projecte |
-|-----------|------------|--------|----------------|
-| **Containerització** | Docker | Latest | Orquestració de tots els serveis |
-| **Orquestració** | Docker Compose | v2.x | Definició multi-contenidor |
-| **Proxy / LB** | NGINX | Alpine | S1, S5, S6 |
-| **WAF** | NGINX Native | Latest | Protecció web |
-| **Firewall** | iptables | Latest | Protecció perimetral |
-| **Backend** | PHP-FPM | 8.2-Alpine | S2, S3, S4 |
-| **Base de Dades** | MySQL | 8.0 | S7 - Persistència |
-| **Autenticació** | OpenLDAP | 1.5.0 | S8 - Gestió usuaris |
-| **Monitoratge** | Grafana + Loki + Prometheus | Latest | Logs i mètriques |
-
-
-[↑ Torna a l'índex](#índex)
+| Component | Tecnologia | Versió | Ús |
+|-----------|------------|--------|-----|
+| Containerització | Docker | Latest | Orquestració de serveis |
+| Orquestració | Docker Compose | v2.x | Definició multi-contenidor |
+| Proxy / Load Balancer | NGINX | Alpine | S1, S5, S6 |
+| WAF | NGINX Native | Latest | Protecció web |
+| Firewall | iptables | Latest | Protecció perimetral |
+| Backend | PHP-FPM | 8.2-Alpine | S2, S3, S4 |
+| Base de Dades | MySQL | 8.0 | S7 |
+| Autenticació | OpenLDAP | 1.5.0 | S8 |
+| Monitoratge | Grafana + Loki + Prometheus | Latest | Logs i mètriques |
 
 ---
+
 ## Planificació de Sprints
 
 ### Cronograma General
 
-| Sprint | Data Inici | Data Fi | Durada | Objectiu Principal | Estat |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Sprint 0** | 08/12/2025 | 14/12/2025 | 1 setmana | Preparació i planificació inicial | **COMPLETAT** |
-| **[Sprint 1](#sprint-1-mvp---màquina-única-completat)** | 15/12/2025 | 19/01/2026 | 5 setmanes | MVP en màquina única | **COMPLETAT** |
-| **[Sprint 2](#sprint-2-dockerització-i-balanceig-completat)** | 20/01/2026 | 02/02/2026 | 2 setmanes | Dockerització, balanceig i segmentació | **COMPLETAT** |
-| **[Sprint 3](#sprint-3-integració-i-proves-finals-completat)** | 03/02/2026 | 10/02/2026 | 1 setmana | Integració, proves i docs finals | **COMPLETAT** |
-| **[Sprint 4](#sprint-4-seguretat-completat)** | 17/02/2026 | 23/02/2026 | 1 setmana | Seguretat (WAF, Hardening, Firewall) | **COMPLETAT** |
-| **[Sprint 5](#sprint-5-monitoratge-pendent)** | 02/03/2026 | 10/03/2026 | 1 setmana | Monitoratge (Grafana, Loki, Prometheus) | PENDENT |
-| **Presentació** | 16/03/2026 | 17/03/2026 | 2 dies | Defensa del projecte | PENDENT |
+| Sprint | Data Inici | Data Fi | Durada | Objectiu | Estat | Documents |
+|--------|------------|---------|--------|----------|-------|-----------|
+| Sprint 0 | 08/12/2025 | 14/12/2025 | 1 setmana | Preparació inicial | COMPLETAT | - |
+| Sprint 1 | 15/12/2025 | 19/01/2026 | 5 setmanes | MVP en màquina única | COMPLETAT | [Planning](actes/sprint1/SPRINT1_PLANNING.md) - [Review](actes/sprint1/SPRINT1_REVIEW.md) |
+| Sprint 2 | 20/01/2026 | 02/02/2026 | 2 setmanes | Dockerització i balanceig | COMPLETAT | [Planning](actes/sprint2/SPRINT2_PLANNING.md) - [Review](actes/sprint2/SPRINT2_REVIEW.md) |
+| Sprint 3 | 03/02/2026 | 10/02/2026 | 1 setmana | Integració i proves | COMPLETAT | [Planning](actes/sprint3/SPRINT3_PLANNING.md) - [Review](actes/sprint3/SPRINT3_REVIEW.md) |
+| Sprint 4 | 17/02/2026 | 23/02/2026 | 1 setmana | Seguretat (WAF, Hardening) | COMPLETAT | [Planning](actes/sprint4/SPRINT4_PLANNING.md) - [Review](actes/sprint4/SPRINT4_REVIEW.md) - [Retrospectiva](actes/sprint4/SPRINT4_RETROSPECTIVA.md) |
+| Sprint 5 | 02/03/2026 | 10/03/2026 | 1 setmana | Monitoratge | PENDENT | - |
+| Presentació | 16/03/2026 | 17/03/2026 | 2 dies | Defensa del projecte | PENDENT | - |
 
----
+### Mètriques de Seguretat (Sprint 4)
 
-### Sprint 1: MVP - Màquina Única [COMPLETAT]
+| Mètrica | Abans | Després | Millora |
+|---------|-------|---------|---------|
+| SQL Injection bloqueats | 0% | 100% | +100% |
+| XSS bloqueats | 0% | 100% | +100% |
+| Path Traversal bloqueats | 0% | 100% | +100% |
+| Security Headers | 0/4 | 4/4 | +100% |
+| Rate Limiting | No | 10 req/s | Implementat |
+| Contenidors hardened | 0/8 | 8/8 | +100% |
+| MySQL fortificat | No | Sí | Implementat |
+| Firewall perimetral | No | iptables | Implementat |
 
-**Documents del Sprint 1:**
--  [Sprint Planning](actes/sprint1/SPRINT1_PLANNING.md)
--  [Sprint Review](actes/sprint1/SPRINT1_REVIEW.md)
-  
-**Objectiu:** Servidor web funcional amb NGINX, PHP i MySQL en una sola màquina
-
-**Dates:** 15 de Desembre de 2025 - 19 de Gener de 2026
-
-#### Backlog del Sprint 1
-
-| ID | Tasca | Assignat | Estimació | Prioritat | Estat |
-|----|-------|----------|-----------|-----------|-------|
-| T1.1 | Crear repositori GitHub amb estructura | Hamza | 2h | Alta | FET |
-| T1.2 | Configurar claus SSH per a GitHub | Hamza | 1h | Alta | FET |
-| T1.3 | Documentar anàlisi del projecte | Hamza | 4h | Alta | FET |
-| T1.4 | Instal·lar i configurar NGINX | Kevin | 3h | Alta | FET |
-| T1.5 | Configurar virtual host per Extagram | Kevin | 2h | Alta | FET |
-| T1.6 | Configurar PHP-FPM amb extensions | Hamza | 3h | Alta | FET |
-| T1.7 | Instal·lar i configurar MySQL Server | Hamza | 2h | Alta | FET |
-| T1.8 | Crear base de dades i taula posts | Hamza | 1h | Alta | FET |
-| T1.9 | Desplegar fitxers de l'aplicació | Kevin | 2h | Mitjana | FET |
-| T1.10 | Proves de funcionament complet | Tots | 3h | Alta | FET |
-| T1.11 | Documentar guia d'instal·lació | Hamza | 3h | Mitjana | FET |
-| T1.12 | Preparar Sprint Review i Demo | Tots | 2h | Mitjana | FET |
-
-**Total estimat:** 28 hores
-
-[↑ Torna als sprints](#planificació-de-sprints)
-
----
-
-### Sprint 2: Dockerització i Balanceig [COMPLETAT]
-
-**Documents del Sprint 2:**
--  [Sprint Planning](actes/sprint2/SPRINT2_PLANNING.md)
--  [Sprint Review](actes/sprint2/SPRINT2_REVIEW.md)
-
-**Objectiu:** Segregar l'aplicació en contenidors Docker amb proxy invers, balanceig de càrrega i segmentació de xarxa
-
-**Dates:** 20 de Gener de 2026 - 2 de Febrer de 2026
-
-#### Backlog del Sprint 2
-
-| ID | Tasca | Assignat | Estimació | Prioritat | Estat |
-|----|-------|----------|-----------|-----------|-------|
-| T2.1 | Crear Dockerfile per a S2/S3 (PHP-FPM) | Hamza, Kevin | 2h | Alta | FET |
-| T2.2 | Crear Dockerfile per a S4 (Upload) | Hamza, Kevin | 1.5h | Alta | FET |
-| T2.3 | Crear imatge MySQL amb init.sql | Hamza, Kevin | 1h | Alta | FET |
-| T2.4 | Configurar NGINX S1 Load Balancer | Kevin | 3h | Alta | FET |
-| T2.5 | Configurar NGINX S5 (Images) | Kevin | 1h | Alta | FET |
-| T2.6 | Configurar NGINX S6 (Static) | Kevin | 1h | Alta | FET |
-| T2.7 | Crear docker-compose.yml complet | Hamza | 3h | Alta | FET |
-| T2.8 | Segmentació de xarxa (3 capes) | Hamza, Kevin | 2h | Alta | FET |
-| T2.9 | Configurar volums persistents | Hamza | 1h | Alta | FET |
-| T2.10 | Implementar S8 OpenLDAP | Hamza | 2h | Alta | FET |
-| T2.11 | Proves balanceig Round-Robin | Hamza, Kevin | 2h | Alta | FET |
-| T2.12 | Proves segmentació de xarxa | Hamza, Kevin | 2h | Alta | FET |
-| T2.13 | Documentar configuració Docker | Hamza | 2h | Mitjana | FET |
-| T2.14 | Crear diagrama interactiu HTML | Kevin | 3h | Mitjana | FET |
-| T2.15 | Preparar Sprint Review | Hamza, Kevin | 1h | Mitjana | FET |
-
-**Total estimat:** 28 hores
-
-[↑ Torna als sprints](#planificació-de-sprints)
-
----
-
-### Sprint 3: Integració i Proves Finals [COMPLETAT]
-
-**Documents del Sprint 3:**
--  [Sprint Planning](actes/sprint3/SPRINT3_PLANNING.md)
--  [Sprint Review](actes/sprint3/SPRINT3_REVIEW.md)
-
-**Objectiu:** Completar la integració, crear diagrama de xarxa i documentació final
-
-**Dates:** 3 de Febrer de 2026 - 10 de Febrer de 2026
-
-#### Backlog del Sprint 3
-
-| ID | Tasca | Assignat | Estimació | Prioritat | Estat |
-|----|-------|----------|-----------|-----------|-------|
-| T3.1 | Crear esquema xarxa Packet Tracer | Kevin | 3h | Alta | FET |
-| T3.2 | Documentar arquitectura de xarxa | Kevin | 2h | Alta | FET |
-| T3.3 | Proves caiguda node S2 | Hamza | 1.5h | Alta | FET |
-| T3.4 | Proves caiguda node S3 | Hamza | 1.5h | Alta | FET |
-| T3.5 | Proves caiguda base de dades | Hamza | 2h | Alta | FET |
-| T3.6 | Documentar resultats de proves | Hamza | 2h | Alta | FET |
-| T3.7 | Revisar README principal | Hamza | 3h | Alta | FET |
-| T3.8 | Preparar presentació final | Hamza | 2h | Alta | FET |
-| T3.9 | Revisar control versions Git | Hamza | 1h | Mitjana | FET |
-| T3.10 | Proves finals integrades | Tots | 2h | Alta | FET |
-| T3.11 | Sprint Review amb tutor | Tots | 2h | Alta | FET |
-
-**Total estimat:** 22 hores
-
-[↑ Torna als sprints](#planificació-de-sprints)
-
----
-
-### Sprint 4: Seguretat [COMPLETAT]
-
-**Documents del Sprint 4:**
--  [Sprint Planning](actes/sprint4/SPRINT4_PLANNING.md)
--  [Sprint Review](actes/sprint4/SPRINT4_REVIEW.md)
-
-**Objectiu:** Implementar WAF, Hardening de sistema operatiu i base de dades, Firewall perimetral
-
-**Dates:** 17 de Febrer de 2026 - 23 de Febrer de 2026
-
-#### Backlog del Sprint 4
-
-| ID | Tasca | Assignat | Estimació | Prioritat | Estat |
-|----|-------|----------|-----------|-----------|-------|
-| T4.1 | Implementar WAF NGINX natiu | Hamza | 4h | Alta | FET |
-| T4.2 | Regles SQL Injection, XSS, Path Traversal | Hamza | 2h | Alta | FET |
-| T4.3 | Implementar Rate Limiting | Hamza | 1h | Alta | FET |
-| T4.4 | Hardening contenidors (no-new-privileges) | Hamza | 3h | Alta | FET |
-| T4.5 | Hardening MySQL (privilegis mínims) | Hamza | 2h | Alta | FET |
-| T4.6 | Crear hardening.sql | Hamza | 1h | Alta | FET |
-| T4.7 | Implementar firewall iptables | Kevin | 3h | Alta | FET |
-| T4.8 | Proves seguretat WAF | Hamza, Kevin | 2h | Alta | FET |
-| T4.9 | Documentar Sprint 4 | Hamza | 2h | Mitjana | FET |
-| T4.10 | Sprint Review amb tutor | Tots | 1h | Mitjana | FET |
-
-**Total estimat:** 21 hores
-  
-[↑ Torna als sprints](#planificació-de-sprints)
-
----
-
-### Sprint 5: Monitoratge [PENDENT]
-
-**Objectiu:** Implementar sistema de monitoratge centralitzat amb Grafana, Loki i Prometheus
-
-**Dates:** 2 de Març de 2026 - 10 de Març de 2026
-
-#### Backlog del Sprint 5
-
-| ID | Tasca | Assignat | Estimació | Prioritat | Estat |
-|----|-------|----------|-----------|-----------|-------|
-| T5.1 | Configurar Grafana + Loki | Hamza | 3h | Alta | PENDENT |
-| T5.2 | Configurar Promtail logs Docker | Hamza | 2h | Alta | PENDENT |
-| T5.3 | Configurar Prometheus mètriques | Hamza | 2h | Alta | PENDENT |
-| T5.4 | Dashboard Logs temps real | Hamza | 2h | Alta | PENDENT |
-| T5.5 | Dashboard Mètriques Sistema | Hamza | 2h | Alta | PENDENT |
-| T5.6 | Proves estrès Apache Bench | Kevin | 3h | Alta | PENDENT |
-| T5.7 | Dashboard rendiment aplicació | Hamza, Kevin | 2h | Alta | PENDENT |
-| T5.8 | Configurar alertes automàtiques | Hamza | 2h | Mitjana | PENDENT |
-| T5.9 | Documentar Sprint 5 | Hamza | 2h | Mitjana | PENDENT |
-| T5.10 | Sprint Review final | Tots | 1h | Mitjana | PENDENT |
-
-**Total estimat:** 21 hores
-
-[↑ Torna als sprints](#planificació-de-sprints)
-
----
-
-### Gràfic de Progrés del Projecte
+### Progrés Global
 ```
-Progrés Global del Projecte
-
 Sprint 1: [####################] 100% COMPLETAT
 Sprint 2: [####################] 100% COMPLETAT
 Sprint 3: [####################] 100% COMPLETAT
@@ -387,44 +292,29 @@ Sprint 5: [                    ]   0% PENDENT
 Total:    [################    ]  80% (4/5 sprints)
 ```
 
-[↑ Torna a l'índex](#índex)
-
 ---
 
-## Guia d'Instal·lació Ràpida
+## Guia d'Instal·lació
 
 ### Pre-requisits
 
-- **Sistema Operatiu:** Ubuntu Server 22.04 LTS
-- **Docker:** 24.0.0 o superior
-- **Docker Compose:** v2.20.0 o superior
-- **Git:** 2.34.0 o superior
-- **Memòria RAM:** Mínim 4GB (Recomanat 8GB)
-- **Disc:** Mínim 20GB lliures
+- Sistema Operatiu: Ubuntu Server 22.04 LTS
+- Docker: 24.0.0 o superior
+- Docker Compose: v2.20.0 o superior
+- Git: 2.34.0 o superior
+- Memòria RAM: Mínim 4GB (Recomanat 8GB)
+- Disc: Mínim 20GB lliures
 
-### Instal·lació Pas a Pas
+### Passos d'Instal·lació
 ```bash
 # 1. Clonar el repositori
 git clone https://github.com/HamzaTayibiITB2425/extagram-project.git
 cd extagram-project/configuracions/docker
 
-# 2. Crear arxiu .env amb les credencials
-cat > .env << EOF
-# MySQL Configuration
-MYSQL_ROOT_PASSWORD=rootpass123
-MYSQL_DATABASE=extagram_db
-MYSQL_USER=extagram_admin
-MYSQL_PASSWORD=adminpass123
-
-# Database Connection (for PHP containers)
-DB_HOST=s7-database
-DB_USER=extagram_admin
-DB_PASSWORD=adminpass123
-DB_NAME=extagram_db
-
-# LDAP Configuration
-LDAP_ADMIN_PASSWORD=ldapadmin123
-EOF
+# 2. Configurar variables d'entorn
+# Copiar .env.example i editar amb credencials segures
+cp .env.example .env
+nano .env
 
 # 3. Aixecar els contenidors
 docker compose up -d
@@ -436,83 +326,11 @@ docker compose ps
 # Navegador: https://extagram-grup3.duckdns.org
 ```
 
-[↑ Torna a l'índex](#índex)
-
----
-
-## Estructura del Repositori
-```
-extagram-project/
-├── README.md                           # Aquest fitxer
-├── .gitignore
-├── LICENSE
-│
-├── actes/                              # Actes de reunions Scrum
-│   ├── sprint1/
-│   │   ├── SPRINT1_PLANNING.md
-│   │   ├── SPRINT1_REVIEW.md
-│   │   └── SPRINT1_RETROSPECTIVA.md
-│   ├── sprint2/
-│   │   ├── SPRINT2_PLANNING.md
-│   │   ├── SPRINT2_REVIEW.md
-│   │   └── SPRINT2_RETROSPECTIVA.md
-│   ├── sprint3/
-│   │   ├── SPRINT3_PLANNING.md
-│   │   ├── SPRINT3_REVIEW.md
-│   │   └── SPRINT3_RETROSPECTIVA.md
-│   └── sprint4/
-│       ├── SPRINT4_PLANNING.md
-│       ├── SPRINT4_REVIEW.md
-│       └── SPRINT4_RETROSPECTIVA.md
-│
-├── configuracions/
-│   └── docker/
-│       ├── docker-compose.yml          # Orquestració multi-contenidor
-│       ├── .env.example
-│       ├── s1-loadbalancer/
-│       │   └── nginx.conf              # Config Load Balancer + WAF
-│       ├── s2-php/
-│       │   ├── Dockerfile
-│       │   └── extagram.php
-│       ├── s3-php/
-│       │   ├── Dockerfile
-│       │   └── extagram.php
-│       ├── s4-upload/
-│       │   ├── Dockerfile
-│       │   ├── upload.php
-│       │   ├── delete.php
-│       │   └── recover.php
-│       ├── s5-images/
-│       │   └── nginx.conf
-│       ├── s6-static/
-│       │   └── nginx.conf
-│       ├── s7-mysql/
-│       │   ├── init.sql
-│       │   └── hardening.sql           # Hardening MySQL
-│       └── s8-ldap/
-│           └── users.ldif
-│
-├── docs/                               # Documentació tècnica
-│   ├── ARQUITECTURA.md
-│   ├── INSTALACION.md
-│   ├── PROVES_XARXA.md
-│   ├── SPRINT4_SEGURIDAD.md
-│   └── imagenes/
-│       ├── arquitectura/
-│       ├── pruebas/
-│       └── sprints/
-│
-├── proves/                             # Scripts de testing
-│   ├── test_network_segmentation.sh
-│   ├── test_waf.sh
-│   └── test_hardening.sh
-│
-└── presentacio/                        # Materials presentació
-    ├── slides.pdf
-    └── demo_video.mp4
-```
-
-[↑ Torna a l'índex](#índex)
+**IMPORTANT - Seguretat:**
+- MAI exposar credencials reals en documentació pública
+- Utilitzar contrasenyes fortes i úniques
+- El fitxer .env està a .gitignore per evitar exposició
+- Consultar .env.example per veure variables necessàries
 
 ---
 
@@ -520,39 +338,42 @@ extagram-project/
 
 ### Proves de Funcionalitat
 
- **Accés web HTTPS:**
+**Accés web HTTPS:**
 ```bash
 curl -I https://extagram-grup3.duckdns.org/extagram.php
 # Esperat: HTTP/2 200 OK
 ```
 
- **Balanceig Round-Robin S2/S3:**
+**Balanceig Round-Robin:**
 ```bash
-for i in {1..10}; do curl -s https://extagram-grup3.duckdns.org/extagram.php | grep "hostname"; done
+for i in {1..10}; do 
+  curl -s https://extagram-grup3.duckdns.org/extagram.php | grep "hostname"
+done
 # Esperat: Alternància entre s2-php i s3-php
 ```
 
- **Upload d'imatges:**
+**Upload d'imatges:**
 ```bash
-curl -X POST -F "caption=Test" -F "photo=@test.jpg" https://extagram-grup3.duckdns.org/upload.php
+curl -X POST -F "caption=Test" -F "photo=@test.jpg" \
+  https://extagram-grup3.duckdns.org/upload.php
 # Esperat: HTTP 302 Redirect
 ```
 
 ### Proves de Seguretat WAF
 
- **Bloqueig SQL Injection:**
+**Bloqueig SQL Injection:**
 ```bash
 curl -i "https://extagram-grup3.duckdns.org/extagram.php?id=1'%20OR%20'1'='1"
 # Esperat: HTTP 403 - WAF: SQL Injection Blocked
 ```
 
- **Bloqueig XSS:**
+**Bloqueig XSS:**
 ```bash
 curl -i "https://extagram-grup3.duckdns.org/extagram.php?search=<script>alert(1)</script>"
 # Esperat: HTTP 403 - WAF: XSS Attack Blocked
 ```
 
- **Bloqueig Path Traversal:**
+**Bloqueig Path Traversal:**
 ```bash
 curl -i "https://extagram-grup3.duckdns.org/../../../etc/passwd"
 # Esperat: HTTP 403 - WAF: Path Traversal Blocked
@@ -560,76 +381,56 @@ curl -i "https://extagram-grup3.duckdns.org/../../../etc/passwd"
 
 ### Proves de Hardening
 
- **Contenidors amb read-only filesystem:**
+**Filesystem read-only:**
 ```bash
 docker exec extagram-s2-php touch /test.txt
 # Esperat: Read-only file system
 ```
 
- **MySQL usuari amb privilegis limitats:**
+**Privilegis MySQL limitats:**
 ```bash
-docker exec extagram-s7-database mysql -u extagram_admin -padminpass123 -e "CREATE DATABASE hack;"
+docker exec extagram-s7-database mysql -u extagram_admin -p \
+  -e "CREATE DATABASE hack;"
 # Esperat: Access denied
 ```
 
-[Veure proves completes →](docs/PROVES.md)
+**Verificació hardening contenidors:**
+```bash
+# Verificar no-new-privileges
+docker inspect extagram-s2-php --format='{{.HostConfig.SecurityOpt}}'
+# Esperat: [no-new-privileges:true]
 
-[↑ Torna a l'índex](#índex)
+# Verificar read-only
+docker inspect extagram-s2-php --format='{{.HostConfig.ReadonlyRootfs}}'
+# Esperat: true
+
+# Verificar cap_drop
+docker inspect extagram-s2-php --format='{{.HostConfig.CapDrop}}'
+# Esperat: [ALL]
+```
+
+**Verificació hardening MySQL:**
+```bash
+# Verificar usuaris MySQL
+docker exec extagram-s7-database mysql -u root -p -e "SELECT user, host FROM mysql.user;"
+
+# Verificar privilegis extagram_admin
+docker exec extagram-s7-database mysql -u root -p -e "SHOW GRANTS FOR 'extagram_admin'@'%';"
+
+# Verificar que root només és local
+docker exec extagram-s7-database mysql -u root -p -e "SELECT user, host FROM mysql.user WHERE user='root';"
+```
 
 ---
 
 ## Documentació
 
-### Documents Tècnics
-
--  [Arquitectura del Sistema](docs/ARQUITECTURA.md)
--  [Guia d'Instal·lació Completa](docs/INSTALACION.md)
--  [Proves de Segmentació de Xarxa](docs/PROVES_XARXA.md)
--  [Documentació de Seguretat Sprint 4](docs/SPRINT4_SEGURIDAD.md)
--  [Guia de Proves i Validació](docs/PROVES.md)
-
 ### Actes de Sprints
 
-- **Sprint 1:** [Planning](actes/sprint1/SPRINT1_PLANNING.md) • [Review](actes/sprint1/SPRINT1_REVIEW.md) • [Retrospectiva](actes/sprint1/SPRINT1_RETROSPECTIVA.md)
-- **Sprint 2:** [Planning](actes/sprint2/SPRINT2_PLANNING.md) • [Review](actes/sprint2/SPRINT2_REVIEW.md) • [Retrospectiva](actes/sprint2/SPRINT2_RETROSPECTIVA.md)
-- **Sprint 3:** [Planning](actes/sprint3/SPRINT3_PLANNING.md) • [Review](actes/sprint3/SPRINT3_REVIEW.md) • [Retrospectiva](actes/sprint3/SPRINT3_RETROSPECTIVA.md)
-- **Sprint 4:** [Planning](actes/sprint4/SPRINT4_PLANNING.md) • [Review](actes/sprint4/SPRINT4_REVIEW.md) • [Retrospectiva](actes/sprint4/SPRINT4_RETROSPECTIVA.md)
-
-[↑ Torna a l'índex](#índex)
-
----
-
-## Gestió de Riscos
-
-| Risc | Probabilitat | Impacte | Mitigació | Estat |
-|------|--------------|---------|-----------|-------|
-| Caiguda d'un node PHP | Mitjana | Baix | Redundància S2+S3 | Mitigat |
-| Sobrecàrrega de base de dades | Baixa | Alt | Pool de connexions, índexs | Monitoritzat |
-| Atac SQL Injection | Mitjana | Crític | WAF + PDO prepared statements | Mitigat |
-| Compromís contenidor | Mitjana | Alt | Hardening + read-only + cap_drop | Mitigat |
-| Caiguda servidor complet | Baixa | Crític | Backups diaris + volums persistents | Implementat |
-
-[↑ Torna a l'índex](#índex)
-
----
-
-## Metodologia Agile
-
-### Framework Utilitzat: Scrum
-
-- **Sprints:** 1-2 setmanes (segons complexitat)
-- **Daily Standups:** Cada dia a les 9:00 AM (15 min)
-- **Sprint Planning:** Primer dia del sprint (2h)
-- **Sprint Review:** Últim dia del sprint (1h)
-- **Retrospectiva:** Després del Review (1h)
-
-### Eines de Gestió
-
-- **ProofHub:** Backlog, Kanban, Sprints, Time Tracking
-- **GitHub Projects:** Issues, Pull Requests, Milestones
-- **Google Meet:** Reunions virtuals dailies i reviews
-
-[↑ Torna a l'índex](#índex)
+- Sprint 1: [Planning](actes/sprint1/SPRINT1_PLANNING.md) - [Review](actes/sprint1/SPRINT1_REVIEW.md)
+- Sprint 2: [Planning](actes/sprint2/SPRINT2_PLANNING.md) - [Review](actes/sprint2/SPRINT2_REVIEW.md)
+- Sprint 3: [Planning](actes/sprint3/SPRINT3_PLANNING.md) - [Review](actes/sprint3/SPRINT3_REVIEW.md)
+- Sprint 4: [Planning](actes/sprint4/SPRINT4_PLANNING.md) - [Review](actes/sprint4/SPRINT4_REVIEW.md) - [Retrospectiva](actes/sprint4/SPRINT4_RETROSPECTIVA.md)
 
 ---
 
@@ -657,11 +458,9 @@ security(mysql): aplicar hardening
 test(waf): afegir proves SQL injection
 ```
 
-[↑ Torna a l'índex](#índex)
-
 ---
 
-## Contacte i Suport
+## Contacte
 
 ### Equip del Projecte
 
@@ -669,7 +468,7 @@ test(waf): afegir proves SQL injection
 - GitHub: [@HamzaTayibiITB2425](https://github.com/HamzaTayibiITB2425)
 - Email: hamza.tayibi@itb.cat
 
-**Kevin** (Infrastructure Engineer / Security)
+**Kevin** (Infrastructure Engineer)
 - GitHub: [@KevinITB](https://github.com/KevinITB)
 - Email: kevin@itb.cat
 
@@ -679,35 +478,13 @@ test(waf): afegir proves SQL injection
 - Email: jordi.casas@itb.cat
 - Institut Tecnològic de Barcelona
 
-### Suport Tècnic
-
-- **Issues GitHub:** [github.com/HamzaTayibiITB2425/extagram-project/issues](https://github.com/HamzaTayibiITB2425/extagram-project/issues)
-- **Documentació:** [Llegeix els docs](docs/)
-- **Wiki del Projecte:** [GitHub Wiki](https://github.com/HamzaTayibiITB2425/extagram-project/wiki)
-
-[↑ Torna a l'índex](#índex)
-
 ---
 
 ## Llicència
 
-Aquest projecte està sota llicència **MIT License**. Vegeu el fitxer [LICENSE](LICENSE) per més detalls.
+Aquest projecte està sota llicència MIT License. Vegeu el fitxer LICENSE per més detalls.
 
-Copyright © 2025-2026 Hamza, Kevin - Institut Tecnològic de Barcelona
-
-[↑ Torna a l'índex](#índex)
-
----
-
-## Agraïments
-
-- **Jordi Casas** - Tutor del projecte per la seva guia i feedback continu
-- **Institut Tecnològic de Barcelona** - Per proporcionar els recursos i infraestructura
-- **Comunitat Docker** - Per l'excel·lent documentació i imatges oficials
-- **NGINX Community** - Per les guies de configuració de proxy invers i WAF
-- **Stack Overflow** - Per resoldre dubtes tècnics durant el desenvolupament
-
-[↑ Torna a l'índex](#índex)
+Copyright 2025-2026 Hamza, Kevin - Institut Tecnològic de Barcelona
 
 ---
 
@@ -716,18 +493,12 @@ Copyright © 2025-2026 Hamza, Kevin - Institut Tecnològic de Barcelona
 **Projecte Extagram - Institut Tecnològic de Barcelona**  
 **Equip:** Hamza, Kevin | **ASIX2c** | **2025-2026**
 
-**SPRINT 4: COMPLETAT | SPRINT 5: PENDENT**
-
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-black?logo=github)](https://github.com/HamzaTayibiITB2425/extagram-project)
 [![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker)](https://www.docker.com/)
 [![NGINX](https://img.shields.io/badge/NGINX-Load%20Balancer-009639?logo=nginx)](https://nginx.org/)
 
-</div>
-
----
-
 **Última actualització:** 24 de Febrer de 2026  
-**Versió del Document:** 8.0  
-**Estat del Projecte:** EN DESENVOLUPAMENT (80% completat)  
-**Proper Sprint:** Sprint 5 (Monitoratge amb Grafana + Loki + Prometheus)  
-**Data Presentació:** 16-17 de Març de 2026
+**Versió:** 10.0  
+**Estat:** EN DESENVOLUPAMENT (80% completat)
+
+</div>
