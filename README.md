@@ -177,18 +177,16 @@ El sistema Extagram està organitzat en **8 contenidors Docker** distribuïts en
 | **S7** | Database (Hardened) | `mysql:8.0` | 3306 | Emmagatzematge de posts i metadata | `extagram_data` (internal) | 172.21.0.2 |
 | **S8** | LDAP Server | `osixia/openldap:1.5.0` | 389/636 | Autenticació d'usuaris (Hamza, Kevin) | `extagram_data` (internal) | 172.21.0.3 |
 
-### Components de Seguretat (Sprint 4) - ✅ COMPLETAT
+### Components de Seguretat (Sprint 4) - COMPLETAT
 
 | Component | Tecnologia | Funció | Estat |
 |-----------|------------|--------|-------|
-| **WAF** | NGINX nati
+| **WAF** | NGINX natiu + Regex Rules | Protecció SQL Injection, XSS, Path Traversal, Rate Limit | IMPLEMENTAT |
+| **Hardening OS** | Docker security_opt, cap_drop, read_only | Contenidors immutables, mínim privilegi | IMPLEMENTAT |
+| **Hardening MySQL** | Usuaris segurs, privilegis mínims | Base de dades fortificada | IMPLEMENTAT |
+| **Firewall** | iptables | Protecció perimetral davant S1 | IMPLEMENTAT |
 
-u + Regex Rules | Protecció SQL Injection, XSS, Path Traversal, Rate Limit | ✅ IMPLEMENTAT |
-| **Hardening OS** | Docker security_opt, cap_drop, read_only | Contenidors immutables, mínim privilegi | ✅ IMPLEMENTAT |
-| **Hardening MySQL** | Usuaris segurs, privilegis mínims | Base de dades fortificada | ✅ IMPLEMENTAT |
-| **Firewall** | iptables | Protecció perimetral davant S1 | ✅ IMPLEMENTAT |
-
-### Components de Monitoratge (Sprint 5) - ⏳ PENDENT
+### Components de Monitoratge (Sprint 5) - PENDENT
 
 | Component | Tecnologia | Port | Funció |
 |-----------|------------|------|--------|
@@ -392,457 +390,6 @@ La segmentació de xarxa garanteix:
 
 ---
 
-### Comparativa i Justificació de Tecnologies
-
-A continuació es presenta una anàlisi detallada de les tecnologies seleccionades, comparant-les amb alternatives viables i justificant la decisió final.
-
----
-
-#### 1. Containerització: Docker vs Kubernetes vs LXC
-
-| Criteri | **Docker** (SELECCIONAT) | Kubernetes | LXC |
-|---------|--------------------------|------------|-----|
-| **Facilitat d'ús** | Molt simple | Corba d'aprenentatge alta | Mitjana |
-| **Documentació** | Extensa i clara | Molt tècnica | Limitada |
-| **Comunitat** | Enorme | Gran però especialitzada | Petita |
-| **Overhead** | Baix | Alt (cluster complet) | Molt baix |
-| **Cas d'ús** | Projectes petits/mitjans | Clusters grans (>100 nodes) | Virtualització lleugera |
-| **Portabilitat** | Excel·lent | Excel·lent | Limitada |
-| **Temps setup** | < 30 minuts | > 2 hores | ~1 hora |
-| **Cost aprenentatge** | Baix | Alt | Mitjà |
-
-**Decisió: Docker**
-
-**Justificació:**
-- **Simplicitat**: Per a un projecte acadèmic de 13 setmanes, Docker ofereix el millor equilibri facilitat/potència
-- **Documentació**: docs.docker.com té tutorials excel·lents per a principiants
-- **Portabilitat**: `docker-compose up` funciona igual a Linux, macOS i Windows
-- **Comunitat**: Més de 13 milions d'imatges a Docker Hub
-- **Overhead mínim**: Comparant amb Kubernetes que requeriria mínim 3 nodes (master + 2 workers)
-
-**Referències:**
-- Docker Documentation: https://docs.docker.com
-- CNCF Survey 2024 - Container Technologies: https://www.cncf.io/reports/
-
----
-
-#### 2. Proxy Invers: NGINX vs Apache vs HAProxy
-
-| Criteri | **NGINX** (SELECCIONAT) | Apache (mod_proxy) | HAProxy |
-|---------|-------------------------|-------------------|---------|
-| **Rendiment** | 50,000 req/s | 10,000 req/s | 51,000 req/s |
-| **Memòria** | ~10 MB per procés | ~25 MB per procés | ~8 MB |
-| **Config Balanceig** | Molt simple | Complex | Excel·lent |
-| **Servir estàtics** | Excel·lent | Bo | No (només LB) |
-| **Documentació** | Excel·lent | Bona | Bona |
-| **Flexibilitat** | Alta | Molt Alta | Mitjana (només proxy) |
-| **SSL/TLS** | Natiu i ràpid | Natiu | Natiu |
-| **WAF Natiu** | Regex + if blocks | ModSecurity | No |
-
-**Decisió: NGINX**
-
-**Justificació:**
-- **Dual purpose**: Actua com a load balancer (S1) I servidor estàtic (S5, S6)
-- **Rendiment**: Arquitectura event-driven no bloquejant vs Apache's threaded model
-- **Memòria**: Consum 60% menor que Apache en càrrega alta
-- **Simplicitat**: Configuració molt més clara que Apache VirtualHosts
-- **Documentació**: nginx.org/en/docs/ amb exemples pràctics
-- **WAF Natiu**: Regex patterns per protecció bàsica sense ModSecurity
-
-**Benchmark real:**
-```bash
-# Test amb Apache Bench (ab)
-# NGINX: 45,234 requests/sec
-# Apache: 12,891 requests/sec
-# HAProxy: 51,203 requests/sec (però no serveix estàtics)
-```
-
-**Referències:**
-- NGINX Documentation: https://nginx.org/en/docs/
-- NGINX vs Apache Benchmark: https://www.nginx.com/blog/nginx-vs-apache-our-view/
-
----
-
-#### 3. WAF: NGINX Native vs ModSecurity vs AWS WAF vs Cloudflare WAF
-
-| Criteri | **NGINX Native** (SELECCIONAT) | ModSecurity | AWS WAF | Cloudflare WAF |
-|---------|-------------------------------|-------------|---------|----------------|
-| **Cost** | Gratuït | Gratuït (Open Source) | $$$ (pagament per ús) | $$$ (pla pro) |
-| **Integració NGINX** | Natiu | Compilació necessària | API externa | Proxy extern |
-| **Complexitat** | Baixa (regex) | Alta (OWASP CRS) | Baixa | Baixa |
-| **Rendiment** | Excel·lent | Bo (overhead) | Bo | Excel·lent |
-| **Control** | Total | Total | Limitat | Limitat |
-| **Aprenentatge** | Baix | Alt | Baixa | Baixa |
-| **Desplegament** | Immediat | Complex | Cloud | Cloud |
-| **Manteniment** | Baix | Alt | Gest
-
-ionat | Gestionat |
-
-**Decisió: NGINX Native**
-
-**Justificació:**
-- **Simplicitat**: Regex patterns en `nginx.conf` sense dependencies
-- **Rendiment**: 0% overhead, part del mateix procés NGINX
-- **Gratuït**: Open source sense costos
-- **Educatiu**: Aprenentatge de regex patterns i lògica de seguretat
-- **Immediat**: No cal compilar ModSecurity ni configurar OWASP CRS
-- **Efectiu**: Protecció bàsica suficient per SQL Injection, XSS, Path Traversal
-
-**Per què NO ModSecurity?**
-- Imatge Docker `owasp/modsecurity:3-nginx` no disponible
-- Compilació manual molt complexa per projecte acadèmic
-- OWASP CRS requereix configuració extensa
-
-**Per què NO AWS WAF o Cloudflare?**
-- Costos elevats per projecte acadèmic
-- Dependència de serveis externs cloud
-- Menys control i aprenentatge
-
-**Referències:**
-- NGINX Security Controls: https://nginx.org/en/docs/http/ngx_http_core_module.html
-
----
-
-#### 4. Firewall: iptables vs pfSense vs CSF vs UFW
-
-| Criteri | **iptables** (SELECCIONAT) | pfSense | CSF (ConfigServer) | UFW |
-|---------|----------------------------|---------|-------------------|-----|
-| **Tipus** | CLI Netfilter | Web GUI | Web + CLI | CLI Wrapper |
-| **Complexitat** | Alta | Mitjana | Baixa | Molt baixa |
-| **Flexibilitat** | Màxima | Alta | Mitjana | Baixa |
-| **Rendiment** | Excel·lent | Bo | Bo | Excel·lent |
-| **Recursos** | Mínim | Alt (VM separada) | Baix | Mínim |
-| **Control** | Total | Total | Alt | Bàsic |
-| **Aprenentatge** | Alt (educatiu) | Mitjà | Baix | Molt baix |
-| **Cas d'ús** | Servidors Linux | Appliances | cPanel/WHM | Desktop Ubuntu |
-
-**Decisió: iptables**
-
-**Justificació:**
-- **Natiu Linux**: Kernel netfilter integrat en Ubuntu Server
-- **Performance**: 0% overhead, filtrat a nivell kernel
-- **Flexibilitat total**: Regles personalitzades per port, IP, protocol
-- **Educatiu**: Aprendre iptables és fonamental per a administradors Linux
-- **No requereix VM**: pfSense necessitaria una màquina virtual separada
-- **Control total**: Configuració regla per regla amb màxima granularitat
-
-**Per què NO pfSense?**
-- Requereix VM dedicada (overhead recursos)
-- Web GUI innecessària per projecte petit
-- Més adequat per routers/firewalls perimetrals grans
-
-**Per què NO CSF?**
-- Dissenyat per cPanel/WHM (web hosting)
-- Menys control que iptables directe
-- Configuració més limitada
-
-**Per què NO UFW?**
-- Massa simplificat per aprenentatge
-- Menys flexibilitat que iptables
-- Millor per desktops que servidors
-
-**Exemple regles iptables implementades:**
-```bash
-# Permetre SSH
-iptables -A INPUT -p tcp --dport 22 -j ACCEPT
-
-# Permetre HTTP/HTTPS
-iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-
-# Bloquejar tot el reste
-iptables -P INPUT DROP
-iptables -P FORWARD DROP
-```
-
-**Referències:**
-- iptables Tutorial: https://www.netfilter.org/documentation/
-- iptables vs pfSense: https://www.pfsense.org/comparison/
-
----
-
-#### 5. Monitoratge: Grafana + Loki vs ELK Stack vs Splunk
-
-| Criteri | **Grafana + Loki** (SELECCIONAT) | ELK Stack | Splunk |
-|---------|----------------------------------|-----------|--------|
-| **Cost** | Gratuït | Gratuït | $$$ (Enterprise) |
-| **Facilitat ús** | Alta | Mitjana | Alta |
-| **Recursos** | Baix | Alt (Elasticsearch) | Mitjà |
-| **Docker** | Natiu | Complexa | Cloud |
-| **Dashboards** | Excel·lents | Bons | Excel·lents |
-| **Aprenentatge** | Baix | Alt | Mitjà |
-
-**Decisió: Grafana + Loki**
-
-**Justificació:**
-- **Lleuger**: Loki és més eficient que Elasticsearch
-- **Integració**: Promtail capta logs Docker nativamente
-- **Dashboards**: Grafana ofereix millors visualitzacions
-- **Prometheus**: Integració nativa amb mètriques
-- **Gratuït**: 100% open source sense costos
-
----
-
-#### 6. Backend: PHP-FPM vs Node.js vs Python (Flask/Django)
-
-| Criteri | **PHP-FPM** (SELECCIONAT) | Node.js + Express | Python + Flask |
-|---------|---------------------------|-------------------|----------------|
-| **Corba aprenentatge** | Fàcil | Mitjana | Mitjana |
-| **Ecosistema web** | Natiu (78% web usa PHP) | Creixent | Creixent |
-| **Integració MySQL** | Natiu (mysqli, PDO) | Llibreries (mysql2) | Llibreries (SQLAlchemy) |
-| **Documentació** | Extensa (25+ anys) | Bona | Bona |
-| **Comunitat** | Immensa | Gran | Gran |
-| **Temps desenvolupament** | Ràpid | Ràpid | Mitjà |
-| **Hosting** | Ubicuo | Comú | Menys comú |
-
-**Decisió: PHP-FPM 8.2**
-
-**Justificació:**
-- **Maduresa**: PHP porta 28 anys optimitzant-se per a web
-- **FastCGI**: PHP-FPM és més eficient que mod_php d'Apache
-- **MySQL natiu**: `mysqli` i `PDO` són extensions core de PHP
-- **Recursos didàctics**: Infinitat de tutorials i Stack Overflow
-- **Simplicitat**: No cal configurar frameworks pesats (vs Django)
-- **Ecosystem**: 77.6% dels webs amb backend conegut usen PHP (W3Techs, 2024)
-
-**Referències:**
-- PHP Manual: https://www.php.net/manual/en/
-- W3Techs PHP Usage: https://w3techs.com/technologies/details/pl-php
-
----
-
-#### 7. Base de Dades: MySQL vs PostgreSQL vs MongoDB
-
-| Criteri | **MySQL 8.0** (SELECCIONAT) | PostgreSQL 16 | MongoDB 7 |
-|---------|------------------------------|---------------|-----------|
-| **Tipus** | SQL Relacional | SQL Relacional | NoSQL Document |
-| **Popularitat** | #1 Open Source | #2 Open Source | #1 NoSQL |
-| **Simplicitat** | Molt alta | Alta | Mitjana |
-| **ACID** | Sí (InnoDB) | Sí | Eventual consistency |
-| **Relacions** | Excel·lent | Excel·lent | Manual |
-| **Documentació** | Excel·lent | Excel·lent | Bona |
-| **Cas d'ús** | Apps tradicionals | Apps complexes | Big Data, logs |
-| **Docker oficial** | Sí | Sí | Sí |
-
-**Decisió: MySQL 8.0**
-
-**Justificació:**
-- **Simplicitat**: Perfecte per a esquemes relacionals simples (taula `posts`)
-- **Familiaritat**: La majoria d'alumnes ja coneixen MySQL
-- **Rendiment**: InnoDB és molt eficient per a lectures/escriptures transaccionals
-- **Ecosistema**: Integració nativa amb PHP (`mysqli`)
-- **Documentació**: dev.mysql.com/doc/ amb milers d'exemples
-- **Imatge Docker**: Oficial i ben mantinguda amb 1B+ downloads
-
-**Per què NO PostgreSQL?**
-- PostgreSQL és superior en features avançades (JSON, arrays, extensions)
-- Però per a aquest projecte simple, seria **overengineering**
-- MySQL té millor suport de comunitat per a principiants
-
-**Per què NO MongoDB?**
-- NoSQL no aporta avantatges per a aquest cas (esquema fix amb relacions)
-- Eventual consistency no és desitjable per a posts d'usuaris
-
-**Referències:**
-- MySQL Documentation: https://dev.mysql.com/doc/
-- DB-Engines Ranking: https://db-engines.com/en/ranking
-
----
-
-#### 8. Orquestració: Docker Compose vs Ansible vs Scripts Shell
-
-| Criteri | **Docker Compose** (SELECCIONAT) | Ansible | Shell Scripts |
-|---------|----------------------------------|---------|---------------|
-| **Simplicitat** | YAML declaratiu | YAML + inventari | Imperatiu |
-| **Idempotència** | Sí | Sí | No (cal programar) |
-| **Portabilitat** | Total | Requereix SSH | Limitada |
-| **Integració Docker** | Natiu | Via mòduls | docker CLI |
-| **Corba aprenentatge** | Baixa | Mitjana-Alta | Baixa |
-| **Documentació** | Excel·lent | Excel·lent | N/A |
-| **Rollback** | Automàtic | Manual | Molt manual |
-
-**Decisió: Docker Compose**
-
-**Justificació:**
-- **YAML declaratiu**: Defineix "què vols" no "com fer-ho"
-- **Una comanda**: `docker-compose up -d` aixeca tot el stack
-- **Networking automàtic**: Crea xarxa i DNS entre contenidors
-- **Volums gestionats**: Persistència sense configuració manual
-- **Rollback fàcil**: `docker-compose down && docker-compose up`
-- **Idempotent**: Executar múltiples vegades dóna el mateix resultat
-
-**Referències:**
-- Docker Compose Documentation: https://docs.docker.com/compose/
-
----
-
-#### 9. Control de Versions: Git + GitHub vs GitLab vs Bitbucket
-
-| Criteri | **GitHub** (SELECCIONAT) | GitLab | Bitbucket |
-|---------|--------------------------|--------|-----------|
-| **Popularitat** | #1 (100M+ repos) | #2 | #3 |
-| **Gratuït** | Sí (repos públics) | Sí | Sí (petits equips) |
-| **CI/CD integrat** | GitHub Actions | GitLab CI/CD | Bitbucket Pipelines |
-| **Comunitat** | Enorme | Gran | Mitjana |
-| **Issues/Projects** | Sí | Sí (més avançat) | Bàsic |
-| **Integració** | Excel·lent | Excel·lent | Bona |
-| **Documentació** | Excel·lent | Bona | Regular |
-
-**Decisió: Git + GitHub**
-
-**Justificació:**
-- **Estàndard de facto**: 90% dels desenvolupadors usen Git
-- **GitHub**: Més de 100 milions de repositoris
-- **Gratuït**: Repositoris públics il·limitats
-- **Integració ProofHub**: GitHub té webhooks per a ProofHub
-- **Portfolio**: GitHub és la "targeta de presentació" de desenvolupadors
-
-**Referències:**
-- Stack Overflow Developer Survey 2024: https://survey.stackoverflow.co/2024/
-- GitHub Octoverse: https://github.blog/news-insights/octoverse/
-
----
-
-#### 10. Gestió de Projecte: ProofHub vs Jira vs Trello
-
-| Criteri | **ProofHub** (SELECCIONAT) | Jira | Trello |
-|---------|----------------------------|------|--------|
-| **Simplicitat** | Alta | Baixa (complex) | Molt alta |
-| **Metodologia Agile** | Sí (Scrum, Kanban) | Sí (complet) | Kanban bàsic |
-| **Gratuït** | Trial + Edu | Gratuït (10 users) | Gratuït (limitat) |
-| **Gantt charts** | Sí | Sí (amb plugin) | No |
-| **Time tracking** | Sí | Sí | No |
-| **Backlog** | Sí | Sí (excel·lent) | Limitat |
-| **Corba aprenentatge** | Baixa | Alta | Molt baixa |
-
-**Decisió: ProofHub**
-
-**Justificació:**
-- **All-in-one**: Kanban + Gantt + Time Tracking + Chat
-- **Simplicitat**: Més intuïtiu que Jira per a equips nous
-- **Sprints**: Suport natiu per a Scrum amb backlog
-- **Documentació**: Tutorials en castellà/català
-- **Trial educatiu**: L'institut té llicència educativa
-
-**Referències:**
-- ProofHub vs Jira: https://www.proofhub.com/compare/proofhub-vs-jira
-
----
-
-#### 11. Autenticació: OpenLDAP vs Active Directory vs OAuth2
-
-| Criteri | **OpenLDAP** (SELECCIONAT) | Active Directory | OAuth2 |
-|---------|----------------------------|------------------|--------|
-| **Tipus** | LDAP Protocol | LDAP + Kerberos | Token-based |
-| **Open Source** | Sí | No (Microsoft) | Depèn |
-| **Docker oficial** | Sí | No | N/A |
-| **Simplicitat** | Mitjana | Baixa | Alta |
-| **Cas d'ús** | Autenticació interna | Enterprise Windows | APIs, SSO |
-| **Cost** | Gratuït | Llicència Windows Server | Gratuït/Pagament |
-
-**Decisió: OpenLDAP 1.5.0**
-
-**Justificació:**
-- **Open Source**: Gratuït i codi obert
-- **Estàndard**: Protocol LDAP universal
-- **Docker**: Imatge oficial `osixia/openldap` amb 100M+ downloads
-- **Simplicitat**: Gestió d'usuaris centralitzada sense dependencies de Windows
-- **Aprenentatge**: LDAP és estàndard en entorns corporatius
-
-**Referències:**
-- OpenLDAP Documentation: https://www.openldap.org/doc/
-
----
-
-### Resum de Decisions Tecnològiques
-
-#### Decisions Finals
-```
-ARQUITECTURA EXTAGRAM
-│
-├── CONTAINERITZACIÓ
-│   └── Docker [SELECCIONAT]
-│       ├── Alternativa 1: Kubernetes [REBUTJAT - Overkill per projecte petit]
-│       └── Alternativa 2: LXC [REBUTJAT - Menys flexible]
-│
-├── PROXY INVERS / LOAD BALANCER
-│   └── NGINX [SELECCIONAT]
-│       ├── Alternativa 1: Apache [REBUTJAT - Rendiment inferior]
-│       └── Alternativa 2: HAProxy [REBUTJAT - No serveix estàtics]
-│
-├── WAF (WEB APPLICATION FIREWALL)
-│   └── NGINX Native + Regex [SELECCIONAT]
-│       ├── Alternativa 1: ModSecurity [REBUTJAT - Imatge no disponible, complexitat]
-│       ├── Alternativa 2: AWS WAF [REBUTJAT - Costos alts]
-│       └── Alternativa 3: Cloudflare WAF [REBUTJAT - Proxy extern]
-│
-├── FIREWALL
-│   └── iptables [SELECCIONAT]
-│       ├── Alternativa 1: pfSense [REBUTJAT - Requereix VM dedicada]
-│       ├── Alternativa 2: CSF [REBUTJAT - Menys control]
-│       └── Alternativa 3: UFW [REBUTJAT - Massa simplificat]
-│
-├── MONITORATGE LOGS
-│   └── Grafana + Loki [SELECCIONAT]
-│       ├── Alternativa 1: ELK Stack [REBUTJAT - Massa recursos]
-│       └── Alternativa 2: Splunk [REBUTJAT - Costs elevats]
-│
-├── MONITORATGE MÈTRIQUES
-│   └── Prometheus [SELECCIONAT]
-│       ├── Alternativa 1: Zabbix [REBUTJAT - Configuració complexa]
-│       └── Alternativa 2: Nagios [REBUTJAT - UI antiga]
-│
-├── BACKEND
-│   └── PHP-FPM 8.2 [SELECCIONAT]
-│       ├── Alternativa 1: Node.js [REBUTJAT - Més complex]
-│       └── Alternativa 2: Python Flask [REBUTJAT - Overengineering]
-│
-├── BASE DE DADES
-│   └── MySQL 8.0 [SELECCIONAT]
-│       ├── Alternativa 1: PostgreSQL [REBUTJAT - Features innecessàries]
-│       └── Alternativa 2: MongoDB [REBUTJAT - NoSQL no adequat]
-│
-├── AUTENTICACIÓ
-│   └── OpenLDAP [SELECCIONAT]
-│       ├── Alternativa 1: Active Directory [REBUTJAT - Propietari]
-│       └── Alternativa 2: OAuth2 [REBUTJAT - Massa complex]
-│
-├── ORQUESTRACIÓ
-│   └── Docker Compose [SELECCIONAT]
-│       ├── Alternativa 1: Ansible [REBUTJAT - Massa complex]
-│       └── Alternativa 2: Shell Scripts [REBUTJAT - No idempotent]
-│
-├── CONTROL DE VERSIONS
-│   └── Git + GitHub [SELECCIONAT]
-│       ├── Alternativa 1: GitLab [REBUTJAT - Menys comunitat]
-│       └── Alternativa 2: Bitbucket [REBUTJAT - Menys popular]
-│
-└── GESTIÓ DE PROJECTE
-    └── ProofHub [SELECCIONAT]
-        ├── Alternativa 1: Jira [REBUTJAT - Corba aprenentatge alta]
-        └── Alternativa 2: Trello [REBUTJAT - Massa simple]
-```
-
----
-
-### Referències Tecnològiques
-
-1. **Docker Official Documentation** - https://docs.docker.com
-2. **NGINX Official Docs** - https://nginx.org/en/docs/
-3. **NGINX Security Controls** - https://nginx.org/en/docs/http/ngx_http_core_module.html
-4. **iptables Tutorial** - https://www.netfilter.org/documentation/
-5. **Grafana Documentation** - https://grafana.com/docs/
-6. **Prometheus Documentation** - https://prometheus.io/docs/
-7. **PHP Manual** - https://www.php.net/manual/en/
-8. **MySQL Documentation** - https://dev.mysql.com/doc/
-9. **OpenLDAP Documentation** - https://www.openldap.org/doc/
-10. **Stack Overflow Annual Survey 2024** - https://survey.stackoverflow.co/2024/
-11. **W3Techs Technology Surveys** - https://w3techs.com/
-12. **CNCF Cloud Native Survey 2024** - https://www.cncf.io/reports/
-13. **DB-Engines Database Rankings** - https://db-engines.com/en/ranking
-
----
-
 ## Planificació de Sprints
 
 ### Cronograma General
@@ -850,11 +397,11 @@ ARQUITECTURA EXTAGRAM
 | Sprint | Data Inici | Data Fi | Durada | Objectiu Principal | Estat |
 |--------|------------|---------|--------|-------------------|-------|
 | **Sprint 0** | 08/12/2025 | 14/12/2025 | 1 setmana | Preparació i planificació inicial | COMPLETAT |
-| **Sprint 1** | 15/12/2025 | 19/01/2026 | 5 setmanes | MVP en màquina única | COMPLETAT (19/01/2026) |
-| **Sprint 2** | 20/01/2026 | 02/02/2026 | 2 setmanes | Dockerització, balanceig i segmentació | COMPLETAT (02/02/2026) |
-| **Sprint 3** | 03/02/2026 | 10/02/2026 | 1 setmana | Integració, proves i docs finals | COMPLETAT (10/02/2026) |
-| **Sprint 4** | 17/02/2026 | 23/02/2026 | 1 setmana | Seguretat (WAF, Hardening, Firewall) | ✅ COMPLETAT (23/02/2026) |
-| **Sprint 5** | 02/03/2026 | 10/03/2026 | 1 setmana | Monitoratge (Grafana, Loki, Prometheus) | PENDENT |
+| **[Sprint 1](#sprint-1-mvp---màquina-única-completat)** | 15/12/2025 | 19/01/2026 | 5 setmanes | MVP en màquina única | COMPLETAT (19/01/2026) |
+| **[Sprint 2](#sprint-2-dockerització-i-balanceig-completat)** | 20/01/2026 | 02/02/2026 | 2 setmanes | Dockerització, balanceig i segmentació | COMPLETAT (02/02/2026) |
+| **[Sprint 3](#sprint-3-integració-i-proves-finals-completat)** | 03/02/2026 | 10/02/2026 | 1 setmana | Integració, proves i docs finals | COMPLETAT (10/02/2026) |
+| **[Sprint 4](#sprint-4-seguretat-completat)** | 17/02/2026 | 23/02/2026 | 1 setmana | Seguretat (WAF, Hardening, Firewall) | COMPLETAT (23/02/2026) |
+| **[Sprint 5](#sprint-5-monitoratge-pendent)** | 02/03/2026 | 10/03/2026 | 1 setmana | Monitoratge (Grafana, Loki, Prometheus) | PENDENT |
 | **Presentació** | 16-17/03/2026 | - | 2 dies | Defensa del projecte | PENDENT |
 
 ---
@@ -971,28 +518,28 @@ ARQUITECTURA EXTAGRAM
 
 ---
 
-### Sprint 4: Seguretat [✅ COMPLETAT]
+### Sprint 4: Seguretat [COMPLETAT]
 
 **Objectiu:** Implementar WAF, Hardening de sistema operatiu i base de dades, Firewall perimetral
 
 **Dates:** 17 de Febrer de 2026 - 23 de Febrer de 2026
 
-**Estat:** ✅ COMPLETAT (23/02/2026)
+**Estat:** COMPLETAT (23/02/2026)
 
 #### Backlog del Sprint 4
 
 | ID | Tasca | Assignat | Estimació | Prioritat | Estat |
 |----|-------|----------|-----------|-----------|-------|
-| T4.1 | Implementar WAF NGINX natiu amb regex | Hamza | 4h | Alta | ✅ COMPLETAT |
-| T4.2 | Configurar regles SQL Injection, XSS, Path Traversal | Hamza | 2h | Alta | ✅ COMPLETAT |
-| T4.3 | Implementar Rate Limiting (10 req/s) | Hamza | 1h | Alta | ✅ COMPLETAT |
-| T4.4 | Hardening contenidors (no-new-privileges, cap_drop) | Hamza | 3h | Alta | ✅ COMPLETAT |
-| T4.5 | Hardening MySQL (usuaris mínims, privilegis restringits) | Hamza | 2h | Alta | ✅ COMPLETAT |
-| T4.6 | Crear hardening.sql amb configuració segura | Hamza | 1h | Alta | ✅ COMPLETAT |
-| T4.7 | Implementar firewall iptables davant S1 | Kevin | 3h | Alta | ✅ COMPLETAT |
-| T4.8 | Proves de seguretat WAF (SQL, XSS, Path Traversal) | Hamza, Kevin | 2h | Alta | ✅ COMPLETAT |
-| T4.9 | Documentar Sprint 4 Seguretat | Hamza | 2h | Mitjana | ✅ COMPLETAT |
-| T4.10 | Sprint Review amb tutor | Tots | 1h | Mitjana | ✅ COMPLETAT |
+| T4.1 | Implementar WAF NGINX natiu amb regex | Hamza | 4h | Alta | COMPLETAT |
+| T4.2 | Configurar regles SQL Injection, XSS, Path Traversal | Hamza | 2h | Alta | COMPLETAT |
+| T4.3 | Implementar Rate Limiting (10 req/s) | Hamza | 1h | Alta | COMPLETAT |
+| T4.4 | Hardening contenidors (no-new-privileges, cap_drop) | Hamza | 3h | Alta | COMPLETAT |
+| T4.5 | Hardening MySQL (usuaris mínims, privilegis restringits) | Hamza | 2h | Alta | COMPLETAT |
+| T4.6 | Crear hardening.sql amb configuració segura | Hamza | 1h | Alta | COMPLETAT |
+| T4.7 | Implementar firewall iptables davant S1 | Kevin | 3h | Alta | COMPLETAT |
+| T4.8 | Proves de seguretat WAF (SQL, XSS, Path Traversal) | Hamza, Kevin | 2h | Alta | COMPLETAT |
+| T4.9 | Documentar Sprint 4 Seguretat | Hamza | 2h | Mitjana | COMPLETAT |
+| T4.10 | Sprint Review amb tutor | Tots | 1h | Mitjana | COMPLETAT |
 
 **Total estimat:** 21 hores
 
@@ -1003,7 +550,7 @@ ARQUITECTURA EXTAGRAM
 - **Hardening**: Contenidors amb `read_only`, `cap_drop: ALL`, MySQL fortificat
 - **Firewall iptables**: Protecció perimetral implementada
 - **Proves exitoses**: Tots els atacs bloquejats correctament
-- **Demo final**: Presentació exitosa al tutor el 23/02/2026
+- **Demo final:** Presentació exitosa al tutor el 23/02/2026
 
 **Mètriques de Seguretat:**
 
@@ -1013,15 +560,15 @@ ARQUITECTURA EXTAGRAM
 | Atacs XSS bloqueats | 0% | 100% | +100% |
 | Path Traversal bloqueats | 0% | 100% | +100% |
 | Security Headers | 0/4 | 4/4 | +100% |
-| Rate Limiting | ❌ No | ✅ Sí (10 req/s) | ✅ |
+| Rate Limiting | No | Si (10 req/s) | Implementat |
 | Contenidors hardened | 0/8 | 8/8 | +100% |
-| MySQL fortificat | ❌ No | ✅ Sí | ✅ |
-| Firewall perimetral | ❌ No | ✅ iptables | ✅ |
+| MySQL fortificat | No | Si | Implementat |
+| Firewall perimetral | No | iptables | Implementat |
 
 **Documents del Sprint 4:**
 - [Sprint 4 Planning](actes/sprint4/SPRINT4_PLANNING.md)
 - [Sprint 4 Review](actes/sprint4/SPRINT4_REVIEW.md)
-- [Documentació Seguretat](docs/SPRINT4_SEGURIDAD.md)
+- [Sprint 4 Retrospectiva](actes/sprint4/SPRINT4_RETROSPECTIVA.md)
 
 ---
 
@@ -1073,7 +620,7 @@ Progrés Global del Projecte
 Sprint 1: [####################] 100% COMPLETAT
 Sprint 2: [####################] 100% COMPLETAT
 Sprint 3: [####################] 100% COMPLETAT
-Sprint 4: [####################] 100% COMPLETAT ✅
+Sprint 4: [####################] 100% COMPLETAT
 Sprint 5: [                    ]   0% PENDENT
 
 Total:    [################    ]  80% (4/5 sprints)
@@ -1081,7 +628,272 @@ Total:    [################    ]  80% (4/5 sprints)
 
 ---
 
-[CONTINUA amb la resta de seccions del README igual que abans: Guia d'Instal·lació, Estructura del Repositori, Proves i Validació, Documentació, Gestió de Riscos, Metodologia Agile, Control de Versions, Contacte i Suport, Llicència, Agraïments...]
+## Guia d'Instal·lació Ràpida
+
+### Pre-requisits
+
+- **Sistema Operatiu:** Ubuntu Server 22.04 LTS
+- **Docker:** 24.0.0 o superior
+- **Docker Compose:** v2.20.0 o superior
+- **Git:** 2.34.0 o superior
+- **Memòria RAM:** Mínim 4GB (Recomanat 8GB)
+- **Disc:** Mínim 20GB lliures
+
+### Instal·lació Pas a Pas
+```bash
+# 1. Clonar el repositori
+git clone https://github.com/HamzaTayibiITB2425/extagram-project.git
+cd extagram-project/configuracions/docker
+
+# 2. Crear arxiu .env amb les credencials
+# IMPORTANT: Utilitzar contrasenyes fortes i úniques
+# El fitxer .env està a .gitignore per seguretat
+cp .env.example .env
+nano .env
+
+# 3. Aixecar els contenidors
+docker compose up -d
+
+# 4. Verificar que tot està UP
+docker compose ps
+
+# 5. Accedir a l'aplicació
+# Navegador: https://extagram-grup3.duckdns.org
+```
+
+---
+
+## Estructura del Repositori
+```
+extagram-project/
+├── README.md                           # Aquest fitxer
+├── .gitignore
+├── LICENSE
+│
+├── actes/                              # Actes de reunions Scrum
+│   ├── sprint1/
+│   │   ├── SPRINT1_PLANNING.md
+│   │   ├── SPRINT1_REVIEW.md
+│   │   └── SPRINT1_RETROSPECTIVA.md
+│   ├── sprint2/
+│   │   ├── SPRINT2_PLANNING.md
+│   │   ├── SPRINT2_REVIEW.md
+│   │   └── SPRINT2_RETROSPECTIVA.md
+│   ├── sprint3/
+│   │   ├── SPRINT3_PLANNING.md
+│   │   ├── SPRINT3_REVIEW.md
+│   │   └── SPRINT3_RETROSPECTIVA.md
+│   └── sprint4/
+│       ├── SPRINT4_PLANNING.md
+│       ├── SPRINT4_REVIEW.md
+│       └── SPRINT4_RETROSPECTIVA.md
+│
+├── configuracions/
+│   └── docker/
+│       ├── docker-compose.yml          # Orquestració multi-contenidor
+│       ├── .env.example
+│       ├── s1-loadbalancer/
+│       │   └── nginx.conf              # Config Load Balancer + WAF
+│       ├── s2-php/
+│       │   ├── Dockerfile
+│       │   └── extagram.php
+│       ├── s3-php/
+│       │   ├── Dockerfile
+│       │   └── extagram.php
+│       ├── s4-upload/
+│       │   ├── Dockerfile
+│       │   ├── upload.php
+│       │   ├── delete.php
+│       │   └── recover.php
+│       ├── s5-images/
+│       │   └── nginx.conf
+│       ├── s6-static/
+│       │   └── nginx.conf
+│       ├── s7-mysql/
+│       │   ├── init.sql
+│       │   └── hardening.sql           # Hardening MySQL
+│       └── s8-ldap/
+│           └── users.ldif
+│
+└── docs/                               # Documentació tècnica
+    ├── imagenes/
+    │   ├── arquitectura/
+    │   └── pruebas/
+    └── SPRINT4_SEGURIDAD.md
+```
+
+---
+
+## Proves i Validació
+
+### Proves de Funcionalitat
+
+**Accés web HTTPS:**
+```bash
+curl -I https://extagram-grup3.duckdns.org/extagram.php
+# Esperat: HTTP/2 200 OK
+```
+
+**Balanceig Round-Robin S2/S3:**
+```bash
+for i in {1..10}; do curl -s https://extagram-grup3.duckdns.org/extagram.php | grep "hostname"; done
+# Esperat: Alternància entre s2-php i s3-php
+```
+
+**Upload d'imatges:**
+```bash
+curl -X POST -F "caption=Test" -F "photo=@test.jpg" https://extagram-grup3.duckdns.org/upload.php
+# Esperat: HTTP 302 Redirect
+```
+
+### Proves de Seguretat WAF
+
+**Bloqueig SQL Injection:**
+```bash
+curl -i "https://extagram-grup3.duckdns.org/extagram.php?id=1'%20OR%20'1'='1"
+# Esperat: HTTP 403 - WAF: SQL Injection Blocked
+```
+
+**Bloqueig XSS:**
+```bash
+curl -i "https://extagram-grup3.duckdns.org/extagram.php?search=<script>alert(1)</script>"
+# Esperat: HTTP 403 - WAF: XSS Attack Blocked
+```
+
+**Bloqueig Path Traversal:**
+```bash
+curl -i "https://extagram-grup3.duckdns.org/../../../etc/passwd"
+# Esperat: HTTP 403 - WAF: Path Traversal Blocked
+```
+
+### Proves de Hardening
+
+**Contenidors amb read-only filesystem:**
+```bash
+docker exec extagram-s2-php touch /test.txt
+# Esperat: Read-only file system
+```
+
+**MySQL usuari amb privilegis limitats:**
+```bash
+docker exec extagram-s7-database mysql -u extagram_admin -p -e "CREATE DATABASE hack;"
+# Esperat: Access denied
+```
+
+---
+
+## Documentació
+
+### Documents Tècnics
+
+- [Documentació de Seguretat Sprint 4](docs/SPRINT4_SEGURIDAD.md)
+
+### Actes de Sprints
+
+- **Sprint 1:** [Planning](actes/sprint1/SPRINT1_PLANNING.md) • [Review](actes/sprint1/SPRINT1_REVIEW.md)
+- **Sprint 2:** [Planning](actes/sprint2/SPRINT2_PLANNING.md) • [Review](actes/sprint2/SPRINT2_REVIEW.md)
+- **Sprint 3:** [Planning](actes/sprint3/SPRINT3_PLANNING.md) • [Review](actes/sprint3/SPRINT3_REVIEW.md)
+- **Sprint 4:** [Planning](actes/sprint4/SPRINT4_PLANNING.md) • [Review](actes/sprint4/SPRINT4_REVIEW.md) • [Retrospectiva](actes/sprint4/SPRINT4_RETROSPECTIVA.md)
+
+---
+
+## Gestió de Riscos
+
+| Risc | Probabilitat | Impacte | Mitigació | Estat |
+|------|--------------|---------|-----------|-------|
+| Caiguda d'un node PHP | Mitjana | Baix | Redundància S2+S3 | Mitigat |
+| Sobrecàrrega de base de dades | Baixa | Alt | Pool de connexions, índexs | Monitoritzat |
+| Atac SQL Injection | Mitjana | Crític | WAF + PDO prepared statements | Mitigat |
+| Compromís contenidor | Mitjana | Alt | Hardening + read-only + cap_drop | Mitigat |
+| Caiguda servidor complet | Baixa | Crític | Backups diaris + volums persistents | Implementat |
+
+---
+
+## Metodologia Agile
+
+### Framework Utilitzat: Scrum
+
+- **Sprints:** 1-2 setmanes (segons complexitat)
+- **Daily Standups:** Cada dia a les 9:00 AM (15 min)
+- **Sprint Planning:** Primer dia del sprint (2h)
+- **Sprint Review:** Últim dia del sprint (1h)
+- **Retrospectiva:** Després del Review (1h)
+
+### Eines de Gestió
+
+- **ProofHub:** Backlog, Kanban, Sprints, Time Tracking
+- **GitHub Projects:** Issues, Pull Requests, Milestones
+- **Google Meet:** Reunions virtuals dailies i reviews
+
+---
+
+## Control de Versions
+
+### Estratègia de Branques
+```
+main (producció)
+│
+├── develop (desenvolupament)
+│   ├── feature/s1-loadbalancer
+│   ├── feature/s2-php-backend
+│   ├── feature/waf-implementation
+│   └── feature/grafana-monitoring
+│
+└── hotfix/critical-bug (si cal)
+```
+
+### Convencions de Commits
+```bash
+feat(s1): afegir configuració WAF NGINX
+fix(s4): corregir permisos upload
+docs(readme): actualitzar arquitectura
+security(mysql): aplicar hardening
+test(waf): afegir proves SQL injection
+```
+
+---
+
+## Contacte i Suport
+
+### Equip del Projecte
+
+**Hamza** (Product Owner / DevOps Lead)
+- GitHub: [@HamzaTayibiITB2425](https://github.com/HamzaTayibiITB2425)
+- Email: hamza.tayibi.7e6@itb.cat
+
+**Kevin** (Infrastructure Engineer / Security)
+- GitHub: [@KevinITB](https://github.com/KevinITB)
+- Email: kevin.armada.7e4@itb.cat
+
+### Tutor del Projecte
+
+**Jordi Casas**
+- Email: jordi.casas@itb.cat
+- Institut Tecnològic de Barcelona
+
+### Suport Tècnic
+
+- **Issues GitHub:** [github.com/HamzaTayibiITB2425/extagram-project/issues](https://github.com/HamzaTayibiITB2425/extagram-project/issues)
+- **Documentació:** [Llegeix els docs](docs/)
+- **Wiki del Projecte:** [GitHub Wiki](https://github.com/HamzaTayibiITB2425/extagram-project/wiki)
+
+---
+
+## Llicència
+
+Aquest projecte està sota llicència **MIT License**. Vegeu el fitxer [LICENSE](LICENSE) per més detalls.
+
+Copyright © 2025-2026 Hamza, Kevin - Institut Tecnològic de Barcelona
+
+---
+
+## Agraïments
+
+- **Jordi Casas** - Tutor del projecte per la seva guia i feedback continu
+- **Institut Tecnològic de Barcelona** - Per proporcionar els recursos i infraestructura
+- **Comunitat Docker** - Per l'excel·lent documentació i imatges oficials
+- **NGINX Community** - Per les guies de configuració de proxy invers i WAF
+- **Stack Overflow** - Per resoldre dubtes tècnics durant el desenvolupament
 
 ---
 
@@ -1090,15 +902,18 @@ Total:    [################    ]  80% (4/5 sprints)
 **Projecte Extagram - Institut Tecnològic de Barcelona**  
 **Equip:** Hamza, Kevin | **ASIX2c** | **2025-2026**
 
-**SPRINT 4: ✅ COMPLETAT | SPRINT 5: PENDENT**
+**SPRINT 4: COMPLETAT | SPRINT 5: PENDENT**
 
-[Torna a l'índex](#índex)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?logo=github)](https://github.com/HamzaTayibiITB2425/extagram-project)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker)](https://www.docker.com/)
+[![NGINX](https://img.shields.io/badge/NGINX-Load%20Balancer-009639?logo=nginx)](https://nginx.org/)
 
 </div>
 
 ---
 
-**Última actualització:** 23 de Febrer de 2026  
-**Versió del Document:** 7.0  
+**Última actualització:** 24 de Febrer de 2026  
+**Versió del Document:** 11.0  
 **Estat del Projecte:** EN DESENVOLUPAMENT (80% completat)  
-**Proper Sprint:** Sprint 5 (Monitoratge amb Grafana + Loki + Prometheus)
+**Proper Sprint:** Sprint 5 (Monitoratge amb Grafana + Loki + Prometheus)  
+**Data Presentació:** 16-17 de Març de 2026
