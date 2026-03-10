@@ -2118,7 +2118,7 @@ docker exec extagram-s7-database mysql -u extagram_admin -p -e "CREATE DATABASE 
 
 **Verificar Grafana dashboard:**
 ```bash
-curl -s -u admin:admin123 http://localhost:3000/grafana/api/search | grep "Extagram Docker Monitoring"
+curl -s -u admin:password http://localhost:3000/grafana/api/search | grep "Extagram Docker Monitoring"
 # Esperat: JSON amb el dashboard
 ```
 
