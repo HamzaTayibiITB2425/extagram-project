@@ -50,13 +50,13 @@ CD.
 
 ### Que ha anat be?
 
-1. 
-2. 
+1. Ens hem coordinat molt bé dividint la feina: mentre un li fotia canya a les proves d'estrès, l'altre anava muntant tota la part visual. El dashboard final de Grafana ens ha quedat molt net i professional.
+2. L'automatització amb Ansible ha estat un encert total. Al principi costa arrencar, però un cop fet el playbook ens ha estalviat moltíssim temps per aixecar i configurar tot l'entorn de producció de cop.
 
 ### Que podria millorar?
 
-1. 
-2. 
+1. Vam perdre bastant temps barallant-nos amb la configuració del Promtail i les etiquetes (labels) de Loki a Grafana per "tonteries" de sintaxi i formats. Per al pròxim projecte hem de llegir millor la documentació oficial abans de tocar fitxers a cegues.
+2. Quan vam fer les proves d'estrès, vam generar tants logs i mètriques de cop que no havíem previst bé el consum de recursos de la pròpia monitorització. Ens va faltar posar límits des del minut zero.
 
 ---
 
