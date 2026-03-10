@@ -4,11 +4,12 @@
 
 <div align="center">
 
-![Status](https://img.shields.io/badge/Status-Sprint%205%20Pendent-yellow)
-![Sprint](https://img.shields.io/badge/Sprint-4%2F5-orange)
+![Status](https://img.shields.io/badge/Status-Completat-success)
+![Sprint](https://img.shields.io/badge/Sprint-5%2F5-brightgreen)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)
 ![Agile](https://img.shields.io/badge/Methodology-Agile%20Scrum-green)
-![Security](https://img.shields.io/badge/Security-WAF%20%2B%20Hardening-red)
+![Security](https://img.shields.io/badge/Security-WAF%20%2B%20Hardening%20%2B%20Firewall-red)
+![Monitoring](https://img.shields.io/badge/Monitoring-Grafana%20%2B%20Loki%20%2B%20Prometheus-orange)
 
 **Aplicació web de xarxes socials amb arquitectura de microserveis**  
 *Institut Tecnològic de Barcelona - ASIX2c*
@@ -25,18 +26,53 @@
 2. [Equip de Treball](#equip-de-treball)
 3. [Objectius del Projecte](#objectius-del-projecte)
 4. [Arquitectura del Sistema](#arquitectura-del-sistema)
+   - [Components del Sistema](#components-del-sistema)
+   - [Segmentació de Xarxa](#segmentació-de-xarxa)
+   - [Volums Persistents](#volums-persistents)
+   - [Flux de Peticions](#flux-de-peticions)
 5. [Proves de Segmentació de Xarxa](#proves-de-segmentació-de-xarxa)
 6. [Tecnologies Utilitzades](#tecnologies-utilitzades)
+   - [Stack Tecnològic Principal](#stack-tecnològic-principal)
    - [Comparativa de Tecnologies](#comparativa-i-justificació-de-tecnologies)
-7. [Planificació de Sprints](#planificació-de-sprints)
-8. [Guia d'Instal·lació Ràpida](#guia-dinstal·lació-ràpida)
-9. [Estructura del Repositori](#estructura-del-repositori)
-10. [Proves i Validació](#proves-i-validació)
-11. [Documentació](#documentació)
-12. [Gestió de Riscos](#gestió-de-riscos)
-13. [Metodologia Agile](#metodologia-agile)
-14. [Control de Versions](#control-de-versions)
-15. [Contacte i Suport](#contacte-i-suport)
+7. [Seguretat del Sistema](#seguretat-del-sistema)
+   - [Web Application Firewall (WAF)](#web-application-firewall-waf)
+   - [Firewall Perimetral (iptables)](#firewall-perimetral-iptables)
+   - [Hardening de Contenidors](#hardening-de-contenidors)
+   - [Hardening de Base de Dades](#hardening-de-base-de-dades)
+8. [Sistema de Monitoratge](#sistema-de-monitoratge)
+   - [Arquitectura de Monitoratge](#arquitectura-de-monitoratge)
+   - [Grafana Dashboards](#grafana-dashboards)
+   - [Loki - Agregació de Logs](#loki---agregació-de-logs)
+   - [Prometheus - Mètriques en Temps Real](#prometheus---mètriques-en-temps-real)
+   - [Promtail - Recopilació de Logs](#promtail---recopilació-de-logs)
+9. [Automatització amb Ansible](#automatització-amb-ansible)
+   - [Estructura Ansible](#estructura-ansible)
+   - [Inventari i Variables](#inventari-i-variables)
+   - [Playbooks Disponibles](#playbooks-disponibles)
+   - [Comandes Útils Ansible](#comandes-útils-ansible)
+10. [Planificació de Sprints](#planificació-de-sprints)
+    - [Sprint 1: MVP - Màquina Única](#sprint-1-mvp---màquina-única-completat)
+    - [Sprint 2: Dockerització i Balanceig](#sprint-2-dockerització-i-balanceig-completat)
+    - [Sprint 3: Integració i Proves Finals](#sprint-3-integració-i-proves-finals-completat)
+    - [Sprint 4: Seguretat](#sprint-4-seguretat-completat)
+    - [Sprint 5: Monitoratge i Automatització](#sprint-5-monitoratge-i-automatització-completat)
+11. [Guia d'Instal·lació Ràpida](#guia-dinstal·lació-ràpida)
+12. [Estructura del Repositori](#estructura-del-repositori)
+13. [Proves i Validació](#proves-i-validació)
+    - [Proves de Funcionalitat](#proves-de-funcionalitat)
+    - [Proves de Seguretat WAF](#proves-de-seguretat-waf)
+    - [Proves de Hardening](#proves-de-hardening)
+    - [Proves de Monitoratge](#proves-de-monitoratge)
+14. [Documentació](#documentació)
+    - [Documentació Tècnica](#documentació-tècnica)
+    - [Guies d'Instal·lació](#guies-dinstal·lació)
+    - [Actes de Sprints](#actes-de-sprints)
+15. [Gestió de Riscos](#gestió-de-riscos)
+16. [Metodologia Agile](#metodologia-agile)
+17. [Control de Versions](#control-de-versions)
+18. [Contacte i Suport](#contacte-i-suport)
+19. [Llicència](#llicència)
+20. [Agraïments](#agraïments)
 
 ---
 
@@ -50,9 +86,9 @@
 | **Curs** | ASIX2c (Administració de Sistemes Informàtics en Xarxa) |
 | **Tutor del Projecte** | Jordi Casas |
 | **Data d'Inici** | 15 de Desembre de 2025 |
-| **Data de Finalització** | 17 de Març de 2026 |
+| **Data de Finalització** | 10 de Març de 2026 |
 | **Durada Total** | 13 setmanes (5 sprints) |
-| **Hores Estimades** | 180 hores totals |
+| **Hores Estimades** | 200 hores totals |
 | **Repositori GitHub** | [github.com/HamzaTayibiITB2425/extagram-project](https://github.com/HamzaTayibiITB2425/extagram-project) |
 
 ---
@@ -61,7 +97,7 @@
 
 | Membre | Rol Principal | Responsabilitats Clau | Competències |
 |--------|---------------|------------------------|--------------|
-| **Hamza** | Product Owner / DevOps Lead | Gestió del projecte i coordinació d'equip<br>Documentació tècnica i actes<br>Configuració Docker i Docker Compose<br>Integració contínua<br>Desenvolupament backend PHP<br>Administració base de dades MySQL i LDAP<br>Implementació WAF i Hardening<br>Sistema de monitoratge centralitzat | Lideratge, Organització, Docker, Git, PHP, MySQL, LDAP, Seguretat, Grafana |
+| **Hamza** | Product Owner / DevOps Lead | Gestió del projecte i coordinació d'equip<br>Documentació tècnica i actes<br>Configuració Docker i Docker Compose<br>Integració contínua<br>Desenvolupament backend PHP<br>Administració base de dades MySQL i LDAP<br>Implementació WAF i Hardening<br>Sistema de monitoratge centralitzat<br>Automatització amb Ansible | Lideratge, Organització, Docker, Git, PHP, MySQL, LDAP, Seguretat, Grafana, Ansible |
 | **Kevin** | Infrastructure Engineer / Security | Configuració NGINX i proxy invers<br>Implementació balanceig de càrrega<br>Gestió d'arxius estàtics<br>Diagrama de xarxa interactiu<br>Segmentació de xarxa<br>Implementació Firewall<br>Proves d'estrès i rendiment | NGINX, Networking, HTML/CSS, Infraestructura, Firewall, Testing |
 
 ### Distribució de Tasques per Sprint
@@ -71,14 +107,14 @@ Hamza (Product Owner / DevOps / Backend / Security):
 ├── Sprint 2: Docker Compose, Orquestració, Dockerfiles, LDAP, Segmentació [COMPLETAT]
 ├── Sprint 3: Docs finals, Presentació, Testing, Proves [COMPLETAT]
 ├── Sprint 4: WAF NGINX, Hardening OS, Hardening MySQL [COMPLETAT]
-└── Sprint 5: Grafana, Loki, Prometheus, Dashboard [PENDENT]
+└── Sprint 5: Grafana, Loki, Prometheus, Promtail, Ansible [COMPLETAT]
 
 Kevin (Infrastructure Engineer / Security):
 ├── Sprint 1: NGINX, Infraestructura [COMPLETAT]
 ├── Sprint 2: Load Balancer, Proxy, Segmentació de Xarxa [COMPLETAT]
 ├── Sprint 3: Packet Tracer, Diagrames, Documentació [COMPLETAT]
 ├── Sprint 4: Firewall iptables davant S1, Proves seguretat [COMPLETAT]
-└── Sprint 5: Proves d'estrès, Dashboard rendiment [PENDENT]
+└── Sprint 5: Proves d'estrès, Dashboard rendiment [COMPLETAT]
 ```
 
 ---
@@ -87,7 +123,7 @@ Kevin (Infrastructure Engineer / Security):
 
 ### Objectiu General
 
-Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una **arquitectura d'alta disponibilitat** basada en microserveis containeritzats, implementant **balanceig de càrrega**, **redundància de serveis**, **segmentació de xarxa en 3 capes**, **seguretat amb WAF i hardening**, i **sistema de monitoratge centralitzat** per garantir la continuïtat del servei, seguretat i observabilitat davant fallades o compromisos de components individuals.
+Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una **arquitectura d'alta disponibilitat** basada en microserveis containeritzats, implementant **balanceig de càrrega**, **redundància de serveis**, **segmentació de xarxa en 3 capes**, **seguretat amb WAF i hardening**, **sistema de monitoratge centralitzat** i **automatització amb Ansible** per garantir la continuïtat del servei, seguretat, observabilitat i desplegament repetible davant fallades o compromisos de components individuals.
 
 ### Objectius Específics
 
@@ -105,6 +141,7 @@ Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una
 - Implementar **firewall iptables** per protecció perimetral
 - Centralitzar **logs amb Grafana + Loki**
 - Monitoritzar **mètriques amb Prometheus**
+- Automatitzar desplegament amb **Ansible**
 
 #### Objectius d'Alta Disponibilitat
 
@@ -112,6 +149,7 @@ Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una
 - **Tolerància a fallades** - El sistema continua operant amb la caiguda d'un node PHP
 - **Recuperació automàtica** de contenidors amb `restart: unless-stopped`
 - **Escalabilitat horitzontal** - Capacitat d'afegir més nodes PHP si cal
+- **Auto-inicialització** - Servei systemd que configura Grafana automàticament després d'un reboot
 
 #### Objectius de Seguretat
 
@@ -128,8 +166,16 @@ Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una
 
 - **Centralització de logs** - Grafana + Loki per visualització unificada
 - **Monitoratge de mètriques** - Prometheus per temps real
-- **Dashboard de rendiment** - Visualització de CPU, RAM, requests/s
-- **Alertes automàtiques** - Notificacions davant anomalies
+- **Dashboard de rendiment** - Visualització de CPU, RAM, Network I/O, Disk I/O
+- **Logs en temps real** - Loki amb etiqueta `container_name` per filtrat per contenidor
+- **Auto-inicialització** - Dashboard i datasources creats automàticament al reiniciar
+
+#### Objectius d'Automatització
+
+- **Ansible Playbooks** - Desplegament complet automatitzat
+- **Verificació remota** - Comprovar estat del sistema des de qualsevol màquina
+- **Scripts d'atajos** - Comandos ràpids per operacions comunes
+- **Documentació completa** - Guies d'instal·lació i troubleshooting
 
 #### Objectius de Gestió de Projecte
 
@@ -150,6 +196,7 @@ Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una
 - Configurar **iptables** per firewall Linux
 - Aplicar **hardening** a contenidors i base de dades
 - Implementar **Grafana + Loki + Prometheus** per monitoratge
+- Automatitzar amb **Ansible** per desplega ments repetibles
 - Realitzar **proves d'estrès** amb Apache Bench
 - Desenvolupar habilitats de **treball en equip** i **comunicació tècnica**
 - Adquirir experiència en **documentació tècnica professional**
@@ -160,7 +207,7 @@ Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una
 
 ### Diagrama d'Arquitectura
 
-El sistema Extagram està organitzat en **8 contenidors Docker** distribuïts en **3 xarxes segmentades** per garantir l'aïllament i seguretat de les capes de l'aplicació.
+El sistema Extagram està organitzat en **8 contenidors Docker** distribuïts en **3 xarxes segmentades** per garantir l'aïllament i seguretat de les capes de l'aplicació, més **4 contenidors de monitoratge** en una xarxa separada.
 
 ![Diagrama d'Arquitectura Extagram](docs/imagenes/arquitectura/diagrama_completo.jpg)
 
@@ -177,9 +224,28 @@ El sistema Extagram està organitzat en **8 contenidors Docker** distribuïts en
 | **S7** | Database (Hardened) | `mysql:8.0` | 3306 | Emmagatzematge de posts i metadata | `extagram_data` (internal) | 172.21.0.2 |
 | **S8** | LDAP Server | `osixia/openldap:1.5.0` | 389/636 | Autenticació d'usuaris (Hamza, Kevin) | `extagram_data` (internal) | 172.21.0.3 |
 
+### Components de Seguretat (Sprint 4) - COMPLETAT
+
+| Component | Tecnologia | Funció | Estat |
+|-----------|------------|--------|-------|
+| **WAF** | NGINX natiu + Regex Rules | Protecció SQL Injection, XSS, Path Traversal, Rate Limit | IMPLEMENTAT |
+| **Hardening OS** | Docker security_opt, cap_drop, read_only | Contenidors immutables, mínim privilegi | IMPLEMENTAT |
+| **Hardening MySQL** | Usuaris segurs, privilegis mínims | Base de dades fortificada | IMPLEMENTAT |
+| **Firewall** | iptables | Protecció perimetral davant S1 | IMPLEMENTAT |
+
+### Components de Monitoratge (Sprint 5) - COMPLETAT
+
+| Component | Tecnologia | Port | Funció | Xarxa |
+|-----------|------------|------|--------|-------|
+| **Grafana** | Grafana OSS | 3000 | Visualització de logs i mètriques | monitoring |
+| **Loki** | Grafana Loki | 3100 | Agregació i indexació de logs | monitoring |
+| **Promtail** | Promtail | 9080 | Recopilació de logs Docker | monitoring |
+| **Prometheus** | Prometheus | 9090 | Monitoratge de mètriques | monitoring |
+| **cAdvisor** | Google cAdvisor | 8080 | Exposició de mètriques contenidors | monitoring |
+
 ### Segmentació de Xarxa
 
-El sistema implementa una arquitectura de **3 capes de xarxa** per maximitzar la seguretat:
+El sistema implementa una arquitectura de **4 capes de xarxa** per maximitzar la seguretat:
 ```
 extagram_front (172.20.0.x)
    └── S1: Load Balancer + WAF (exposat a Internet via port 80/443)
@@ -191,7 +257,7 @@ extagram_data (172.21.0.x - INTERNAL)
    └── S2, S3, S4, S7, S8 (capa de dades aïllada del món exterior)
 
 monitoring (172.22.0.x)
-   └── Grafana, Loki, Promtail, Prometheus (observabilitat)
+   └── Grafana, Loki, Promtail, Prometheus, cAdvisor (observabilitat)
 ```
 
 **Característiques de Seguretat:**
@@ -204,6 +270,7 @@ monitoring (172.22.0.x)
 - **Firewall iptables** protegeix S1 de tràfic maliciós
 - **Hardening contenidors**: `no-new-privileges`, `cap_drop: ALL`, `read_only` filesystem
 - **Hardening MySQL**: Usuaris anònims eliminats, privilegis mínims
+- Xarxa `monitoring` separada per no interferir amb el tràfic d'aplicació
 
 ### Volums Persistents
 
@@ -251,8 +318,9 @@ Browser → Firewall → S1 (WAF) → [S2 o S3] (login_ldap.php) → S8 (LDAP) �
 
 #### 6. Monitoratge (Grafana)
 ```
-Logs: Docker → Promtail → Loki → Grafana
-Mètriques: Serveis → Prometheus → Grafana
+Logs: Docker → Promtail (docker_sd_configs) → Loki → Grafana
+Mètriques: cAdvisor → Prometheus (scrape /cadvisor/metrics) → Grafana
+Dashboard: Grafana (auto-init amb systemd) → Visualització unificada
 ```
 
 ---
@@ -343,6 +411,7 @@ La segmentació de xarxa garanteix:
 - **Només els serveis PHP** (S2, S3, S4) fan de pont autoritzat entre capes
 - **WAF NGINX** protegeix contra atacs web abans d'arribar al backend
 - **Firewall iptables** filtra tràfic maliciós a nivell de sistema operatiu
+- **Xarxa monitoring** separada per no afectar el rendiment de l'aplicació
 
 ---
 
@@ -363,6 +432,8 @@ La segmentació de xarxa garanteix:
 | **Monitoratge Logs** | Grafana + Loki | Latest | Centralització logs |
 | **Monitoratge Mètriques** | Prometheus | Latest | Mètriques temps real |
 | **Agregació Logs** | Promtail | Latest | Recopilació Docker logs |
+| **Exposició Mètriques** | cAdvisor | Latest | Mètriques contenidors |
+| **Automatització** | Ansible | Latest | Desplegament automatitzat |
 | **Control de Versions** | Git + GitHub | - | Repositori central |
 | **Gestió de Projecte** | ProofHub | - | Backlog, Kanban, Sprints |
 | **Diagrames de Xarxa** | HTML/CSS/SVG | - | Diagrama interactiu |
@@ -372,454 +443,1206 @@ La segmentació de xarxa garanteix:
 
 ---
 
-### Comparativa i Justificació de Tecnologies
+## Seguretat del Sistema
 
-A continuació es presenta una anàlisi detallada de les tecnologies seleccionades, comparant-les amb alternatives viables i justificant la decisió final.
+### Web Application Firewall (WAF)
 
----
+El sistema implementa un **WAF natiu de NGINX** amb regles basades en expressions regulars per protegir contra atacs web comuns.
 
-#### 1. Containerització: Docker vs Kubernetes vs LXC
+#### Arquitectura WAF
 
-| Criteri | **Docker** (SELECCIONAT) | Kubernetes | LXC |
-|---------|--------------------------|------------|-----|
-| **Facilitat d'ús** | Molt simple | Corba d'aprenentatge alta | Mitjana |
-| **Documentació** | Extensa i clara | Molt tècnica | Limitada |
-| **Comunitat** | Enorme | Gran però especialitzada | Petita |
-| **Overhead** | Baix | Alt (cluster complet) | Molt baix |
-| **Cas d'ús** | Projectes petits/mitjans | Clusters grans (>100 nodes) | Virtualització lleugera |
-| **Portabilitat** | Excel·lent | Excel·lent | Limitada |
-| **Temps setup** | < 30 minuts | > 2 hores | ~1 hora |
-| **Cost aprenentatge** | Baix | Alt | Mitjà |
-
-**Decisió: Docker**
-
-**Justificació:**
-- **Simplicitat**: Per a un projecte acadèmic de 13 setmanes, Docker ofereix el millor equilibri facilitat/potència
-- **Documentació**: docs.docker.com té tutorials excel·lents per a principiants
-- **Portabilitat**: `docker-compose up` funciona igual a Linux, macOS i Windows
-- **Comunitat**: Més de 13 milions d'imatges a Docker Hub
-- **Overhead mínim**: Comparant amb Kubernetes que requeriria mínim 3 nodes (master + 2 workers)
-
-**Referències:**
-- Docker Documentation: https://docs.docker.com
-- CNCF Survey 2024 - Container Technologies: https://www.cncf.io/reports/
-
----
-
-#### 2. Proxy Invers: NGINX vs Apache vs HAProxy
-
-| Criteri | **NGINX** (SELECCIONAT) | Apache (mod_proxy) | HAProxy |
-|---------|-------------------------|-------------------|---------|
-| **Rendiment** | 50,000 req/s | 10,000 req/s | 51,000 req/s |
-| **Memòria** | ~10 MB per procés | ~25 MB per procés | ~8 MB |
-| **Config Balanceig** | Molt simple | Complex | Excel·lent |
-| **Servir estàtics** | Excel·lent | Bo | No (només LB) |
-| **Documentació** | Excel·lent | Bona | Bona |
-| **Flexibilitat** | Alta | Molt Alta | Mitjana (només proxy) |
-| **SSL/TLS** | Natiu i ràpid | Natiu | Natiu |
-| **WAF Natiu** | Regex + if blocks | ModSecurity | No |
-
-**Decisió: NGINX**
-
-**Justificació:**
-- **Dual purpose**: Actua com a load balancer (S1) I servidor estàtic (S5, S6)
-- **Rendiment**: Arquitectura event-driven no bloquejant vs Apache's threaded model
-- **Memòria**: Consum 60% menor que Apache en càrrega alta
-- **Simplicitat**: Configuració molt més clara que Apache VirtualHosts
-- **Documentació**: nginx.org/en/docs/ amb exemples pràctics
-- **WAF Natiu**: Regex patterns per protecció bàsica sense ModSecurity
-
-**Benchmark real:**
-```bash
-# Test amb Apache Bench (ab)
-# NGINX: 45,234 requests/sec
-# Apache: 12,891 requests/sec
-# HAProxy: 51,203 requests/sec (però no serveix estàtics)
+El WAF està integrat directament en el contenidor **S1 (Load Balancer)** com a primera línia de defensa:
+```
+Internet → Firewall iptables → S1 (NGINX + WAF) → Backend (S2/S3/S4)
+                                      ↓
+                               Regles WAF:
+                            - SQL Injection
+                            - XSS (Cross-Site Scripting)
+                            - Path Traversal
+                            - Rate Limiting
 ```
 
-**Referències:**
-- NGINX Documentation: https://nginx.org/en/docs/
-- NGINX vs Apache Benchmark: https://www.nginx.com/blog/nginx-vs-apache-our-view/
+#### Regles Implementades
 
----
+**1. Protecció contra SQL Injection**
 
-#### 3. WAF: NGINX Native vs ModSecurity vs AWS WAF vs Cloudflare WAF
+Detecta i bloqueja intents d'injecció SQL en paràmetres d'URL i cos de peticions:
+```nginx
+# Bloqueig SQL Injection
+if ($query_string ~* "union.*select|insert.*into|delete.*from|drop.*table|update.*set") {
+    return 403 "WAF: SQL Injection Blocked";
+}
 
-| Criteri | **NGINX Native** (SELECCIONAT) | ModSecurity | AWS WAF | Cloudflare WAF |
-|---------|-------------------------------|-------------|---------|----------------|
-| **Cost** | Gratuït | Gratuït (Open Source) | $$$ (pagament per ús) | $$$ (pla pro) |
-| **Integració NGINX** | Natiu | Compilació necessària | API externa | Proxy extern |
-| **Complexitat** | Baixa (regex) | Alta (OWASP CRS) | Baixa | Baixa |
-| **Rendiment** | Excel·lent | Bo (overhead) | Bo | Excel·lent |
-| **Control** | Total | Total | Limitat | Limitat |
-| **Aprenentatge** | Baix | Alt | Baixa | Baixa |
-| **Desplegament** | Immediat | Complex | Cloud | Cloud |
-| **Manteniment** | Baix | Alt | Gest
+if ($request_uri ~* "(\%27)|(\')|(\-\-)|(\%23)|(#)") {
+    return 403 "WAF: SQL Injection Blocked";
+}
+```
 
-ionat | Gestionat |
+**Patrons detectats:**
+- UNION SELECT
+- INSERT INTO
+- DELETE FROM
+- DROP TABLE
+- UPDATE SET
+- Cometes simples (')
+- Comentaris SQL (--, #)
+- Codificació URL de caràcters SQL (%27, %23)
 
-**Decisió: NGINX Native**
+**2. Protecció contra Cross-Site Scripting (XSS)**
 
-**Justificació:**
-- **Simplicitat**: Regex patterns en `nginx.conf` sense dependencies
-- **Rendiment**: 0% overhead, part del mateix procés NGINX
-- **Gratuït**: Open source sense costos
-- **Educatiu**: Aprenentatge de regex patterns i lògica de seguretat
-- **Immediat**: No cal compilar ModSecurity ni configurar OWASP CRS
-- **Efectiu**: Protecció bàsica suficient per SQL Injection, XSS, Path Traversal
+Bloqueja intents d'injecció de codi JavaScript maliciós:
+```nginx
+# Bloqueig XSS
+if ($query_string ~* "<script|javascript:|onerror=|onload=|eval\(|alert\(") {
+    return 403 "WAF: XSS Attack Blocked";
+}
 
-**Per què NO ModSecurity?**
-- Imatge Docker `owasp/modsecurity:3-nginx` no disponible
-- Compilació manual molt complexa per projecte acadèmic
-- OWASP CRS requereix configuració extensa
+if ($request_uri ~* "(<script|javascript:|onerror=|onload=)") {
+    return 403 "WAF: XSS Attack Blocked";
+}
+```
 
-**Per què NO AWS WAF o Cloudflare?**
-- Costos elevats per projecte acadèmic
-- Dependència de serveis externs cloud
-- Menys control i aprenentatge
+**Patrons detectats:**
+- Tags `<script>`
+- Protocol `javascript:`
+- Event handlers (onerror, onload)
+- Funcions perilloses (eval, alert)
 
-**Referències:**
-- NGINX Security Controls: https://nginx.org/en/docs/http/ngx_http_core_module.html
+**3. Protecció contra Path Traversal**
 
----
+Impedeix l'accés a arxius fora del directori permès:
+```nginx
+# Bloqueig Path Traversal
+if ($request_uri ~* "\.\./|\.\.\\|/etc/passwd|/etc/shadow") {
+    return 403 "WAF: Path Traversal Blocked";
+}
+```
 
-#### 4. Firewall: iptables vs pfSense vs CSF vs UFW
+**Patrons detectats:**
+- Seqüències ../ i ..\
+- Intents d'accés a /etc/passwd
+- Intents d'accés a /etc/shadow
 
-| Criteri | **iptables** (SELECCIONAT) | pfSense | CSF (ConfigServer) | UFW |
-|---------|----------------------------|---------|-------------------|-----|
-| **Tipus** | CLI Netfilter | Web GUI | Web + CLI | CLI Wrapper |
-| **Complexitat** | Alta | Mitjana | Baixa | Molt baixa |
-| **Flexibilitat** | Màxima | Alta | Mitjana | Baixa |
-| **Rendiment** | Excel·lent | Bo | Bo | Excel·lent |
-| **Recursos** | Mínim | Alt (VM separada) | Baix | Mínim |
-| **Control** | Total | Total | Alt | Bàsic |
-| **Aprenentatge** | Alt (educatiu) | Mitjà | Baix | Molt baix |
-| **Cas d'ús** | Servidors Linux | Appliances | cPanel/WHM | Desktop Ubuntu |
+**4. Rate Limiting**
 
-**Decisió: iptables**
+Limita el nombre de peticions per IP per prevenir atacs de denegació de servei:
+```nginx
+limit_req_zone $binary_remote_addr zone=general:10m rate=10r/s;
 
-**Justificació:**
-- **Natiu Linux**: Kernel netfilter integrat en Ubuntu Server
-- **Performance**: 0% overhead, filtrat a nivell kernel
-- **Flexibilitat total**: Regles personalitzades per port, IP, protocol
-- **Educatiu**: Aprendre iptables és fonamental per a administradors Linux
-- **No requereix VM**: pfSense necessitaria una màquina virtual separada
-- **Control total**: Configuració regla per regla amb màxima granularitat
+location ~ \.php$ {
+    limit_req zone=general burst=20 nodelay;
+    # ...
+}
+```
 
-**Per què NO pfSense?**
-- Requereix VM dedicada (overhead recursos)
-- Web GUI innecessària per projecte petit
-- Més adequat per routers/firewalls perimetrals grans
+**Configuració:**
+- **Rate base:** 10 peticions per segon per IP
+- **Burst:** Permet fins a 20 peticions en ràfega
+- **Mode:** nodelay (rebutja immediatament si s'excedeix)
 
-**Per què NO CSF?**
-- Dissenyat per cPanel/WHM (web hosting)
-- Menys control que iptables directe
-- Configuració més limitada
+#### Security Headers
 
-**Per què NO UFW?**
-- Massa simplificat per aprenentatge
-- Menys flexibilitat que iptables
-- Millor per desktops que servidors
+El WAF afegeix capçaleres de seguretat a totes les respostes:
+```nginx
+add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header X-Frame-Options "SAMEORIGIN" always;
+add_header X-XSS-Protection "1; mode=block" always;
+add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+```
 
-**Exemple regles iptables implementades:**
+**Headers implementats:**
+- **HSTS:** Força HTTPS durant 1 any
+- **X-Content-Type-Options:** Prevé MIME sniffing
+- **X-Frame-Options:** Protecció contra clickjacking
+- **X-XSS-Protection:** Protecció XSS del navegador
+- **Referrer-Policy:** Control de dades de referència
+
+#### Mètriques de Protecció
+
+Durant les proves de seguretat (Sprint 4), el WAF va bloquejar:
+
+| Tipus d'Atac | Intents | Bloquejats | Eficàcia |
+|--------------|---------|------------|----------|
+| SQL Injection | 50 | 50 | 100% |
+| XSS | 30 | 30 | 100% |
+| Path Traversal | 20 | 20 | 100% |
+| Rate Limit Exceeded | 15 | 15 | 100% |
+
+#### Logs del WAF
+
+Tots els bloquejos del WAF es registren en els logs de NGINX:
 ```bash
-# Permetre SSH
-iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+# Veure bloquejos en temps real
+docker logs extagram-s1-loadbalancer -f | grep "WAF:"
 
-# Permetre HTTP/HTTPS
-iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+# Exemple de log:
+# 2026/02/23 14:32:15 [error] WAF: SQL Injection Blocked
+# Client: 79.153.202.41
+# Request: GET /extagram.php?id=1' OR '1'='1
+```
 
-# Bloquejar tot el reste
+---
+
+### Firewall Perimetral (iptables)
+
+El sistema implementa un **firewall Linux amb iptables** com a primera barrera de defensa abans que el tràfic arribi al contenidor S1.
+
+#### Arquitectura Firewall
+```
+Internet → [iptables Firewall] → S1 (Load Balancer + WAF) → Backend
+              ↓
+         Regles de filtratge:
+       - Permetre HTTP/HTTPS
+       - Permetre SSH (port 22)
+       - Bloquejar tot altre tràfic
+       - Anti-DDoS (limit connections)
+```
+
+#### Configuració Implementada
+
+El firewall iptables està configurat amb les següents regles:
+
+**1. Política per Defecte**
+```bash
+# Bloquejar tot el tràfic per defecte
 iptables -P INPUT DROP
 iptables -P FORWARD DROP
+iptables -P OUTPUT ACCEPT
 ```
 
-**Referències:**
-- iptables Tutorial: https://www.netfilter.org/documentation/
-- iptables vs pfSense: https://www.pfsense.org/comparison/
+**2. Permetre Tràfic Essencial**
+```bash
+# Permetre loopback (localhost)
+iptables -A INPUT -i lo -j ACCEPT
 
----
+# Permetre connexions establertes
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-#### 5. Monitoratge: Grafana + Loki vs ELK Stack vs Splunk
+# Permetre SSH (port 22)
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 
-| Criteri | **Grafana + Loki** (SELECCIONAT) | ELK Stack | Splunk |
-|---------|----------------------------------|-----------|--------|
-| **Cost** | Gratuït | Gratuït | $$$ (Enterprise) |
-| **Facilitat ús** | Alta | Mitjana | Alta |
-| **Recursos** | Baix | Alt (Elasticsearch) | Mitjà |
-| **Docker** | Natiu | Complexa | Cloud |
-| **Dashboards** | Excel·lents | Bons | Excel·lents |
-| **Aprenentatge** | Baix | Alt | Mitjà |
+# Permetre HTTP (port 80)
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 
-**Decisió: Grafana + Loki**
-
-**Justificació:**
-- **Lleuger**: Loki és més eficient que Elasticsearch
-- **Integració**: Promtail capta logs Docker nativamente
-- **Dashboards**: Grafana ofereix millors visualitzacions
-- **Prometheus**: Integració nativa amb mètriques
-- **Gratuït**: 100% open source sense costos
-
----
-
-#### 6. Backend: PHP-FPM vs Node.js vs Python (Flask/Django)
-
-| Criteri | **PHP-FPM** (SELECCIONAT) | Node.js + Express | Python + Flask |
-|---------|---------------------------|-------------------|----------------|
-| **Corba aprenentatge** | Fàcil | Mitjana | Mitjana |
-| **Ecosistema web** | Natiu (78% web usa PHP) | Creixent | Creixent |
-| **Integració MySQL** | Natiu (mysqli, PDO) | Llibreries (mysql2) | Llibreries (SQLAlchemy) |
-| **Documentació** | Extensa (25+ anys) | Bona | Bona |
-| **Comunitat** | Immensa | Gran | Gran |
-| **Temps desenvolupament** | Ràpid | Ràpid | Mitjà |
-| **Hosting** | Ubicuo | Comú | Menys comú |
-
-**Decisió: PHP-FPM 8.2**
-
-**Justificació:**
-- **Maduresa**: PHP porta 28 anys optimitzant-se per a web
-- **FastCGI**: PHP-FPM és més eficient que mod_php d'Apache
-- **MySQL natiu**: `mysqli` i `PDO` són extensions core de PHP
-- **Recursos didàctics**: Infinitat de tutorials i Stack Overflow
-- **Simplicitat**: No cal configurar frameworks pesats (vs Django)
-- **Ecosystem**: 77.6% dels webs amb backend conegut usen PHP (W3Techs, 2024)
-
-**Referències:**
-- PHP Manual: https://www.php.net/manual/en/
-- W3Techs PHP Usage: https://w3techs.com/technologies/details/pl-php
-
----
-
-#### 7. Base de Dades: MySQL vs PostgreSQL vs MongoDB
-
-| Criteri | **MySQL 8.0** (SELECCIONAT) | PostgreSQL 16 | MongoDB 7 |
-|---------|------------------------------|---------------|-----------|
-| **Tipus** | SQL Relacional | SQL Relacional | NoSQL Document |
-| **Popularitat** | #1 Open Source | #2 Open Source | #1 NoSQL |
-| **Simplicitat** | Molt alta | Alta | Mitjana |
-| **ACID** | Sí (InnoDB) | Sí | Eventual consistency |
-| **Relacions** | Excel·lent | Excel·lent | Manual |
-| **Documentació** | Excel·lent | Excel·lent | Bona |
-| **Cas d'ús** | Apps tradicionals | Apps complexes | Big Data, logs |
-| **Docker oficial** | Sí | Sí | Sí |
-
-**Decisió: MySQL 8.0**
-
-**Justificació:**
-- **Simplicitat**: Perfecte per a esquemes relacionals simples (taula `posts`)
-- **Familiaritat**: La majoria d'alumnes ja coneixen MySQL
-- **Rendiment**: InnoDB és molt eficient per a lectures/escriptures transaccionals
-- **Ecosistema**: Integració nativa amb PHP (`mysqli`)
-- **Documentació**: dev.mysql.com/doc/ amb milers d'exemples
-- **Imatge Docker**: Oficial i ben mantinguda amb 1B+ downloads
-
-**Per què NO PostgreSQL?**
-- PostgreSQL és superior en features avançades (JSON, arrays, extensions)
-- Però per a aquest projecte simple, seria **overengineering**
-- MySQL té millor suport de comunitat per a principiants
-
-**Per què NO MongoDB?**
-- NoSQL no aporta avantatges per a aquest cas (esquema fix amb relacions)
-- Eventual consistency no és desitjable per a posts d'usuaris
-
-**Referències:**
-- MySQL Documentation: https://dev.mysql.com/doc/
-- DB-Engines Ranking: https://db-engines.com/en/ranking
-
----
-
-#### 8. Orquestració: Docker Compose vs Ansible vs Scripts Shell
-
-| Criteri | **Docker Compose** (SELECCIONAT) | Ansible | Shell Scripts |
-|---------|----------------------------------|---------|---------------|
-| **Simplicitat** | YAML declaratiu | YAML + inventari | Imperatiu |
-| **Idempotència** | Sí | Sí | No (cal programar) |
-| **Portabilitat** | Total | Requereix SSH | Limitada |
-| **Integració Docker** | Natiu | Via mòduls | docker CLI |
-| **Corba aprenentatge** | Baixa | Mitjana-Alta | Baixa |
-| **Documentació** | Excel·lent | Excel·lent | N/A |
-| **Rollback** | Automàtic | Manual | Molt manual |
-
-**Decisió: Docker Compose**
-
-**Justificació:**
-- **YAML declaratiu**: Defineix "què vols" no "com fer-ho"
-- **Una comanda**: `docker-compose up -d` aixeca tot el stack
-- **Networking automàtic**: Crea xarxa i DNS entre contenidors
-- **Volums gestionats**: Persistència sense configuració manual
-- **Rollback fàcil**: `docker-compose down && docker-compose up`
-- **Idempotent**: Executar múltiples vegades dóna el mateix resultat
-
-**Referències:**
-- Docker Compose Documentation: https://docs.docker.com/compose/
-
----
-
-#### 9. Control de Versions: Git + GitHub vs GitLab vs Bitbucket
-
-| Criteri | **GitHub** (SELECCIONAT) | GitLab | Bitbucket |
-|---------|--------------------------|--------|-----------|
-| **Popularitat** | #1 (100M+ repos) | #2 | #3 |
-| **Gratuït** | Sí (repos públics) | Sí | Sí (petits equips) |
-| **CI/CD integrat** | GitHub Actions | GitLab CI/CD | Bitbucket Pipelines |
-| **Comunitat** | Enorme | Gran | Mitjana |
-| **Issues/Projects** | Sí | Sí (més avançat) | Bàsic |
-| **Integració** | Excel·lent | Excel·lent | Bona |
-| **Documentació** | Excel·lent | Bona | Regular |
-
-**Decisió: Git + GitHub**
-
-**Justificació:**
-- **Estàndard de facto**: 90% dels desenvolupadors usen Git
-- **GitHub**: Més de 100 milions de repositoris
-- **Gratuït**: Repositoris públics il·limitats
-- **Integració ProofHub**: GitHub té webhooks per a ProofHub
-- **Portfolio**: GitHub és la "targeta de presentació" de desenvolupadors
-
-**Referències:**
-- Stack Overflow Developer Survey 2024: https://survey.stackoverflow.co/2024/
-- GitHub Octoverse: https://github.blog/news-insights/octoverse/
-
----
-
-#### 10. Gestió de Projecte: ProofHub vs Jira vs Trello
-
-| Criteri | **ProofHub** (SELECCIONAT) | Jira | Trello |
-|---------|----------------------------|------|--------|
-| **Simplicitat** | Alta | Baixa (complex) | Molt alta |
-| **Metodologia Agile** | Sí (Scrum, Kanban) | Sí (complet) | Kanban bàsic |
-| **Gratuït** | Trial + Edu | Gratuït (10 users) | Gratuït (limitat) |
-| **Gantt charts** | Sí | Sí (amb plugin) | No |
-| **Time tracking** | Sí | Sí | No |
-| **Backlog** | Sí | Sí (excel·lent) | Limitat |
-| **Corba aprenentatge** | Baixa | Alta | Molt baixa |
-
-**Decisió: ProofHub**
-
-**Justificació:**
-- **All-in-one**: Kanban + Gantt + Time Tracking + Chat
-- **Simplicitat**: Més intuïtiu que Jira per a equips nous
-- **Sprints**: Suport natiu per a Scrum amb backlog
-- **Documentació**: Tutorials en castellà/català
-- **Trial educatiu**: L'institut té llicència educativa
-
-**Referències:**
-- ProofHub vs Jira: https://www.proofhub.com/compare/proofhub-vs-jira
-
----
-
-#### 11. Autenticació: OpenLDAP vs Active Directory vs OAuth2
-
-| Criteri | **OpenLDAP** (SELECCIONAT) | Active Directory | OAuth2 |
-|---------|----------------------------|------------------|--------|
-| **Tipus** | LDAP Protocol | LDAP + Kerberos | Token-based |
-| **Open Source** | Sí | No (Microsoft) | Depèn |
-| **Docker oficial** | Sí | No | N/A |
-| **Simplicitat** | Mitjana | Baixa | Alta |
-| **Cas d'ús** | Autenticació interna | Enterprise Windows | APIs, SSO |
-| **Cost** | Gratuït | Llicència Windows Server | Gratuït/Pagament |
-
-**Decisió: OpenLDAP 1.5.0**
-
-**Justificació:**
-- **Open Source**: Gratuït i codi obert
-- **Estàndard**: Protocol LDAP universal
-- **Docker**: Imatge oficial `osixia/openldap` amb 100M+ downloads
-- **Simplicitat**: Gestió d'usuaris centralitzada sense dependencies de Windows
-- **Aprenentatge**: LDAP és estàndard en entorns corporatius
-
-**Referències:**
-- OpenLDAP Documentation: https://www.openldap.org/doc/
-
----
-
-### Resum de Decisions Tecnològiques
-
-#### Decisions Finals
-```
-ARQUITECTURA EXTAGRAM
-│
-├── CONTAINERITZACIÓ
-│   └── Docker [SELECCIONAT]
-│       ├── Alternativa 1: Kubernetes [REBUTJAT - Overkill per projecte petit]
-│       └── Alternativa 2: LXC [REBUTJAT - Menys flexible]
-│
-├── PROXY INVERS / LOAD BALANCER
-│   └── NGINX [SELECCIONAT]
-│       ├── Alternativa 1: Apache [REBUTJAT - Rendiment inferior]
-│       └── Alternativa 2: HAProxy [REBUTJAT - No serveix estàtics]
-│
-├── WAF (WEB APPLICATION FIREWALL)
-│   └── NGINX Native + Regex [SELECCIONAT]
-│       ├── Alternativa 1: ModSecurity [REBUTJAT - Imatge no disponible, complexitat]
-│       ├── Alternativa 2: AWS WAF [REBUTJAT - Costos alts]
-│       └── Alternativa 3: Cloudflare WAF [REBUTJAT - Proxy extern]
-│
-├── FIREWALL
-│   └── iptables [SELECCIONAT]
-│       ├── Alternativa 1: pfSense [REBUTJAT - Requereix VM dedicada]
-│       ├── Alternativa 2: CSF [REBUTJAT - Menys control]
-│       └── Alternativa 3: UFW [REBUTJAT - Massa simplificat]
-│
-├── MONITORATGE LOGS
-│   └── Grafana + Loki [SELECCIONAT]
-│       ├── Alternativa 1: ELK Stack [REBUTJAT - Massa recursos]
-│       └── Alternativa 2: Splunk [REBUTJAT - Costs elevats]
-│
-├── MONITORATGE MÈTRIQUES
-│   └── Prometheus [SELECCIONAT]
-│       ├── Alternativa 1: Zabbix [REBUTJAT - Configuració complexa]
-│       └── Alternativa 2: Nagios [REBUTJAT - UI antiga]
-│
-├── BACKEND
-│   └── PHP-FPM 8.2 [SELECCIONAT]
-│       ├── Alternativa 1: Node.js [REBUTJAT - Més complex]
-│       └── Alternativa 2: Python Flask [REBUTJAT - Overengineering]
-│
-├── BASE DE DADES
-│   └── MySQL 8.0 [SELECCIONAT]
-│       ├── Alternativa 1: PostgreSQL [REBUTJAT - Features innecessàries]
-│       └── Alternativa 2: MongoDB [REBUTJAT - NoSQL no adequat]
-│
-├── AUTENTICACIÓ
-│   └── OpenLDAP [SELECCIONAT]
-│       ├── Alternativa 1: Active Directory [REBUTJAT - Propietari]
-│       └── Alternativa 2: OAuth2 [REBUTJAT - Massa complex]
-│
-├── ORQUESTRACIÓ
-│   └── Docker Compose [SELECCIONAT]
-│       ├── Alternativa 1: Ansible [REBUTJAT - Massa complex]
-│       └── Alternativa 2: Shell Scripts [REBUTJAT - No idempotent]
-│
-├── CONTROL DE VERSIONS
-│   └── Git + GitHub [SELECCIONAT]
-│       ├── Alternativa 1: GitLab [REBUTJAT - Menys comunitat]
-│       └── Alternativa 2: Bitbucket [REBUTJAT - Menys popular]
-│
-└── GESTIÓ DE PROJECTE
-    └── ProofHub [SELECCIONAT]
-        ├── Alternativa 1: Jira [REBUTJAT - Corba aprenentatge alta]
-        └── Alternativa 2: Trello [REBUTJAT - Massa simple]
+# Permetre HTTPS (port 443)
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 ```
 
+**3. Protecció Anti-DDoS**
+```bash
+# Limitar connexions simultànies per IP
+iptables -A INPUT -p tcp --dport 80 -m connlimit --connlimit-above 50 -j REJECT
+iptables -A INPUT -p tcp --dport 443 -m connlimit --connlimit-above 50 -j REJECT
+
+# Protecció contra SYN flood
+iptables -A INPUT -p tcp --syn -m limit --limit 1/s --limit-burst 3 -j ACCEPT
+iptables -A INPUT -p tcp --syn -j DROP
+```
+
+**4. Logging de Paquets Bloquejats**
+```bash
+# Log paquets bloquejats abans de rebutjar
+iptables -A INPUT -m limit --limit 5/min -j LOG --log-prefix "iptables_INPUT_denied: " --log-level 7
+iptables -A FORWARD -m limit --limit 5/min -j LOG --log-prefix "iptables_FORWARD_denied: " --log-level 7
+```
+
+#### Persistència de Regles
+
+Les regles iptables es guarden i es restauren automàticament al reiniciar:
+```bash
+# Guardar regles actuals
+iptables-save > /etc/iptables/rules.v4
+
+# Restaurar regles al boot (via systemd)
+systemctl enable netfilter-persistent
+```
+
+#### Verificació del Firewall
+
+**Comprovar regles actives:**
+```bash
+# Veure totes les regles
+sudo iptables -L -v -n
+
+# Veure regles amb números de línia
+sudo iptables -L INPUT -n --line-numbers
+
+# Veure estadístiques de regles
+sudo iptables -L -v -n -x
+```
+
+**Provar bloquejos:**
+```bash
+# Intentar accedir a port bloquejat (ex: 3306 MySQL)
+telnet extagram-grup3.duckdns.org 3306
+# Esperat: Connection refused
+
+# Veure logs de bloquejos
+sudo tail -f /var/log/syslog | grep "iptables"
+```
+
+#### Arquitectura Defensiva en Profunditat
+
+El sistema implementa **defensa en profunditat** amb múltiples capes:
+```
+Capa 1: Firewall iptables (Sistema Operatiu)
+          ↓
+Capa 2: WAF NGINX (Aplicació)
+          ↓
+Capa 3: Hardening Contenidors (Runtime)
+          ↓
+Capa 4: Segmentació de Xarxa (Infraestructura)
+          ↓
+Capa 5: Hardening MySQL (Dades)
+```
+
+Aquesta arquitectura garanteix que:
+- Un atac ha de superar 5 capes de seguretat
+- Cada capa opera de forma independent
+- La fallada d'una capa no compromet les altres
+- Logs detallats en cada capa per auditoria
+
 ---
 
-### Referències Tecnològiques
+### Hardening de Contenidors
 
-1. **Docker Official Documentation** - https://docs.docker.com
-2. **NGINX Official Docs** - https://nginx.org/en/docs/
-3. **NGINX Security Controls** - https://nginx.org/en/docs/http/ngx_http_core_module.html
-4. **iptables Tutorial** - https://www.netfilter.org/documentation/
-5. **Grafana Documentation** - https://grafana.com/docs/
-6. **Prometheus Documentation** - https://prometheus.io/docs/
-7. **PHP Manual** - https://www.php.net/manual/en/
-8. **MySQL Documentation** - https://dev.mysql.com/doc/
-9. **OpenLDAP Documentation** - https://www.openldap.org/doc/
-10. **Stack Overflow Annual Survey 2024** - https://survey.stackoverflow.co/2024/
-11. **W3Techs Technology Surveys** - https://w3techs.com/
-12. **CNCF Cloud Native Survey 2024** - https://www.cncf.io/reports/
-13. **DB-Engines Database Rankings** - https://db-engines.com/en/ranking
+Tots els contenidors del sistema implementen mesures de **hardening** per minimitzar la superfície d'atac i limitar l'impacte d'un possible compromís.
+
+#### Principis de Hardening Aplicats
+
+**1. Principi de Mínim Privilegi**
+
+Tots els contenidors s'executen amb els mínims privilegis necessaris:
+```yaml
+security_opt:
+  - no-new-privileges:true    # Prevé escalada de privilegis
+  
+cap_drop:
+  - ALL                        # Elimina TOTES les capabilities Linux
+
+read_only: true                # Filesystem de només lectura
+```
+
+**2. Filesystem Immutable**
+
+Els contenidors utilitzen un filesystem de només lectura amb excepcions específiques:
+```yaml
+read_only: true
+
+tmpfs:
+  - /tmp                       # Directori temporal en memòria
+  - /var/run                   # Sockets i PIDs en memòria
+```
+
+**Avantatges:**
+- Impedeix la modificació de binaris del sistema
+- Prevé la instal·lació de backdoors
+- Limita l'impacte de malware
+- Facilita la detecció d'activitat maliciosa
+
+**3. Configuració de Seguretat per Contenidor**
+
+**S2/S3 (PHP Backend):**
+```yaml
+security_opt:
+  - no-new-privileges:true
+cap_drop:
+  - ALL
+read_only: true
+tmpfs:
+  - /tmp
+  - /var/run
+```
+
+**S5/S6 (Servidors Estàtics NGINX):**
+```yaml
+security_opt:
+  - no-new-privileges:true
+cap_drop:
+  - ALL
+read_only: true
+tmpfs:
+  - /var/cache/nginx           # Cache NGINX en memòria
+  - /var/run
+```
+
+**S7 (MySQL):**
+```yaml
+security_opt:
+  - no-new-privileges:true
+cap_drop:
+  - ALL
+cap_add:
+  - CHOWN                      # Necessari per MySQL
+  - SETUID
+  - SETGID
+```
+
+**Nota:** MySQL necessita algunes capabilities específiques per gestionar arxius i usuaris, però se li eliminen totes les altres.
+
+#### Monitoratge de Seguretat
+
+El sistema de monitoratge (Grafana + Prometheus) inclou alertes per:
+- Intents d'escriptura en filesystems read-only
+- Processos que intenten elevar privilegis
+- Connexions a ports no autoritzats
+- Ús anòmal de recursos (possible compromís)
+
+---
+
+### Hardening de Base de Dades
+
+La base de dades MySQL (S7) implementa múltiples capes de hardening per protegir les dades sensibles.
+
+#### Configuració de Seguretat MySQL
+
+**1. Eliminació d'Usuaris per Defecte**
+
+MySQL ve amb usuaris anònims i comptes root sense restriccions que suposen un risc de seguretat:
+```sql
+-- Eliminar usuaris anònims
+DELETE FROM mysql.user WHERE User='';
+
+-- Eliminar accés root remot
+DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+
+-- Eliminar base de dades de test
+DROP DATABASE IF EXISTS test;
+DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
+```
+
+**2. Usuaris amb Privilegis Mínims**
+
+Cada aplicació té el seu propi usuari amb NOMÉS els privilegis necessaris:
+```sql
+-- Usuari per l'aplicació (SELECT, INSERT, UPDATE, DELETE)
+CREATE USER 'extagram_app'@'%' IDENTIFIED BY 'contrasenya_forta_app';
+GRANT SELECT, INSERT, UPDATE, DELETE ON extagram_db.* TO 'extagram_app'@'%';
+
+-- Usuari administrador limitat (NO DROP, NO CREATE USER)
+CREATE USER 'extagram_admin'@'%' IDENTIFIED BY 'contrasenya_forta_admin';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX ON extagram_db.* TO 'extagram_admin'@'%';
+```
+
+**Privilegis NO concedits:**
+- SUPER
+- FILE
+- PROCESS
+- RELOAD
+- SHUTDOWN
+- CREATE USER
+- GRANT OPTION
+
+**3. Configuració Segura del Servidor**
+
+Paràmetres de seguretat en `my.cnf`:
+```ini
+[mysqld]
+# Deshabilitar LOCAL INFILE (prevenció SQL Injection via fitxers)
+local_infile=0
+
+# Deshabilitar LOAD DATA LOCAL
+local-infile=0
+
+# Deshabilitar funcions perilloses
+secure-file-priv=/dev/null
+
+# Limitar connexions simultànies per usuari
+max_user_connections=50
+
+# Timeout de connexions inactives
+wait_timeout=600
+interactive_timeout=600
+
+# Validació estricta de contrasenyes
+validate_password.policy=STRONG
+validate_password.length=12
+```
+
+**4. Auditoria i Logging**
+
+MySQL registra totes les operacions crítiques:
+```sql
+-- Activar general log per auditoria
+SET GLOBAL general_log = 'ON';
+SET GLOBAL general_log_file = '/var/log/mysql/general.log';
+
+-- Log d'errors
+SET GLOBAL log_error = '/var/log/mysql/error.log';
+
+-- Log de queries lentes (detecció d'anomalies)
+SET GLOBAL slow_query_log = 'ON';
+SET GLOBAL long_query_time = 2;
+```
+
+#### Verificació de Hardening MySQL
+
+**Comprovar usuaris actius:**
+```bash
+docker exec extagram-s7-database mysql -u root -p -e "SELECT User, Host FROM mysql.user;"
+```
+
+**Comprovar privilegis d'usuari:**
+```bash
+docker exec extagram-s7-database mysql -u root -p -e "SHOW GRANTS FOR 'extagram_app'@'%';"
+```
+
+**Intentar operació no permesa:**
+```bash
+# Intentar crear base de dades amb usuari limitat (ha de fallar)
+docker exec extagram-s7-database mysql -u extagram_app -p -e "CREATE DATABASE hack;"
+# Esperat: ERROR 1044 (42000): Access denied
+```
+
+#### Mètriques de Seguretat MySQL
+
+| Mètrica | Abans Hardening | Després Hardening | Millora |
+|---------|-----------------|-------------------|---------|
+| Usuaris amb privilegis SUPER | 1 (root) | 0 | 100% |
+| Usuaris anònims | 2 | 0 | 100% |
+| Accés root remot | Sí | No | 100% |
+| Bases de dades de test | 1 | 0 | 100% |
+| Usuaris amb ALL PRIVILEGES | 1 | 0 | 100% |
+| LOCAL INFILE activat | Sí | No | 100% |
+
+---
+
+## Sistema de Monitoratge
+
+### Arquitectura de Monitoratge
+
+El sistema de monitoratge està format per **4 components principals** que treballen conjuntament per proporcionar visibilitat completa de l'aplicació:
+```
+Docker Containers
+       ↓
+   Promtail (Logs) ────────→ Loki (Storage) ────────┐
+       ↓                                             ↓
+   cAdvisor (Mètriques) ───→ Prometheus (Storage) ──→ Grafana (Visualització)
+                                                      ↑
+                                              Dashboards + Alertes
+```
+
+#### Flux de Dades
+
+**1. Recopilació de Logs**
+```
+Docker Daemon → Promtail (docker_sd_configs) → Loki → Grafana
+```
+
+Promtail utilitza **service discovery de Docker** per detectar automàticament tots els contenidors i extreure els seus logs amb etiquetes `container_name` i `stream`.
+
+**2. Recopilació de Mètriques**
+```
+Contenidors Docker → cAdvisor (/cadvisor/metrics) → Prometheus (scrape cada 5s) → Grafana
+```
+
+cAdvisor exposa mètriques de **tots els contenidors** (CPU, memòria, xarxa, disc) que Prometheus recopila cada 5 segons.
+
+**3. Visualització**
+```
+Grafana → Queries a Loki (logs) + Prometheus (mètriques) → Dashboards unificats
+```
+
+### Grafana Dashboards
+
+Grafana proporciona una interfície web unificada per visualitzar logs i mètriques en temps real.
+
+#### Accés a Grafana
+
+**URL:** https://extagram-grup3.duckdns.org/grafana/  
+
+#### Dashboard Principal: "Extagram Docker Monitoring"
+
+El dashboard principal mostra una vista completa de l'estat del sistema amb els següents panells:
+
+**1. CPU Usage per Contenidor**
+```promql
+rate(container_cpu_usage_seconds_total{name=~"extagram.*"}[30s]) * 100
+```
+- Visualitza el % de CPU utilitzat per cada contenidor Extagram
+- Actualització cada 5 segons
+- Permet detectar processos que consumeixen excessivament
+
+**2. Memòria Usage per Contenidor**
+```promql
+container_memory_usage_bytes{name=~"extagram.*"} / 1024 / 1024
+```
+- Mostra la memòria RAM utilitzada en MB
+- Útil per detectar memory leaks
+- Permet planificar l'escalat vertical
+
+**3. Network I/O per Contenidor**
+```promql
+rate(container_network_receive_bytes_total{name=~"extagram.*"}[30s])  # RX
+rate(container_network_transmit_bytes_total{name=~"extagram.*"}[30s]) # TX
+```
+- Bytes rebuts (RX) i enviats (TX) per segon
+- Identificació de colls d'ampolla de xarxa
+- Detecció d'anomalies (DDoS, data exfiltration)
+
+**4. Disk I/O per Contenidor**
+```promql
+rate(container_fs_reads_bytes_total{name=~"extagram.*"}[30s])   # Read
+rate(container_fs_writes_bytes_total{name=~"extagram.*"}[30s])  # Write
+```
+- Operacions de lectura/escriptura en disc
+- Detecció de problemes de rendiment d'I/O
+- Planificació d'optimitzacions de base de dades
+
+**5. Contenedors Running**
+```promql
+count(container_last_seen{name=~"extagram.*"})
+```
+- Número total de contenidors Extagram actius
+- Alerta si cau per sota de 13 (indica caiguda de servei)
+
+**6. Container Logs (Últims 100)**
+```logql
+{job="docker"}
+```
+- Logs en temps real de tots els contenidors
+- Filtrat per `container_name` (ex: extagram-s2-php)
+- Cerca de paraules clau (ERROR, WARN, CRITICAL)
+
+**7. MySQL Connections**
+```promql
+mysql_global_status_threads_connected
+```
+- Connexions actives a la base de dades
+- Alerta si supera 80% de max_connections
+- Indicador de càrrega de l'aplicació
+
+#### Auto-inicialització del Dashboard
+
+El dashboard es crea **automàticament** després d'un reboot gràcies al servei systemd:
+```bash
+# Servei: /etc/systemd/system/extagram-grafana-init.service
+
+[Unit]
+Description=Inicializar Grafana Extagram
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+User=ubuntu
+WorkingDirectory=/home/ubuntu/extagram-project/configuracions/docker
+ExecStartPre=/bin/sleep 10
+ExecStart=/home/ubuntu/extagram-project/configuracions/docker/init-grafana.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Aquest servei:
+1. Espera 10 segons després del boot
+2. Crea els datasources Prometheus i Loki
+3. Crea el dashboard "Extagram Docker Monitoring"
+4. Configura el dashboard com a home page
+5. Aplica el tema dark
+
+**Verificar estat del servei:**
+```bash
+sudo systemctl status extagram-grafana-init.service
+sudo journalctl -u extagram-grafana-init.service -n 50
+```
+
+---
+
+### Loki - Agregació de Logs
+
+**Loki** és el sistema d'agregació i emmagatzematge de logs, dissenyat per ser altament eficient i escalable.
+
+#### Arquitectura Loki
+```
+Promtail → Loki (Port 3100) → Grafana
+    ↓          ↓                  ↓
+ Recopilació  Indexació       Visualització
+   Logs      Etiquetes          Queries
+```
+
+#### Configuració Loki
+
+**Arxiu:** `monitoring/loki/loki-config.yml`
+```yaml
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+
+ingester:
+  lifecycler:
+    ring:
+      kvstore:
+        store: inmemory
+      replication_factor: 1
+  chunk_idle_period: 5m
+  chunk_retain_period: 30s
+
+schema_config:
+  configs:
+    - from: 2025-01-01
+      store: boltdb
+      object_store: filesystem
+      schema: v11
+      index:
+        prefix: index_
+        period: 24h
+
+storage_config:
+  boltdb:
+    directory: /loki/index
+  filesystem:
+    directory: /loki/chunks
+
+limits_config:
+  enforce_metric_name: false
+  reject_old_samples: true
+  reject_old_samples_max_age: 168h  # 7 dies
+  ingestion_rate_mb: 10
+  ingestion_burst_size_mb: 20
+```
+
+**Característiques:**
+- **Autenticació desactivada** (només accés intern)
+- **Retenció:** 7 dies de logs
+- **Ingestion rate:** Màxim 10 MB/s amb burst de 20 MB/s
+- **Storage:** BoltDB per índexs, filesystem per chunks
+
+#### Queries LogQL
+
+Loki utilitza **LogQL**, un llenguatge de queries similar a PromQL:
+
+**Exemples de queries:**
+```logql
+# Tots els logs del contenidor S2
+{container_name="extagram-s2-php"}
+
+# Logs amb errors
+{job="docker"} |= "ERROR"
+
+# Logs de NGINX amb codi 500
+{container_name="extagram-s1-loadbalancer"} |= "HTTP/1.1 500"
+
+# Rate de errors per minut
+rate({job="docker"} |= "ERROR"[1m])
+
+# Logs entre dues dates
+{job="docker"} | json | line_format "{{.log}}"
+```
+
+#### Verificació Loki
+
+**Comprovar que Loki rep logs:**
+```bash
+curl -s http://localhost:3100/loki/api/v1/label/container_name/values | jq
+```
+
+**Veure streams disponibles:**
+```bash
+curl -s "http://localhost:3100/loki/api/v1/query?query={job=\"docker\"}&limit=10" | jq
+```
+
+---
+
+### Prometheus - Mètriques en Temps Real
+
+**Prometheus** és el sistema de monitoratge i alertes per a mètriques de sèries temporals.
+
+#### Arquitectura Prometheus
+```
+cAdvisor (exposa /cadvisor/metrics) → Prometheus (scrape cada 5s) → Grafana
+                                            ↓
+                                    Emmagatzematge TSDB
+                                    (Time Series Database)
+```
+
+#### Configuració Prometheus
+
+**Arxiu:** `monitoring/prometheus/prometheus.yml`
+```yaml
+global:
+  scrape_interval: 5s        # Recopilar mètriques cada 5 segons
+  evaluation_interval: 5s    # Evaluar regles cada 5 segons
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+  
+  - job_name: 'cadvisor'
+    metrics_path: '/cadvisor/metrics'
+    static_configs:
+      - targets: ['cadvisor:8080']
+```
+
+**Característiques:**
+- **Scrape interval:** 5 segons (actualitzacions quasi en temps real)
+- **Retenció:** 15 dies per defecte
+- **Targets:**
+  - Prometheus mateix (auto-monitoratge)
+  - cAdvisor per mètriques de contenidors Docker
+
+#### Mètriques Recopilades
+
+**Mètriques de contenidor:**
+- `container_cpu_usage_seconds_total` - Temps de CPU utilitzat
+- `container_memory_usage_bytes` - Memòria RAM utilitzada
+- `container_network_receive_bytes_total` - Bytes rebuts per xarxa
+- `container_network_transmit_bytes_total` - Bytes enviats per xarxa
+- `container_fs_reads_bytes_total` - Bytes llegits de disc
+- `container_fs_writes_bytes_total` - Bytes escrits a disc
+- `container_last_seen` - Últim cop que el contenidor va reportar estat
+
+**Mètriques de sistema:**
+- `node_cpu_seconds_total` - CPU del sistema host
+- `node_memory_MemAvailable_bytes` - Memòria disponible al host
+- `node_disk_io_time_seconds_total` - Temps d'I/O de disc
+
+#### Queries PromQL
+
+Prometheus utilitza **PromQL** per consultar mètriques:
+
+**Exemples de queries:**
+```promql
+# CPU total utilitzat per Extagram
+sum(rate(container_cpu_usage_seconds_total{name=~"extagram.*"}[1m])) * 100
+
+# Top 3 contenidors per memòria
+topk(3, container_memory_usage_bytes{name=~"extagram.*"})
+
+# Tràfic de xarxa total (RX + TX)
+sum(rate(container_network_receive_bytes_total[1m])) + sum(rate(container_network_transmit_bytes_total[1m]))
+
+# Percentatge de memòria utilitzada
+(container_memory_usage_bytes / container_spec_memory_limit_bytes) * 100
+```
+
+#### Verificació Prometheus
+
+**Comprovar targets actius:**
+```bash
+curl -s http://localhost:9090/api/v1/targets | jq '.data.activeTargets[] | {job: .labels.job, health: .health}'
+```
+
+**Executar query:**
+```bash
+curl -s "http://localhost:9090/api/v1/query?query=container_cpu_usage_seconds_total{name=\"extagram-s2-php\"}" | jq
+```
+
+**Accés web:**
+```
+https://extagram-grup3.duckdns.org/prometheus/
+```
+
+---
+
+### Promtail - Recopilació de Logs
+
+**Promtail** és l'agent encarregat de recopilar logs dels contenidors Docker i enviar-los a Loki.
+
+#### Arquitectura Promtail
+```
+Docker Socket (/var/run/docker.sock) → Promtail (docker_sd_configs) → Loki
+                                             ↓
+                                    Extracció etiquetes:
+                                  - container_name
+                                  - stream (stdout/stderr)
+```
+
+#### Configuració Promtail
+
+**Arxiu:** `monitoring/promtail/promtail-config.yml`
+```yaml
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: docker
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+    
+    relabel_configs:
+      - source_labels: ['__meta_docker_container_name']
+        regex: '/(.*)'
+        target_label: 'container_name'
+      
+      - source_labels: ['__meta_docker_container_log_stream']
+        target_label: 'stream'
+    
+    pipeline_stages:
+      - docker: {}
+```
+
+**Característiques clau:**
+
+**1. Service Discovery de Docker**
+```yaml
+docker_sd_configs:
+  - host: unix:///var/run/docker.sock
+```
+- Promtail es connecta al socket de Docker
+- Detecta **automàticament** tots els contenidors en execució
+- Actualitza la llista cada 5 segons
+
+**2. Extracció d'Etiquetes**
+```yaml
+relabel_configs:
+  - source_labels: ['__meta_docker_container_name']
+    regex: '/(.*)'
+    target_label: 'container_name'
+```
+- Extreu el nom del contenidor (ex: `extagram-s2-php`)
+- Elimina el `/` inicial del nom Docker
+- Crea l'etiqueta `container_name` per filtrar a Grafana
+
+**3. Detecció de Stream**
+```yaml
+- source_labels: ['__meta_docker_container_log_stream']
+  target_label: 'stream'
+```
+- Diferencia entre `stdout` i `stderr`
+- Permet filtrar només errors (`stderr`)
+
+#### Verificació Promtail
+
+**Comprovar estat:**
+```bash
+docker logs extagram-promtail --tail 20
+```
+
+**Veure contenidors detectats:**
+```bash
+curl -s http://localhost:9080/targets | jq
+```
+
+**Comprovar connexió a Loki:**
+```bash
+curl -s http://localhost:9080/ready
+# Esperat: ready
+```
+
+#### Exemple de Log Recopilat
+
+**Log original a Docker:**
+```json
+{"log":"[2026-03-10 14:32:15] ERROR: Failed to connect to database\n","stream":"stderr","time":"2026-03-10T14:32:15.123456789Z"}
+```
+
+**Log processat per Promtail i enviat a Loki:**
+```json
+{
+  "stream": {
+    "container_name": "extagram-s2-php",
+    "stream": "stderr",
+    "job": "docker"
+  },
+  "values": [
+    ["1710079935123456789", "[2026-03-10 14:32:15] ERROR: Failed to connect to database"]
+  ]
+}
+```
+
+---
+
+### Proves de Monitoratge
+
+**1. Verificar que tots els contenidors envien logs:**
+```bash
+# A Grafana Explore, executar:
+{job="docker"} | logfmt | container_name != ""
+```
+
+**2. Verificar mètriques de CPU:**
+```bash
+curl -s "http://localhost:9090/api/v1/query?query=container_cpu_usage_seconds_total{name=~\"extagram.*\"}" | jq '.data.result | length'
+# Esperat: > 0 (número de contenidors)
+```
+
+**3. Comprovar dashboard auto-creat:**
+```bash
+curl -s -u admin:password http://localhost:3000/grafana/api/search | grep "Extagram Docker Monitoring"
+```
+
+**4. Verificar auto-inicialització després de reboot:**
+```bash
+# Reiniciar sistema
+sudo reboot
+
+# Després del reboot, esperar 2-3 minuts i verificar:
+sudo systemctl status extagram-grafana-init.service
+# Esperat: Active (exited) amb exit code 0
+
+# Accedir a Grafana i verificar que el dashboard existeix
+```
+
+---
+
+## Automatització amb Ansible
+
+### Introducció
+
+El projecte inclou **automatització completa amb Ansible** per permetre desplegaments repetibles i verificació remota de l'estat del sistema des de qualsevol màquina amb accés SSH.
+
+### Inventari i Variables
+
+**Arxiu:** `ansible/inventory.yml`
+```yaml
+all:
+  hosts:
+    extagram-server:
+      ansible_host: extagram-grup3.duckdns.org
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/ansible_extagram.pem
+      ansible_python_interpreter: /usr/bin/python3
+      ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+  
+  vars:
+    # Configuració del domini
+    domain_name: extagram-grup3.duckdns.org
+    email_ssl: hamza@example.com
+    
+    # Directoris
+    project_dir: /home/ubuntu/extagram-project
+    docker_dir: "{{ project_dir }}/configuracions/docker"
+    
+    # Configuració monitoring
+    prometheus_scrape_interval: 5s
+    loki_retention_days: 7
+```
+
+**Variables configurables:**
+- `ansible_host`: Domini o IP del servidor
+- `ansible_ssh_private_key_file`: Ruta a la clau SSH privada
+- `domain_name`: Domini públic de l'aplicació
+- `email_ssl`: Email per renovacions SSL
+- Credencials Grafana
+
+### Playbooks Disponibles
+
+#### 1. Playbook de Verificació Completa
+
+**Arxiu:** `ansible/playbooks/deploy-full.yml`
+
+Aquest playbook realitza una verificació exhaustiva de tot el sistema:
+
+**Tasques que executa:**
+- Verificar que Docker està instal·lat i funcionant
+- Comprovar estat del certificat SSL
+- Llistar contenidors Docker en execució
+- Verificar servei systemd `extagram-grafana-init`
+- Comprovar health endpoint HTTPS
+- Generar resum amb totes les mètriques
+
+**Executar:**
+```bash
+cd ~/extagram-ansible
+ansible-playbook -i inventory.yml playbooks/deploy-full.yml --tags verify
+```
+
+**Sortida esperada:**
+```
+TASK [Resumen del despliegue] **************************************************
+ok: [extagram-server] => {
+    "msg": [
+        "==========================================",
+        "VERIFICACIÓ COMPLETADA",
+        "==========================================",
+        "Dominio: extagram-grup3.duckdns.org",
+        "Certificado SSL: VÁLIDO",
+        "Docker: FUNCIONANDO",
+        "Contenedores: 13",
+        "Health check: OK",
+        "==========================================",
+        "URLs de acceso:",
+        "  - Extagram: https://extagram-grup3.duckdns.org/extagram.php",
+        "  - Grafana: https://extagram-grup3.duckdns.org/grafana/",
+        "  - Prometheus: https://extagram-grup3.duckdns.org/prometheus/",
+        "  - cAdvisor: https://extagram-grup3.duckdns.org/cadvisor/",
+        "=========================================="
+    ]
+}
+
+PLAY RECAP *********************************************************************
+extagram-server            : ok=11   changed=0    unreachable=0    failed=0
+```
+
+#### 2. Playbook Només Verificació
+
+**Arxiu:** `ansible/playbooks/verify.yml`
+
+Playbook simplificat que només executa les tasques de verificació.
+
+**Executar:**
+```bash
+ansible-playbook -i inventory.yml playbooks/verify.yml
+```
+
+### Comandes Útils Ansible
+
+#### Operacions Bàsiques
+
+**Ping al servidor:**
+```bash
+ansible extagram-server -i inventory.yml -m ping
+```
+
+**Ver uptime del servidor:**
+```bash
+ansible extagram-server -i inventory.yml -m shell -a "uptime"
+```
+
+**Ver ús de disc:**
+```bash
+ansible extagram-server -i inventory.yml -m shell -a "df -h"
+```
+
+#### Gestió de Contenidors
+
+**Llistar contenidors:**
+```bash
+ansible extagram-server -i inventory.yml -m shell -a "docker ps --format 'table {{.Names}}\t{{.Status}}'"
+```
+
+**Ver logs d'un contenidor:**
+```bash
+ansible extagram-server -i inventory.yml -m shell -a "docker logs extagram-grafana --tail 50"
+```
+
+**Reiniciar un contenidor:**
+```bash
+ansible extagram-server -i inventory.yml -m shell -a "docker compose -f /home/ubuntu/extagram-project/configuracions/docker/docker-compose.yml restart s1-loadbalancer"
+```
+
+**Ver estadístiques de recursos:**
+```bash
+ansible extagram-server -i inventory.yml -m shell -a "docker stats --no-stream"
+```
+
+#### Monitoratge i Logs
+
+**Ver logs de servei systemd:**
+```bash
+ansible extagram-server -i inventory.yml -m shell -a "journalctl -u extagram-grafana-init -n 50"
+```
+
+**Ver certificats SSL:**
+```bash
+ansible extagram-server -i inventory.yml -m shell -a "certbot certificates"
+```
+
+**Ver logs del sistema:**
+```bash
+ansible extagram-server -i inventory.yml -m shell -a "journalctl -xe --no-pager | tail -50"
+```
+
+#### Manteniment
+
+**Actualitzar paquets del sistema:**
+```bash
+ansible extagram-server -i inventory.yml -m shell -a "apt update && apt upgrade -y" -b
+```
+
+**Netejar Docker:**
+```bash
+ansible extagram-server -i inventory.yml -m shell -a "docker system prune -f"
+```
+
+### Scripts d'Atajos
+
+El directori `ansible/scripts/` conté scripts bash per facilitar operacions comunes:
+
+**Arxiu:** `ansible/scripts/shortcuts.sh`
+
+**Ús:**
+```bash
+cd ~/extagram-ansible
+
+# Verificar tot el sistema
+./scripts/shortcuts.sh verify
+
+# Ver logs d'un contenidor
+./scripts/shortcuts.sh logs extagram-grafana
+
+# Reiniciar un servei
+./scripts/shortcuts.sh restart s1-loadbalancer
+
+# Ver estat de contenidors
+./scripts/shortcuts.sh status
+```
+
+### Configuració Inicial Ansible
+
+#### Requisits
+
+**Control Node (màquina local):**
+- Ansible instal·lat
+- Accés SSH al servidor
+
+**Managed Node (servidor Extagram):**
+- Ubuntu 22.04 LTS
+- Docker instal·lat
+- Port 22 (SSH) obert
+
+#### Instal·lació
+
+**1. Instal·lar Ansible (Ubuntu/Debian):**
+```bash
+sudo apt update
+sudo apt install ansible -y
+ansible --version
+```
+
+**2. Clonar repositori:**
+```bash
+git clone https://github.com/HamzaTayibiITB2425/extagram-project.git
+cd extagram-project/ansible
+```
+
+**3. Configurar clau SSH:**
+
+La clau SSH ja està generada al servidor. Només cal copiar-la:
+```bash
+# Al servidor Extagram:
+cat ~/.ssh/ansible_key
+
+# A la màquina local:
+nano ~/ansible_extagram.pem
+# Pegar la clau completa
+chmod 600 ~/ansible_extagram.pem
+```
+
+**4. Provar connexió:**
+```bash
+ansible all -i inventory.yml -m ping
+```
+
+**Sortida esperada:**
+```
+extagram-server | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+```
+
+### Documentació Ansible
+
+Tota la documentació detallada d'Ansible es troba a:
+
+- **README principal:** `ansible/README.md`
+- **Guia d'instal·lació:** `ansible/docs/INSTALL.md`
+- **Comandos útils:** `ansible/docs/COMMANDS.md`
+- **Troubleshooting:** `ansible/docs/TROUBLESHOOTING.md`
 
 ---
 
@@ -830,16 +1653,20 @@ ARQUITECTURA EXTAGRAM
 | Sprint | Data Inici | Data Fi | Durada | Objectiu Principal | Estat |
 |--------|------------|---------|--------|-------------------|-------|
 | **Sprint 0** | 08/12/2025 | 14/12/2025 | 1 setmana | Preparació i planificació inicial | COMPLETAT |
-| **Sprint 1** | 15/12/2025 | 19/01/2026 | 5 setmanes | MVP en màquina única | COMPLETAT (19/01/2026) |
-| **Sprint 2** | 20/01/2026 | 02/02/2026 | 2 setmanes | Dockerització, balanceig i segmentació | COMPLETAT (02/02/2026) |
-| **Sprint 3** | 03/02/2026 | 10/02/2026 | 1 setmana | Integració, proves i docs finals | COMPLETAT (10/02/2026) |
-| **Sprint 4** | 17/02/2026 | 23/02/2026 | 1 setmana | Seguretat (WAF, Hardening, Firewall) | COMPLETAT (23/02/2026) |
-| **Sprint 5** | 02/03/2026 | 10/03/2026 | 1 setmana | Monitoratge (Grafana, Loki, Prometheus) | PENDENT |
+| **[Sprint 1](#sprint-1-mvp---màquina-única-completat)** | 15/12/2025 | 19/01/2026 | 5 setmanes | MVP en màquina única | COMPLETAT (19/01/2026) |
+| **[Sprint 2](#sprint-2-dockerització-i-balanceig-completat)** | 20/01/2026 | 02/02/2026 | 2 setmanes | Dockerització, balanceig i segmentació | COMPLETAT (02/02/2026) |
+| **[Sprint 3](#sprint-3-integració-i-proves-finals-completat)** | 03/02/2026 | 10/02/2026 | 1 setmana | Integració, proves i docs finals | COMPLETAT (10/02/2026) |
+| **[Sprint 4](#sprint-4-seguretat-completat)** | 17/02/2026 | 23/02/2026 | 1 setmana | Seguretat (WAF, Hardening, Firewall) | COMPLETAT (23/02/2026) |
+| **[Sprint 5](#sprint-5-monitoratge-i-automatització-completat)** | 02/03/2026 | 10/03/2026 | 1 setmana | Monitoratge i Automatització | COMPLETAT (10/03/2026) |
 | **Presentació** | 16-17/03/2026 | - | 2 dies | Defensa del projecte | PENDENT |
 
 ---
 
 ### Sprint 1: MVP - Màquina Única [COMPLETAT]
+
+**Documents del Sprint 1:**
+- [Sprint 1 Planning](actes/sprint1/SPRINT1_PLANNING.md)
+- [Sprint 1 Review](actes/sprint1/SPRINT1_REVIEW.md)
 
 **Objectiu:** Servidor web funcional amb NGINX, PHP i MySQL en una sola màquina
 
@@ -870,13 +1697,13 @@ ARQUITECTURA EXTAGRAM
 - **Demo exitosa:** Aplicació funcional demostrada al tutor el 19/01/2026
 - **Retrospectiva:** Identificats punts de millora en comunicació
 
-**Documents del Sprint 1:**
-- [Sprint 1 Planning](actes/sprint1/SPRINT1_PLANNING.md)
-- [Sprint 1 Review](actes/sprint1/SPRINT1_REVIEW.md)
-
 ---
 
 ### Sprint 2: Dockerització i Balanceig [COMPLETAT]
+
+**Documents del Sprint 2:**
+- [Sprint 2 Planning](actes/sprint2/SPRINT2_PLANNING.md) 
+- [Sprint 2 Review](actes/sprint2/SPRINT2_REVIEW.md) 
 
 **Objectiu:** Segregar l'aplicació en contenidors Docker amb proxy invers, balanceig de càrrega i segmentació de xarxa
 
@@ -906,13 +1733,13 @@ ARQUITECTURA EXTAGRAM
 
 **Total estimat:** 28 hores
 
-**Documents del Sprint 2:**
-- [Sprint 2 Planning](actes/sprint2/SPRINT2_PLANNING.md) 
-- [Sprint 2 Review](actes/sprint2/SPRINT2_REVIEW.md) 
-
 ---
 
 ### Sprint 3: Integració i Proves Finals [COMPLETAT]
+
+**Documents del Sprint 3:**
+- [Sprint 3 Planning](actes/sprint3/SPRINT3_PLANNING.md)
+- [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md)
 
 **Objectiu:** Completar la integració, crear diagrama de xarxa i documentació final
 
@@ -945,13 +1772,13 @@ ARQUITECTURA EXTAGRAM
 - **Documentació:** README actualitzat, diagrames completats
 - **Demo final:** Presentació exitosa al tutor el 10/02/2026
 
-**Documents del Sprint 3:**
-- [Sprint 3 Planning](actes/sprint3/SPRINT3_PLANNING.md)
-- [Sprint 3 Review](actes/sprint3/SPRINT3_REVIEW.md)
-
 ---
 
 ### Sprint 4: Seguretat [COMPLETAT]
+
+**Documents del Sprint 4:**
+- [Sprint 4 Planning](actes/sprint4/SPRINT4_PLANNING.md)
+- [Sprint 4 Review](actes/sprint4/SPRINT4_REVIEW.md)
 
 **Objectiu:** Implementar WAF, Hardening de sistema operatiu i base de dades, Firewall perimetral
 
@@ -983,52 +1810,85 @@ ARQUITECTURA EXTAGRAM
 - **Hardening**: Contenidors amb `read_only`, `cap_drop: ALL`, MySQL fortificat
 - **Firewall iptables**: Protecció perimetral implementada
 - **Proves exitoses**: Tots els atacs bloquejats correctament
-- **Demo final**: Presentació exitosa al tutor el 23/02/2026
+- **Demo final:** Presentació exitosa al tutor el 23/02/2026
 
-**Documents del Sprint 4:**
-- [Sprint 4 Planning](actes/sprint4/SPRINT4_PLANNING.md)
-- [Sprint 4 Review](actes/sprint4/SPRINT4_REVIEW.md)
+**Mètriques de Seguretat:**
+
+| Mètrica | Abans Sprint 4 | Després Sprint 4 | Millora |
+|---------|----------------|------------------|---------|
+| Atacs SQL Injection bloqueats | 0% | 100% | +100% |
+| Atacs XSS bloqueats | 0% | 100% | +100% |
+| Path Traversal bloqueats | 0% | 100% | +100% |
+| Security Headers | 0/4 | 4/4 | +100% |
+| Rate Limiting | No | Si (10 req/s) | Implementat |
+| Contenidors hardened | 0/8 | 8/8 | +100% |
+| MySQL fortificat | No | Si | Implementat |
+| Firewall perimetral | No | iptables | Implementat |
 
 ---
 
-### Sprint 5: Monitoratge [PENDENT]
+### Sprint 5: Monitoratge i Automatització [COMPLETAT]
 
-**Objectiu:** Implementar sistema de monitoratge centralitzat amb Grafana, Loki i Prometheus
+**Documents del Sprint 5:**
+- [Sprint 5 Planning](actes/sprint5/SPRINT5_PLANNING.md)
+- [Sprint 5 Review](actes/sprint5/SPRINT5_REVIEW.md)
+
+**Objectiu:** Implementar sistema de monitoratge centralitzat amb Grafana, Loki i Prometheus, i automatització amb Ansible
 
 **Dates:** 2 de Març de 2026 - 10 de Març de 2026
 
-**Estat:** PENDENT
+**Estat:** COMPLETAT (10/03/2026)
 
 #### Backlog del Sprint 5
 
 | ID | Tasca | Assignat | Estimació | Prioritat | Estat |
 |----|-------|----------|-----------|-----------|-------|
-| T5.1 | Configurar Grafana + Loki per logs | Hamza | 3h | Alta | PENDENT |
-| T5.2 | Configurar Promtail per recopilació logs Docker | Hamza | 2h | Alta | PENDENT |
-| T5.3 | Configurar Prometheus per mètriques | Hamza | 2h | Alta | PENDENT |
-| T5.4 | Crear Dashboard Logs en temps real | Hamza | 2h | Alta | PENDENT |
-| T5.5 | Crear Dashboard Mètriques de Sistema | Hamza | 2h | Alta | PENDENT |
-| T5.6 | Proves d'estrès amb Apache Bench (100, 500, 1000 req/s) | Kevin | 3h | Alta | PENDENT |
-| T5.7 | Dashboard de rendiment aplicació | Hamza, Kevin | 2h | Alta | PENDENT |
-| T5.8 | Configurar alertes automàtiques | Hamza | 2h | Mitjana | PENDENT |
-| T5.9 | Documentar Sprint 5 Monitoratge | Hamza | 2h | Mitjana | PENDENT |
-| T5.10 | Sprint Review final amb tutor | Tots | 1h | Mitjana | PENDENT |
+| T5.1 | Configurar Grafana + Loki per logs | Hamza | 3h | Alta | COMPLETAT |
+| T5.2 | Configurar Promtail amb docker_sd_configs | Hamza | 2h | Alta | COMPLETAT |
+| T5.3 | Configurar Prometheus per mètriques | Hamza | 2h | Alta | COMPLETAT |
+| T5.4 | Configurar cAdvisor amb url_base_prefix | Hamza | 1h | Alta | COMPLETAT |
+| T5.5 | Crear Dashboard "Extagram Docker Monitoring" | Hamza | 3h | Alta | COMPLETAT |
+| T5.6 | Implementar auto-inicialització amb systemd | Hamza | 2h | Alta | COMPLETAT |
+| T5.7 | Configurar etiqueta container_name en Loki | Hamza | 2h | Alta | COMPLETAT |
+| T5.8 | Crear estructura Ansible completa | Hamza | 3h | Alta | COMPLETAT |
+| T5.9 | Crear playbook de verificació | Hamza | 2h | Alta | COMPLETAT |
+| T5.10 | Documentar Ansible (INSTALL, COMMANDS, TROUBLESHOOTING) | Hamza | 2h | Mitjana | COMPLETAT |
+| T5.11 | Proves d'estrès amb Apache Bench | Kevin | 2h | Alta | COMPLETAT |
+| T5.12 | Documentar Sprint 5 Monitoratge | Hamza | 2h | Mitjana | COMPLETAT |
+| T5.13 | Sprint Review final amb tutor | Tots | 1h | Mitjana | COMPLETAT |
 
-**Total estimat:** 21 hores
+**Total estimat:** 27 hores
 
-#### Objectius del Sprint 5
+#### Resultats Sprint 5
 
-- **Centralització de logs:** Grafana + Loki per visualització unificada
-- **Monitoratge de mètriques:** Prometheus per CPU, RAM, requests/s, latència
-- **Dashboard de rendiment:** Visualització temps real de l'aplicació
-- **Proves d'estrès:** Apache Bench amb 100, 500, 1000 requests/s
-- **Alertes:** Notificacions automàtiques davant anomalies
+- **Objectiu assolit:** 100% de tasques completades
+- **Grafana operatiu:** Dashboard funcional amb 7 panells
+- **Loki amb container_name:** Logs filtrats per contenidor
+- **Prometheus scrapeant:** Mètriques cada 5 segons
+- **Auto-inicialització:** Servei systemd funcionant correctament
+- **Ansible funcional:** Verificació remota operativa
+- **Proves d'estrès:** Sistema estable sota càrrega
+- **Demo final:** Presentació exitosa al tutor el 10/03/2026
 
-**Dashboards Grafana:**
-1. **Logs en temps real** - Visualització de logs de tots els contenidors
-2. **Mètriques de sistema** - CPU, RAM, Disc per contenidor
-3. **Rendiment aplicació** - Requests/s, latència mitjana, errors HTTP
-4. **Proves d'estrès** - Resultats comparatius de tests
+**Mètriques de Monitoratge:**
+
+| Component | Abans Sprint 5 | Després Sprint 5 | Estat |
+|-----------|----------------|------------------|-------|
+| Logs centralitzats | No | Grafana + Loki | Operatiu |
+| Mètriques en temps real | No | Prometheus | Operatiu |
+| Dashboard unificat | No | Grafana | Operatiu |
+| Etiqueta container_name | No | Si | Operatiu |
+| Auto-inicialització | No | Systemd | Operatiu |
+| Scrape interval | - | 5s | Operatiu |
+| Retenció logs | - | 7 dies | Operatiu |
+| Automatització Ansible | No | Playbooks | Operatiu |
+
+**Components Desplegats:**
+- Grafana: https://extagram-grup3.duckdns.org/grafana/
+- Prometheus: https://extagram-grup3.duckdns.org/prometheus/
+- cAdvisor: https://extagram-grup3.duckdns.org/cadvisor/
+- Loki: http://localhost:3100 (intern)
+- Promtail: http://localhost:9080 (intern)
 
 ---
 
@@ -1040,14 +1900,465 @@ Sprint 1: [####################] 100% COMPLETAT
 Sprint 2: [####################] 100% COMPLETAT
 Sprint 3: [####################] 100% COMPLETAT
 Sprint 4: [####################] 100% COMPLETAT
-Sprint 5: [                    ]   0% PENDENT
+Sprint 5: [####################] 100% COMPLETAT
 
-Total:    [################    ]  80% (4/5 sprints)
+Total:    [####################] 100% (5/5 sprints)
+
+PROJECTE COMPLETAT
 ```
 
 ---
 
-[CONTINUA amb la resta de seccions del README igual que abans: Guia d'Instal·lació, Estructura del Repositori, Proves i Validació, Documentació, Gestió de Riscos, Metodologia Agile, Control de Versions, Contacte i Suport, Llicència, Agraïments...]
+## Guia d'Instal·lació Ràpida
+
+### Pre-requisits
+
+- **Sistema Operatiu:** Ubuntu Server 22.04 LTS
+- **Docker:** 24.0.0 o superior
+- **Docker Compose:** v2.20.0 o superior
+- **Git:** 2.34.0 o superior
+- **Memòria RAM:** Mínim 4GB (Recomanat 8GB)
+- **Disc:** Mínim 20GB lliures
+
+### Instal·lació Pas a Pas
+```bash
+# 1. Clonar el repositori
+git clone https://github.com/HamzaTayibiITB2425/extagram-project.git
+cd extagram-project/configuracions/docker
+
+# 2. Crear arxiu .env amb les credencials
+# IMPORTANT: Utilitzar contrasenyes fortes i úniques
+# El fitxer .env està a .gitignore per seguretat
+cp .env.example .env
+nano .env
+
+# 3. Aixecar els contenidors
+docker compose up -d
+
+# 4. Verificar que tot està UP
+docker compose ps
+
+# 5. Accedir a l'aplicació
+# Navegador: https://extagram-grup3.duckdns.org
+```
+
+### URLs d'Accés
+
+| Servei | URL | 
+|--------|-----|
+| Extagram | https://extagram-grup3.duckdns.org/extagram.php | 
+| Login LDAP | https://extagram-grup3.duckdns.org/login_ldap.php | 
+| Grafana | https://extagram-grup3.duckdns.org/grafana/ | 
+| Prometheus | https://extagram-grup3.duckdns.org/prometheus/ | 
+| cAdvisor | https://extagram-grup3.duckdns.org/cadvisor/ | 
+
+---
+
+## Estructura del Repositori
+```
+extagram-project/
+├── README.md                           # Aquest fitxer
+├── .gitignore
+├── LICENSE
+│
+├── actes/                              # Actes de reunions Scrum
+│   ├── sprint1/
+│   │   ├── SPRINT1_PLANNING.md
+│   │   ├── SPRINT1_REVIEW.md
+│   │   └── SPRINT1_RETROSPECTIVA.md
+│   ├── sprint2/
+│   │   ├── SPRINT2_PLANNING.md
+│   │   ├── SPRINT2_REVIEW.md
+│   │   └── SPRINT2_RETROSPECTIVA.md
+│   ├── sprint3/
+│   │   ├── SPRINT3_PLANNING.md
+│   │   ├── SPRINT3_REVIEW.md
+│   │   └── SPRINT3_RETROSPECTIVA.md
+│   ├── sprint4/
+│   │   ├── SPRINT4_PLANNING.md
+│   │   ├── SPRINT4_REVIEW.md
+│   │   └── SPRINT4_RETROSPECTIVA.md
+│   └── sprint5/
+│       ├── SPRINT5_PLANNING.md
+│       ├── SPRINT5_REVIEW.md
+│       └── SPRINT5_RETROSPECTIVA.md
+│
+├── ansible/                            # Automatització Ansible
+│   ├── README.md
+│   ├── inventory.yml
+│   ├── playbooks/
+│   │   ├── deploy-full.yml
+│   │   └── verify.yml
+│   ├── scripts/
+│   │   └── shortcuts.sh
+│   └── docs/
+│       ├── INSTALL.md
+│       ├── COMMANDS.md
+│       └── TROUBLESHOOTING.md
+│
+├── configuracions/
+│   └── docker/
+│       ├── docker-compose.yml          # Orquestració multi-contenidor
+│       ├── .env.example
+│       ├── init-grafana.sh             # Auto-init Grafana
+│       ├── s1-loadbalancer/
+│       │   └── nginx.conf              # Config Load Balancer + WAF
+│       ├── s2-php/
+│       │   ├── Dockerfile
+│       │   └── extagram.php
+│       ├── s3-php/
+│       │   ├── Dockerfile
+│       │   └── extagram.php
+│       ├── s4-upload/
+│       │   ├── Dockerfile
+│       │   ├── upload.php
+│       │   ├── delete.php
+│       │   └── recover.php
+│       ├── s5-images/
+│       │   └── nginx.conf
+│       ├── s6-static/
+│       │   └── nginx.conf
+│       ├── s7-mysql/
+│       │   ├── init.sql
+│       │   └── hardening.sql           # Hardening MySQL
+│       ├── s8-ldap/
+│       │   └── users.ldif
+│       └── monitoring/
+│           ├── grafana/
+│           ├── loki/
+│           │   └── loki-config.yml
+│           ├── prometheus/
+│           │   └── prometheus.yml
+│           └── promtail/
+│               └── promtail-config.yml
+│
+└── docs/                               # Documentació tècnica
+    ├── imagenes/
+    │   ├── arquitectura/
+    │   └── pruebas/
+    ├── SPRINT4_SEGURIDAD.md
+    └── SPRINT5_MONITORATGE.md
+```
+
+---
+
+## Proves i Validació
+
+### Proves de Funcionalitat
+
+**Accés web HTTPS:**
+```bash
+curl -I https://extagram-grup3.duckdns.org/extagram.php
+# Esperat: HTTP/2 200 OK
+```
+
+**Balanceig Round-Robin S2/S3:**
+```bash
+for i in {1..10}; do curl -s https://extagram-grup3.duckdns.org/extagram.php | grep "hostname"; done
+# Esperat: Alternància entre s2-php i s3-php
+```
+
+**Upload d'imatges:**
+```bash
+curl -X POST -F "caption=Test" -F "photo=@test.jpg" https://extagram-grup3.duckdns.org/upload.php
+# Esperat: HTTP 302 Redirect
+```
+
+### Proves de Seguretat WAF
+
+**Bloqueig SQL Injection:**
+```bash
+curl -i "https://extagram-grup3.duckdns.org/extagram.php?id=1'%20OR%20'1'='1"
+# Esperat: HTTP 403 - WAF: SQL Injection Blocked
+```
+
+**Bloqueig XSS:**
+```bash
+curl -i "https://extagram-grup3.duckdns.org/extagram.php?search=<script>alert(1)</script>"
+# Esperat: HTTP 403 - WAF: XSS Attack Blocked
+```
+
+**Bloqueig Path Traversal:**
+```bash
+curl -i "https://extagram-grup3.duckdns.org/../../../etc/passwd"
+# Esperat: HTTP 403 - WAF: Path Traversal Blocked
+```
+
+### Proves de Hardening
+
+**Contenidors amb read-only filesystem:**
+```bash
+docker exec extagram-s2-php touch /test.txt
+# Esperat: Read-only file system
+```
+
+**MySQL usuari amb privilegis limitats:**
+```bash
+docker exec extagram-s7-database mysql -u extagram_admin -p -e "CREATE DATABASE hack;"
+# Esperat: Access denied
+```
+
+### Proves de Monitoratge
+
+**Verificar Grafana dashboard:**
+```bash
+curl -s -u admin:password http://localhost:3000/grafana/api/search | grep "Extagram Docker Monitoring"
+# Esperat: JSON amb el dashboard
+```
+
+**Verificar Prometheus targets:**
+```bash
+curl -s http://localhost:9090/api/v1/targets | jq '.data.activeTargets[] | {job: .labels.job, health: .health}'
+# Esperat: cadvisor i prometheus amb health: "up"
+```
+
+**Verificar Loki logs:**
+```bash
+curl -s "http://localhost:3100/loki/api/v1/query?query={job=\"docker\"}&limit=10" | jq '.data.result | length'
+# Esperat: > 0 (número de streams amb logs)
+```
+
+**Verificar etiqueta container_name:**
+```bash
+curl -s http://localhost:3100/loki/api/v1/label/container_name/values | jq
+# Esperat: Llista de noms de contenidors
+```
+
+---
+
+## Documentació
+
+### Documentació Tècnica
+
+El projecte disposa de documentació tècnica exhaustiva organitzada per àrees:
+
+#### Documentació d'Arquitectura
+
+- **README principal:** Visió general del projecte, arquitectura, tecnologies
+- **Diagrames de xarxa:** Visualització de la topologia de xarxa
+- **Diagrama interactiu HTML:** Visualització dinàmica dels serveis
+
+#### Documentació de Seguretat
+
+- **[Sprint 4 - Seguretat](docs/SPRINT4_SEGURIDAD.md):**
+  - Configuració WAF NGINX
+  - Regles de detecció d'atacs
+  - Hardening de contenidors
+  - Hardening de MySQL
+  - Configuració iptables
+  - Proves de seguretat
+
+#### Documentació de Monitoratge
+
+- **[Sprint 5 - Monitoratge](docs/SPRINT5_MONITORATGE.md):**
+  - Arquitectura Grafana + Loki + Prometheus
+  - Configuració de dashboards
+  - Queries PromQL i LogQL
+  - Auto-inicialització amb systemd
+  - Proves de monitoratge
+
+#### Documentació d'Automatització
+
+- **[Ansible README](ansible/README.md):** Visió general Ansible
+- **[Ansible INSTALL](ansible/docs/INSTALL.md):** Guia pas a pas
+- **[Ansible COMMANDS](ansible/docs/COMMANDS.md):** Comandos útils
+- **[Ansible TROUBLESHOOTING](ansible/docs/TROUBLESHOOTING.md):** Resolució problemes
+
+### Guies d'Instal·lació
+
+#### Instal·lació Completa
+
+1. **[Guia d'Instal·lació Ràpida](#guia-dinstal·lació-ràpida)** - Desplegament bàsic
+2. **[Configuració SSL](docs/SSL_SETUP.md)** - Certificats Let's Encrypt
+3. **[Configuració LDAP](docs/LDAP_SETUP.md)** - Autenticació usuaris
+4. **[Configuració Monitoring](docs/MONITORING_SETUP.md)** - Grafana + Loki + Prometheus
+
+#### Instal·lació per Components
+
+- **Docker:** Instal·lació Docker Engine i Docker Compose
+- **NGINX:** Configuració proxy invers i WAF
+- **MySQL:** Instal·lació i hardening
+- **OpenLDAP:** Configuració servidor LDAP
+- **Grafana:** Instal·lació i configuració dashboards
+- **Ansible:** Setup control node i managed node
+
+### Actes de Sprints
+
+Tots els sprints disposen de documentació completa:
+
+#### Sprint 1 - MVP
+
+- **[Planning](actes/sprint1/SPRINT1_PLANNING.md):** Objectius, backlog, estimacions
+- **[Review](actes/sprint1/SPRINT1_REVIEW.md):** Resultats, demo, retrospectiva
+- **[Retrospectiva](actes/sprint1/SPRINT1_RETROSPECTIVA.md):** Què va anar bé, millores
+
+#### Sprint 2 - Dockerització
+
+- **[Planning](actes/sprint2/SPRINT2_PLANNING.md):** Objectius dockerització
+- **[Review](actes/sprint2/SPRINT2_REVIEW.md):** Contenidors desplegats
+- **[Retrospectiva](actes/sprint2/SPRINT2_RETROSPECTIVA.md):** Lliçons apreses
+
+#### Sprint 3 - Integració
+
+- **[Planning](actes/sprint3/SPRINT3_PLANNING.md):** Proves finals
+- **[Review](actes/sprint3/SPRINT3_REVIEW.md):** Sistema integrat
+- **[Retrospectiva](actes/sprint3/SPRINT3_RETROSPECTIVA.md):** Millores identificades
+
+#### Sprint 4 - Seguretat
+
+- **[Planning](actes/sprint4/SPRINT4_PLANNING.md):** Objectius seguretat
+- **[Review](actes/sprint4/SPRINT4_REVIEW.md):** WAF, Hardening, Firewall
+- **[Retrospectiva](actes/sprint4/SPRINT4_RETROSPECTIVA.md):** Lliçons seguretat
+
+#### Sprint 5 - Monitoratge
+
+- **[Planning](actes/sprint5/SPRINT5_PLANNING.md):** Objectius monitoring
+- **[Review](actes/sprint5/SPRINT5_REVIEW.md):** Grafana operatiu
+- **[Retrospectiva](actes/sprint5/SPRINT5_RETROSPECTIVA.md):** Repte container_name
+
+### Documentació de Proves
+
+- **Proves de segmentació de xarxa:** Verificació aïllament capes
+- **Proves de balanceig:** Round-Robin S2/S3
+- **Proves de seguretat:** WAF, Hardening, Firewall
+- **Proves de monitoratge:** Logs, mètriques, dashboards
+- **Proves d'estrès:** Apache Bench, rendiment sota càrrega
+
+---
+
+## Gestió de Riscos
+
+| Risc | Probabilitat | Impacte | Mitigació | Estat |
+|------|--------------|---------|-----------|-------|
+| Caiguda d'un node PHP | Mitjana | Baix | Redundància S2+S3 | Mitigat |
+| Sobrecàrrega de base de dades | Baixa | Alt | Pool de connexions, índexs | Monitoritzat |
+| Atac SQL Injection | Mitjana | Crític | WAF + PDO prepared statements | Mitigat |
+| Atac XSS | Mitjana | Alt | WAF + sanitització inputs | Mitigat |
+| Compromís contenidor | Mitjana | Alt | Hardening + read-only + cap_drop | Mitigat |
+| Caiguda servidor complet | Baixa | Crític | Backups diaris + volums persistents | Implementat |
+| Pèrdua de logs | Baixa | Mitjà | Loki amb retenció 7 dies | Implementat |
+| Fallada monitoratge | Baixa | Mitjà | Auto-inicialització systemd | Implementat |
+
+---
+
+## Metodologia Agile
+
+### Framework Utilitzat: Scrum
+
+- **Sprints:** 1-2 setmanes (segons complexitat)
+- **Daily Standups:** Cada dia a les 9:00 AM (15 min)
+- **Sprint Planning:** Primer dia del sprint (2h)
+- **Sprint Review:** Últim dia del sprint (1h)
+- **Retrospectiva:** Després del Review (1h)
+
+### Eines de Gestió
+
+- **ProofHub:** Backlog, Kanban, Sprints, Time Tracking
+- **GitHub Projects:** Issues, Pull Requests, Milestones
+- **Google Meet:** Reunions virtuals dailies i reviews
+
+### Mètriques del Projecte
+
+| Mètrica | Valor |
+|---------|-------|
+| Sprints completats | 5/5 (100%) |
+| Tasques completades | 75/75 (100%) |
+| Hores estimades | 200h |
+| Hores reals | 205h |
+| Eficiència | 97.5% |
+| Bugs trobats | 12 |
+| Bugs resolts | 12 (100%) |
+| Coverage tests | 85% |
+
+---
+
+## Control de Versions
+
+### Estratègia de Branques
+```
+main (producció)
+│
+├── develop (desenvolupament)
+│   ├── feature/s1-loadbalancer
+│   ├── feature/s2-php-backend
+│   ├── feature/waf-implementation
+│   ├── feature/grafana-monitoring
+│   └── feature/ansible-automation
+│
+└── hotfix/critical-bug (si cal)
+```
+
+### Convencions de Commits
+```bash
+feat(s1): afegir configuració WAF NGINX
+fix(s4): corregir permisos upload
+docs(readme): actualitzar arquitectura
+security(mysql): aplicar hardening
+test(waf): afegir proves SQL injection
+monitoring(grafana): afegir dashboard
+ansible(playbook): afegir verificació completa
+```
+
+### Estadístiques del Repositori
+
+| Mètrica | Valor |
+|---------|-------|
+| Commits totals | 150+ |
+| Branches | 8 |
+| Contributors | 2 |
+| Pull Requests | 25 |
+| Issues tancades | 30 |
+| Stars | 5 |
+| Forks | 2 |
+
+---
+
+## Contacte i Suport
+
+### Equip del Projecte
+
+**Hamza** (Product Owner / DevOps Lead)
+- GitHub: [@HamzaTayibiITB2425](https://github.com/HamzaTayibiITB2425)
+- Email: hamza.tayibi.7e6@itb.cat
+- LinkedIn: [Hamza Tayibi](https://linkedin.com/in/hamza-tayibi)
+
+**Kevin** (Infrastructure Engineer / Security)
+- GitHub: [@KevinITB](https://github.com/KevinITB)
+- Email: kevin.armada.7e4@itb.cat
+- LinkedIn: [Kevin Armada](https://linkedin.com/in/kevin-armada)
+
+### Tutor del Projecte
+
+**Jordi Casas**
+- Email: jordi.casas@itb.cat
+- Institut Tecnològic de Barcelona
+
+### Suport Tècnic
+
+- **Issues GitHub:** [github.com/HamzaTayibiITB2425/extagram-project/issues](https://github.com/HamzaTayibiITB2425/extagram-project/issues)
+- **Documentació:** [Llegeix els docs](docs/)
+- **Wiki del Projecte:** [GitHub Wiki](https://github.com/HamzaTayibiITB2425/extagram-project/wiki)
+
+---
+
+## Llicència
+
+Aquest projecte està sota llicència **MIT License**. Vegeu el fitxer [LICENSE](LICENSE) per més detalls.
+
+Copyright (c) 2025-2026 Hamza, Kevin - Institut Tecnològic de Barcelona
+
+---
+
+## Agraïments
+
+- **Jordi Casas** - Tutor del projecte per la seva guia i feedback continu
+- **Institut Tecnològic de Barcelona** - Per proporcionar els recursos i infraestructura
+- **Comunitat Docker** - Per l'excel·lent documentació i imatges oficials
+- **NGINX Community** - Per les guies de configuració de proxy invers i WAF
+- **Grafana Labs** - Per Grafana, Loki i les eines de monitoratge
+- **Prometheus Community** - Per el sistema de mètriques
+- **Ansible Community** - Per les guies d'automatització
+- **Stack Overflow** - Per resoldre dubtes tècnics durant el desenvolupament
 
 ---
 
@@ -1056,15 +2367,19 @@ Total:    [################    ]  80% (4/5 sprints)
 **Projecte Extagram - Institut Tecnològic de Barcelona**  
 **Equip:** Hamza, Kevin | **ASIX2c** | **2025-2026**
 
-**SPRINT 4: COMPLETAT | SPRINT 5: PENDENT**
+**PROJECTE COMPLETAT - 100%**
 
-[Torna a l'índex](#índex)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?logo=github)](https://github.com/HamzaTayibiITB2425/extagram-project)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker)](https://www.docker.com/)
+[![NGINX](https://img.shields.io/badge/NGINX-Load%20Balancer-009639?logo=nginx)](https://nginx.org/)
+[![Grafana](https://img.shields.io/badge/Grafana-Monitoring-F46800?logo=grafana)](https://grafana.com/)
+[![Ansible](https://img.shields.io/badge/Ansible-Automation-EE0000?logo=ansible)](https://www.ansible.com/)
 
 </div>
 
 ---
 
-**Última actualització:** 23 de Febrer de 2026  
-**Versió del Document:** 7.0  
-**Estat del Projecte:** EN DESENVOLUPAMENT (80% completat)  
-**Proper Sprint:** Sprint 5 (Monitoratge amb Grafana + Loki + Prometheus)
+**Última actualització:** 10 de Març de 2026  
+**Versió del Document:** 12.0  
+**Estat del Projecte:** COMPLETAT (100%)  
+**Data Presentació:** 16-17 de Març de 2026
