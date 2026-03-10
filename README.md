@@ -1394,22 +1394,6 @@ sudo systemctl status extagram-grafana-init.service
 
 El projecte inclou **automatització completa amb Ansible** per permetre desplegaments repetibles i verificació remota de l'estat del sistema des de qualsevol màquina amb accés SSH.
 
-### Estructura Ansible
-```
-ansible/
-├── README.md                          # Documentació completa Ansible
-├── inventory.yml                      # Inventari de servidors
-├── playbooks/
-│   ├── deploy-full.yml               # Playbook verificació completa
-│   └── verify.yml                    # Només verificació
-├── scripts/
-│   └── shortcuts.sh                  # Comandos ràpids
-└── docs/
-    ├── INSTALL.md                    # Guia instal·lació Ansible
-    ├── COMMANDS.md                   # Comandos útils
-    └── TROUBLESHOOTING.md            # Solució de problemes
-```
-
 ### Inventari i Variables
 
 **Arxiu:** `ansible/inventory.yml`
