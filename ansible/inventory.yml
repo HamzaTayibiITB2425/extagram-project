@@ -1,0 +1,25 @@
+all:
+  hosts:
+    extagram-server:
+      ansible_host: extagram-grup3.duckdns.org
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/ansible_extagram.pem
+      ansible_python_interpreter: /usr/bin/python3
+      ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+  
+  vars:
+    # Configuración del dominio
+    domain_name: extagram-grup3.duckdns.org
+    email_ssl: hamza@example.com
+    
+    # Directorios
+    project_dir: /home/ubuntu/extagram-project
+    docker_dir: "{{ project_dir }}/configuracions/docker"
+    
+    # Credenciales Grafana
+    grafana_admin_user: admin
+    grafana_admin_password: admin123
+    
+    # Configuración monitoring
+    prometheus_scrape_interval: 5s
+    loki_retention_days: 7

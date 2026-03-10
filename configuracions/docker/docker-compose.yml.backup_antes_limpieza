@@ -10,17 +10,31 @@ services:
       - ./s1-loadbalancer/nginx.conf:/etc/nginx/nginx.conf:ro
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - /var/www/certbot:/var/www/certbot:ro
-      - ./s2-s3-php:/var/www/html:ro
+      - /etc/nginx/ssl:/etc/nginx/ssl:ro
     networks:
       - extagram_front
       - extagram_services
-      - monitoring
     depends_on:
       - s2-php
       - s3-php
       - s4-upload
       - s5-images
       - s6-static
+    # HARDENING
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - CHOWN
+      - SETGID
+      - SETUID
+    read_only: true
+    tmpfs:
+      - /tmp:mode=1777
+      - /var/cache/nginx:mode=0755
+      - /var/run:mode=0755
 
   s2-php:
     build: ./s2-s3-php
@@ -39,6 +53,7 @@ services:
       - extagram_services
       - extagram_data
     restart: unless-stopped
+    # HARDENING
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -67,6 +82,7 @@ services:
       - extagram_services
       - extagram_data
     restart: unless-stopped
+    # HARDENING
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -98,6 +114,7 @@ services:
       - extagram_services
       - extagram_data
     restart: unless-stopped
+    # HARDENING (SIN read_only porque necesita escribir uploads)
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -116,6 +133,7 @@ services:
     networks:
       - extagram_services
     restart: unless-stopped
+    # HARDENING
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -136,6 +154,7 @@ services:
     networks:
       - extagram_services
     restart: unless-stopped
+    # HARDENING
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -182,6 +201,7 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+    # HARDENING
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -200,10 +220,35 @@ services:
       LDAP_DOMAIN: ${LDAP_DOMAIN}
       LDAP_ADMIN_PASSWORD: ${LDAP_ADMIN_PASSWORD}
       LDAP_USER_PASSWORD: ${LDAP_USER_PASSWORD}
-      CONTAINER_LOG_LEVEL: debug
     networks:
       - extagram_data
     restart: unless-stopped
+    # HARDENING
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+
+networks:
+  extagram_front:
+    driver: bridge
+  extagram_services:
+    driver: bridge
+  extagram_data:
+    driver: bridge
+    internal: true
+
+volumes:
+  db_data:
+  uploads_data:
+
+  # ==========================================
+  # MONITORING STACK (SPRINT 5)
+  # ==========================================
 
   grafana:
     image: grafana/grafana:latest
@@ -214,13 +259,10 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin123
-      - GF_SERVER_DOMAIN=extagram-grup3.duckdns.org
-      - GF_SERVER_ROOT_URL=https://extagram-grup3.duckdns.org/grafana/
-      - GF_SERVER_SERVE_FROM_SUB_PATH=true
-      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/home.json
-      - GF_NEWS_NEWS_FEED_ENABLED=false
+      - GF_INSTALL_PLUGINS=grafana-clock-panel
     volumes:
       - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
     networks:
       - monitoring
     depends_on:
@@ -235,7 +277,7 @@ services:
       - "3100:3100"
     volumes:
       - ./monitoring/loki/loki-config.yml:/etc/loki/local-config.yaml
-      - ./monitoring/loki/data:/tmp/loki
+      - loki-data:/tmp/loki
     command: -config.file=/etc/loki/local-config.yaml
     networks:
       - monitoring
@@ -266,8 +308,6 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
-      - '--web.external-url=https://extagram-grup3.duckdns.org/prometheus/'
-      - '--web.route-prefix=/'
     networks:
       - monitoring
 
@@ -284,28 +324,122 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
     privileged: true
-    command:
-      - '--url_base_prefix=/cadvisor'
     networks:
       - monitoring
 
+# ==========================================
+# NETWORKS
+# ==========================================
 networks:
-  extagram_front:
-    driver: bridge
-  extagram_services:
-    driver: bridge
-  extagram_data:
-    driver: bridge
-    internal: true
   monitoring:
     driver: bridge
     ipam:
       config:
         - subnet: 172.22.0.0/16
 
+# ==========================================
+# VOLUMES
+# ==========================================
 volumes:
-  db_data:
-  uploads_data:
+  grafana-data:
+  loki-data:
+  prometheus-data:
+
+  # ==========================================
+  # MONITORING STACK (SPRINT 5)
+  # ==========================================
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: extagram-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_INSTALL_PLUGINS=grafana-clock-panel
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+    networks:
+      - monitoring
+    depends_on:
+      - loki
+      - prometheus
+
+  loki:
+    image: grafana/loki:latest
+    container_name: extagram-loki
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./monitoring/loki/loki-config.yml:/etc/loki/local-config.yaml
+      - loki-data:/tmp/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - monitoring
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: extagram-promtail
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/promtail/promtail-config.yml:/etc/promtail/config.yml
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - monitoring
+    depends_on:
+      - loki
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: extagram-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    networks:
+      - monitoring
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: extagram-cadvisor
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    privileged: true
+    networks:
+      - monitoring
+
+# ==========================================
+# NETWORKS
+# ==========================================
+networks:
+  monitoring:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16
+
+# ==========================================
+# VOLUMES
+# ==========================================
+volumes:
   grafana-data:
   loki-data:
   prometheus-data:

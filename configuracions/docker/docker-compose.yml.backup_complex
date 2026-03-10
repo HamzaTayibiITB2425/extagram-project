@@ -1,44 +1,42 @@
 services:
+  # ==========================================
+  # S1: LOAD BALANCER + WAF + HTTPS
+  # ==========================================
   s1-loadbalancer:
-    image: nginx:alpine
+    build: ./s1-loadbalancer
     container_name: extagram-s1-loadbalancer
-    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
-    volumes:
-      - ./s1-loadbalancer/nginx.conf:/etc/nginx/nginx.conf:ro
-      - /etc/letsencrypt:/etc/letsencrypt:ro
-      - /var/www/certbot:/var/www/certbot:ro
-      - ./s2-s3-php:/var/www/html:ro
     networks:
       - extagram_front
       - extagram_services
       - monitoring
-    depends_on:
-      - s2-php
-      - s3-php
-      - s4-upload
-      - s5-images
-      - s6-static
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_add:
+      - NET_BIND_SERVICE
+    tmpfs:
+      - /var/run
+      - /var/cache/nginx
+      - /tmp
 
+  # ==========================================
+  # S2: PHP BACKEND 1
+  # ==========================================
   s2-php:
-    build: ./s2-s3-php
+    build: ./s2-php
     container_name: extagram-s2-php
+    networks:
+      - extagram_services
+      - extagram_data
+    restart: unless-stopped
     environment:
       - DB_HOST=${DB_HOST}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
-    volumes:
-      - ./s2-s3-php:/var/www/html:ro
-    depends_on:
-      s7-database:
-        condition: service_healthy
-    networks:
-      - extagram_services
-      - extagram_data
-    restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -48,25 +46,23 @@ services:
       - SETUID
     read_only: true
     tmpfs:
-      - /tmp:mode=1777
+      - /tmp
 
+  # ==========================================
+  # S3: PHP BACKEND 2
+  # ==========================================
   s3-php:
-    build: ./s2-s3-php
+    build: ./s3-php
     container_name: extagram-s3-php
+    networks:
+      - extagram_services
+      - extagram_data
+    restart: unless-stopped
     environment:
       - DB_HOST=${DB_HOST}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
-    volumes:
-      - ./s2-s3-php:/var/www/html:ro
-    depends_on:
-      s7-database:
-        condition: service_healthy
-    networks:
-      - extagram_services
-      - extagram_data
-    restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -76,28 +72,25 @@ services:
       - SETUID
     read_only: true
     tmpfs:
-      - /tmp:mode=1777
+      - /tmp
 
+  # ==========================================
+  # S4: UPLOAD SERVICE
+  # ==========================================
   s4-upload:
     build: ./s4-upload
     container_name: extagram-s4-upload
+    networks:
+      - extagram_services
+      - extagram_data
+    volumes:
+      - uploads_data:/var/www/html/uploads
+    restart: unless-stopped
     environment:
       - DB_HOST=${DB_HOST}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
-    volumes:
-      - ./s4-upload/upload.php:/var/www/html/upload.php:ro
-      - ./s4-upload/delete.php:/var/www/html/delete.php:ro
-      - ./s4-upload/recover.php:/var/www/html/recover.php:ro
-      - uploads_data:/var/www/html/uploads
-    depends_on:
-      s7-database:
-        condition: service_healthy
-    networks:
-      - extagram_services
-      - extagram_data
-    restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -108,28 +101,27 @@ services:
       - CHOWN
       - DAC_OVERRIDE
 
+  # ==========================================
+  # S5: IMAGE SERVER (READ-ONLY)
+  # ==========================================
   s5-images:
     build: ./s5-images
     container_name: extagram-s5-images
-    volumes:
-      - uploads_data:/var/www/html/uploads:ro
     networks:
       - extagram_services
+    volumes:
+      - uploads_data:/var/www/html/uploads:ro
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    cap_drop:
-      - ALL
-    cap_add:
-      - CHOWN
-      - SETGID
-      - SETUID
-    read_only: true
     tmpfs:
-      - /tmp:mode=1777
-      - /var/cache/nginx:mode=0755
-      - /var/run:mode=0755
+      - /var/run
+      - /var/cache/nginx
+      - /tmp
 
+  # ==========================================
+  # S6: STATIC SERVER
+  # ==========================================
   s6-static:
     build: ./s6-static
     container_name: extagram-s6-static
@@ -138,50 +130,51 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
+    tmpfs:
+      - /var/run
+      - /var/cache/nginx
+      - /tmp
+
+  # ==========================================
+  # S7: DATABASE (HARDENED)
+  # ==========================================
+  s7-database:
+    build: ./s7-mysql
+    container_name: extagram-s7-database
+    networks:
+      - extagram_data
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    security_opt:
+      - no-new-privileges:true
     cap_drop:
       - ALL
     cap_add:
-      - CHOWN
       - SETGID
       - SETUID
-    read_only: true
-    tmpfs:
-      - /tmp:mode=1777
-      - /var/cache/nginx:mode=0755
-      - /var/run:mode=0755
+      - CHOWN
+      - DAC_OVERRIDE
 
-  s7-database:
-    image: mysql:8
-    container_name: extagram-s7-database
-    command: >
-      sh -c "
-      docker-entrypoint.sh mysqld --general-log=1 --general-log-file=/var/log/mysql/general.log --local-infile=0 --skip-show-database --max-allowed-packet=16M &
-      MYSQL_PID=\$$!;
-      sleep 8;
-      tail -f /var/log/mysql/general.log | 
-      tr -cd '\\11\\12\\15\\40-\\176' | 
-      grep --line-buffered -E '(Connect|Query|INSERT|SELECT|UPDATE|DELETE|Prepare|Execute|Close|Quit)' | 
-      sed -u 's/VALUES ([^,]*, [^,]*, .*/VALUES (caption, image_path, [BLOB_OMITIDO])/' &
-      wait \$$MYSQL_PID
-      "
+  # ==========================================
+  # S8: LDAP SERVER
+  # ==========================================
+  s8-ldap:
+    build: ./s8-ldap
+    container_name: extagram-s8-ldap
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    volumes:
-      - db_data:/var/lib/mysql
-      - ./s7-mysql/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
-      - ./s7-mysql/hardening.sql:/docker-entrypoint-initdb.d/02-hardening.sql:ro
+      - LDAP_ORGANISATION=${LDAP_ORGANISATION}
+      - LDAP_DOMAIN=${LDAP_DOMAIN}
+      - LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD}
+      - LDAP_USER_PASSWORD=${LDAP_USER_PASSWORD}
     networks:
       - extagram_data
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -190,21 +183,10 @@ services:
       - CHOWN
       - SETGID
       - SETUID
-      - DAC_OVERRIDE
 
-  s8-ldap:
-    build: ./s8-ldap
-    container_name: extagram-s8-ldap
-    environment:
-      LDAP_ORGANISATION: ${LDAP_ORGANISATION}
-      LDAP_DOMAIN: ${LDAP_DOMAIN}
-      LDAP_ADMIN_PASSWORD: ${LDAP_ADMIN_PASSWORD}
-      LDAP_USER_PASSWORD: ${LDAP_USER_PASSWORD}
-      CONTAINER_LOG_LEVEL: debug
-    networks:
-      - extagram_data
-    restart: unless-stopped
-
+  # ==========================================
+  # MONITORING STACK (SPRINT 5)
+  # ==========================================
   grafana:
     image: grafana/grafana:latest
     container_name: extagram-grafana
@@ -214,13 +196,10 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin123
-      - GF_SERVER_DOMAIN=extagram-grup3.duckdns.org
-      - GF_SERVER_ROOT_URL=https://extagram-grup3.duckdns.org/grafana/
-      - GF_SERVER_SERVE_FROM_SUB_PATH=true
-      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/home.json
-      - GF_NEWS_NEWS_FEED_ENABLED=false
+      - GF_INSTALL_PLUGINS=grafana-clock-panel
     volumes:
       - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
     networks:
       - monitoring
     depends_on:
@@ -266,8 +245,6 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
-      - '--web.external-url=https://extagram-grup3.duckdns.org/prometheus/'
-      - '--web.route-prefix=/'
     networks:
       - monitoring
 
@@ -284,19 +261,26 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
     privileged: true
-    command:
-      - '--url_base_prefix=/cadvisor'
     networks:
       - monitoring
 
 networks:
   extagram_front:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
   extagram_services:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
   extagram_data:
     driver: bridge
     internal: true
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
   monitoring:
     driver: bridge
     ipam:

@@ -1,0 +1,20 @@
+# Claves privadas SSH
+*.pem
+*.key
+*_key
+*_key.pub
+
+# Archivos de Ansible
+*.retry
+.ansible/
+
+# Logs
+*.log
+
+# Archivos de backup
+*.bak
+*~
+
+# OS específicos
+.DS_Store
+Thumbs.db

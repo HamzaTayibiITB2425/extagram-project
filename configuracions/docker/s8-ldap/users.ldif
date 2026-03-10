@@ -1,0 +1,11 @@
+dn: cn=Hamza,dc=extagram,dc=com
+objectClass: inetOrgPerson
+cn: Hamza
+sn: usuario
+userPassword: @ITB2026
+
+dn: cn=Kevin,dc=extagram,dc=com
+objectClass: inetOrgPerson
+cn: Kevin
+sn: usuario
+userPassword: @ITB2026

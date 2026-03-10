@@ -1,0 +1,110 @@
+---
+- name: Desplegar Extagram completo en producción
+  hosts: extagram-server
+  become: yes
+  
+  vars:
+    domain_name: extagram-grup3.duckdns.org
+    project_dir: /home/ubuntu/extagram-project
+    docker_dir: "{{ project_dir }}/configuracions/docker"
+    grafana_admin_user: admin
+    grafana_admin_password: admin123
+  
+  tasks:
+    - name: Actualizar paquetes del sistema
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      tags: [system, never-skip]
+    
+    - name: Instalar dependencias base
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+          - git
+          - python3-pip
+          - jq
+        state: present
+      tags: [system]
+    
+    - name: Verificar que Docker funciona
+      command: docker ps
+      changed_when: false
+      tags: [docker, verify]
+    
+    - name: Verificar estado de certificado SSL
+      stat:
+        path: "/etc/letsencrypt/live/{{ domain_name }}/fullchain.pem"
+      register: ssl_cert
+      tags: [ssl, verify]
+    
+    - name: Mostrar estado SSL
+      debug:
+        msg: "Certificado SSL existe: {{ ssl_cert.stat.exists }}"
+      tags: [ssl, verify]
+    
+    - name: Verificar servicios Docker corriendo
+      shell: "docker ps --format 'table {{ '{{' }}.Names{{ '}}' }}\\t{{ '{{' }}.Status{{ '}}' }}' | grep extagram"
+      register: docker_services
+      changed_when: false
+      failed_when: false
+      tags: [verify]
+    
+    - name: Mostrar servicios activos
+      debug:
+        msg: "{{ docker_services.stdout_lines }}"
+      when: docker_services.stdout_lines is defined
+      tags: [verify]
+    
+    - name: Verificar servicio systemd
+      systemd:
+        name: extagram-grafana-init
+      register: systemd_status
+      failed_when: false
+      tags: [monitoring, verify]
+    
+    - name: Mostrar estado del servicio
+      debug:
+        msg: "Servicio extagram-grafana-init: {{ 'ACTIVO' if systemd_status.status.ActiveState == 'active' else systemd_status.status.ActiveState | default('NO ENCONTRADO') }}"
+      when: systemd_status.status is defined
+      tags: [monitoring, verify]
+    
+    - name: Verificar acceso HTTPS
+      uri:
+        url: "https://{{ domain_name }}/health"
+        validate_certs: no
+        status_code: 200
+      register: health_check
+      retries: 3
+      delay: 5
+      failed_when: false
+      tags: [verify]
+    
+    - name: Mostrar resultado health check
+      debug:
+        msg: "Health check: {{ 'OK' if health_check.status == 200 else 'FAILED' }}"
+      tags: [verify]
+    
+    - name: Resumen del despliegue
+      debug:
+        msg:
+          - "=========================================="
+          - "✅ VERIFICACIÓN COMPLETADA"
+          - "=========================================="
+          - "Dominio: {{ domain_name }}"
+          - "Certificado SSL: {{ 'VÁLIDO' if ssl_cert.stat.exists else 'NO ENCONTRADO' }}"
+          - "Docker: {{ 'FUNCIONANDO' if docker_services.rc == 0 else 'VERIFICAR' }}"
+          - "Contenedores: {{ docker_services.stdout_lines | length if docker_services.stdout_lines is defined else 0 }}"
+          - "Health check: {{ 'OK' if health_check.status == 200 else 'FAILED' }}"
+          - "=========================================="
+          - "URLs de acceso:"
+          - "  - Extagram: https://{{ domain_name }}/extagram.php"
+          - "  - Grafana: https://{{ domain_name }}/grafana/"
+          - "  - Prometheus: https://{{ domain_name }}/prometheus/"
+          - "  - cAdvisor: https://{{ domain_name }}/cadvisor/"
+          - "=========================================="
+      tags: [verify, always]

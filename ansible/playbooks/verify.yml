@@ -1,0 +1,9 @@
+---
+- name: Verificar estado de Extagram
+  hosts: extagram-server
+  become: yes
+  
+  tasks:
+    - name: Importar tareas de verificación
+      import_playbook: deploy-full.yml
+      tags: [verify]

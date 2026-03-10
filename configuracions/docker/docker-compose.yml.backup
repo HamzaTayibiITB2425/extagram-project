@@ -11,6 +11,9 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - /var/www/certbot:/var/www/certbot:ro
       - ./s2-s3-php:/var/www/html:ro
+      - ./s4-upload/upload.php:/var/www/html/upload.php:ro
+      - ./s4-upload/delete.php:/var/www/html/delete.php:ro
+      - ./s4-upload/recover.php:/var/www/html/recover.php:ro
     networks:
       - extagram_front
       - extagram_services
@@ -21,6 +24,15 @@ services:
       - s4-upload
       - s5-images
       - s6-static
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - CHOWN
+      - SETGID
+      - SETUID
 
   s2-php:
     build: ./s2-s3-php
@@ -200,10 +212,17 @@ services:
       LDAP_DOMAIN: ${LDAP_DOMAIN}
       LDAP_ADMIN_PASSWORD: ${LDAP_ADMIN_PASSWORD}
       LDAP_USER_PASSWORD: ${LDAP_USER_PASSWORD}
-      CONTAINER_LOG_LEVEL: debug
     networks:
       - extagram_data
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
 
   grafana:
     image: grafana/grafana:latest
@@ -214,11 +233,8 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin123
-      - GF_SERVER_DOMAIN=extagram-grup3.duckdns.org
       - GF_SERVER_ROOT_URL=https://extagram-grup3.duckdns.org/grafana/
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
-      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/home.json
-      - GF_NEWS_NEWS_FEED_ENABLED=false
     volumes:
       - grafana-data:/var/lib/grafana
     networks:
