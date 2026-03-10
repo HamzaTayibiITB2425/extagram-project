@@ -25,3 +25,6 @@ Thumbs.db
 configuracions/docker/monitoring/loki/data/
 configuracions/docker/monitoring/prometheus/data/
 configuracions/docker/monitoring/grafana/data/
+configuracions/docker/monitoring/loki/data/
+configuracions/docker/monitoring/prometheus/data/
+configuracions/docker/monitoring/grafana/data/
