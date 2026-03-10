@@ -1371,7 +1371,7 @@ curl -s "http://localhost:9090/api/v1/query?query=container_cpu_usage_seconds_to
 
 **3. Comprovar dashboard auto-creat:**
 ```bash
-curl -s -u admin:admin123 http://localhost:3000/grafana/api/search | grep "Extagram Docker Monitoring"
+curl -s -u admin:password http://localhost:3000/grafana/api/search | grep "Extagram Docker Monitoring"
 ```
 
 **4. Verificar auto-inicialització després de reboot:**
