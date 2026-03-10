@@ -951,7 +951,6 @@ Grafana proporciona una interfície web unificada per visualitzar logs i mètriq
 #### Accés a Grafana
 
 **URL:** https://extagram-grup3.duckdns.org/grafana/  
-**Credencials:** admin / admin123
 
 #### Dashboard Principal: "Extagram Docker Monitoring"
 
@@ -1432,10 +1431,6 @@ all:
     # Directoris
     project_dir: /home/ubuntu/extagram-project
     docker_dir: "{{ project_dir }}/configuracions/docker"
-    
-    # Credencials Grafana
-    grafana_admin_user: admin
-    grafana_admin_password: admin123
     
     # Configuració monitoring
     prometheus_scrape_interval: 5s
@@ -1965,13 +1960,13 @@ docker compose ps
 
 ### URLs d'Accés
 
-| Servei | URL | Credencials |
-|--------|-----|-------------|
-| Extagram | https://extagram-grup3.duckdns.org/extagram.php | - |
-| Login LDAP | https://extagram-grup3.duckdns.org/login_ldap.php | hamza / Kevin |
-| Grafana | https://extagram-grup3.duckdns.org/grafana/ | admin / admin123 |
-| Prometheus | https://extagram-grup3.duckdns.org/prometheus/ | - |
-| cAdvisor | https://extagram-grup3.duckdns.org/cadvisor/ | - |
+| Servei | URL | 
+|--------|-----|
+| Extagram | https://extagram-grup3.duckdns.org/extagram.php | 
+| Login LDAP | https://extagram-grup3.duckdns.org/login_ldap.php | 
+| Grafana | https://extagram-grup3.duckdns.org/grafana/ | 
+| Prometheus | https://extagram-grup3.duckdns.org/prometheus/ | 
+| cAdvisor | https://extagram-grup3.duckdns.org/cadvisor/ | 
 
 ---
 
