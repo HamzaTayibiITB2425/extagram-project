@@ -62,7 +62,7 @@ CD.
 
 ## 5. Captura ProofHub
 
-![ProofHub Sprint 5 Review](./captures/proofhub_sprint5_review.png)
+![ProofHub Sprint 5 Review](./captures/SPRINT5_REVIEW)
 
 ---
 
