@@ -2343,7 +2343,7 @@ ansible(playbook): afegir verificació completa
 
 ## Llicència
 
-Aquest projecte està sota llicència **MIT License**. Vegeu el fitxer [LICENSE](LICENSE) per més detalls.
+Aquest projecte està sota llicència **MIT License**.
 
 Copyright (c) 2025-2026 Hamza, Kevin - Institut Tecnològic de Barcelona
 
