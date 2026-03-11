@@ -2378,31 +2378,31 @@ Tots els sprints disposen de documentació completa:
 
 - **[Planning](actes/sprint1/SPRINT1_PLANNING.md):** Objectius, backlog, estimacions
 - **[Review](actes/sprint1/SPRINT1_REVIEW.md):** Resultats, demo, retrospectiva
-- **[Retrospectiva](actes/sprint1/SPRINT1_RETROSPECTIVA.md):** Què va anar bé, millores
+- **[Retrospectiva](actes/sprint1/SPRINT1_REVIEW.md#4-retrospectiva-del-projecte):** Què va anar bé, millores
 
 #### Sprint 2 - Dockerització
 
 - **[Planning](actes/sprint2/SPRINT2_PLANNING.md):** Objectius dockerització
 - **[Review](actes/sprint2/SPRINT2_REVIEW.md):** Contenidors desplegats
-- **[Retrospectiva](actes/sprint2/SPRINT2_RETROSPECTIVA.md):** Lliçons apreses
+- **[Retrospectiva](actes/sprint2/SPRINT2_REVIEW.md#4-retrospectiva-del-projecte):** Lliçons apreses
 
 #### Sprint 3 - Integració
 
 - **[Planning](actes/sprint3/SPRINT3_PLANNING.md):** Proves finals
 - **[Review](actes/sprint3/SPRINT3_REVIEW.md):** Sistema integrat
-- **[Retrospectiva](actes/sprint3/SPRINT3_RETROSPECTIVA.md):** Millores identificades
+- **[Retrospectiva](actes/sprint3/SPRINT3_REVIEW.md#4-retrospectiva-del-projecte):** Millores identificades
 
 #### Sprint 4 - Seguretat
 
 - **[Planning](actes/sprint4/SPRINT4_PLANNING.md):** Objectius seguretat
 - **[Review](actes/sprint4/SPRINT4_REVIEW.md):** WAF, Hardening, Firewall
-- **[Retrospectiva](actes/sprint4/SPRINT4_RETROSPECTIVA.md):** Lliçons seguretat
+- **[Retrospectiva](actes/sprint4/SPRINT4_REVIEW.md#4-retrospectiva-del-projecte):** Lliçons seguretat
 
 #### Sprint 5 - Monitoratge
 
 - **[Planning](actes/sprint5/SPRINT5_PLANNING.md):** Objectius monitoring
 - **[Review](actes/sprint5/SPRINT5_REVIEW.md):** Grafana operatiu
-- **[Retrospectiva](actes/sprint5/SPRINT5_RETROSPECTIVA.md):** Repte container_name
+- **[Retrospectiva](actes/sprint5/SPRINT5_REVIEW.md#4-retrospectiva-del-projecte):** Repte container_name
 
 ### Documentació de Proves
 
