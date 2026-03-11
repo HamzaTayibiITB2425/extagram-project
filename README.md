@@ -32,8 +32,6 @@
    - [Flux de Peticions](#flux-de-peticions)
 5. [Proves de Segmentació de Xarxa](#proves-de-segmentació-de-xarxa)
 6. [Tecnologies Utilitzades](#tecnologies-utilitzades)
-   - [Stack Tecnològic Principal](#stack-tecnològic-principal)
-   - [Comparativa de Tecnologies](#comparativa-i-justificació-de-tecnologies)
 7. [Seguretat del Sistema](#seguretat-del-sistema)
    - [Web Application Firewall (WAF)](#web-application-firewall-waf)
    - [Firewall Perimetral (iptables)](#firewall-perimetral-iptables)
@@ -46,7 +44,6 @@
    - [Prometheus - Mètriques en Temps Real](#prometheus---mètriques-en-temps-real)
    - [Promtail - Recopilació de Logs](#promtail---recopilació-de-logs)
 9. [Automatització amb Ansible](#automatització-amb-ansible)
-   - [Estructura Ansible](#estructura-ansible)
    - [Inventari i Variables](#inventari-i-variables)
    - [Playbooks Disponibles](#playbooks-disponibles)
    - [Comandes Útils Ansible](#comandes-útils-ansible)
@@ -196,7 +193,7 @@ Desenvolupar i desplegar una aplicació web de xarxes socials (Extagram) amb una
 - Configurar **iptables** per firewall Linux
 - Aplicar **hardening** a contenidors i base de dades
 - Implementar **Grafana + Loki + Prometheus** per monitoratge
-- Automatitzar amb **Ansible** per desplega ments repetibles
+- Automatitzar amb **Ansible** per desplegaments repetibles
 - Realitzar **proves d'estrès** amb Apache Bench
 - Desenvolupar habilitats de **treball en equip** i **comunicació tècnica**
 - Adquirir experiència en **documentació tècnica professional**
@@ -2036,6 +2033,7 @@ extagram-project/
     ├── imagenes/
     │   ├── arquitectura/
     │   └── pruebas/
+    ├── ALERTAS_TELEGRAM.md
     ├── SPRINT4_SEGURIDAD.md
     └── SPRINT5_MONITORATGE.md
 ```
@@ -2156,6 +2154,11 @@ El projecte disposa de documentació tècnica exhaustiva organitzada per àrees:
   - Queries PromQL i LogQL
   - Auto-inicialització amb systemd
   - Proves de monitoratge
+- **[Alertes Telegram](docs/ALERTAS_TELEGRAM.md):**
+  - Configuració alertes Grafana
+  - Integració amb Telegram
+  - Contact Points i Notification Policies
+  - Scripts de verificació
 
 #### Documentació d'Automatització
 
@@ -2379,7 +2382,7 @@ Copyright (c) 2025-2026 Hamza, Kevin - Institut Tecnològic de Barcelona
 
 ---
 
-**Última actualització:** 10 de Març de 2026  
-**Versió del Document:** 12.0  
+**Última actualització:** 11 de Març de 2026  
+**Versió del Document:** 13.0  
 **Estat del Projecte:** COMPLETAT (100%)  
 **Data Presentació:** 16-17 de Març de 2026
