@@ -1393,7 +1393,7 @@ El projecte inclou **automatització completa amb Ansible** per permetre despleg
 
 ### Inventari i Variables
 
-**Arxiu:** `ansible/inventory.yml`
+**Arxiu:** [`ansible/inventory.yml`](ansible/inventory.yml)
 ```yaml
 all:
   hosts:
@@ -1405,15 +1405,19 @@ all:
       ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
   
   vars:
-    # Configuració del domini
+    # Configuración del dominio
     domain_name: extagram-grup3.duckdns.org
     email_ssl: hamza@example.com
     
-    # Directoris
+    # Directorios
     project_dir: /home/ubuntu/extagram-project
     docker_dir: "{{ project_dir }}/configuracions/docker"
     
-    # Configuració monitoring
+    # Credenciales Grafana
+    grafana_admin_user: admin
+    grafana_admin_password: admin123
+    
+    # Configuración monitoring
     prometheus_scrape_interval: 5s
     loki_retention_days: 7
 ```
@@ -1429,7 +1433,7 @@ all:
 
 #### 1. Playbook de Verificació Completa
 
-**Arxiu:** `ansible/playbooks/deploy-full.yml`
+**Arxiu:** [`ansible/playbooks/deploy-full.yml`](ansible/playbooks/deploy-full.yml)
 
 Aquest playbook realitza una verificació exhaustiva de tot el sistema:
 
@@ -1440,6 +1444,120 @@ Aquest playbook realitza una verificació exhaustiva de tot el sistema:
 - Verificar servei systemd `extagram-grafana-init`
 - Comprovar health endpoint HTTPS
 - Generar resum amb totes les mètriques
+
+**Codi complet del playbook:**
+```yaml
+---
+- name: Desplegar Extagram completo en producción
+  hosts: extagram-server
+  become: yes
+  
+  vars:
+    domain_name: extagram-grup3.duckdns.org
+    project_dir: /home/ubuntu/extagram-project
+    docker_dir: "{{ project_dir }}/configuracions/docker"
+    grafana_admin_user: admin
+    grafana_admin_password: admin123
+  
+  tasks:
+    - name: Actualizar paquetes del sistema
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      tags: [system, never-skip]
+    
+    - name: Instalar dependencias base
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+          - git
+          - python3-pip
+          - jq
+        state: present
+      tags: [system]
+    
+    - name: Verificar que Docker funciona
+      command: docker ps
+      changed_when: false
+      tags: [docker, verify]
+    
+    - name: Verificar estado de certificado SSL
+      stat:
+        path: "/etc/letsencrypt/live/{{ domain_name }}/fullchain.pem"
+      register: ssl_cert
+      tags: [ssl, verify]
+    
+    - name: Mostrar estado SSL
+      debug:
+        msg: "Certificado SSL existe: {{ ssl_cert.stat.exists }}"
+      tags: [ssl, verify]
+    
+    - name: Verificar servicios Docker corriendo
+      shell: "docker ps --format 'table {{ '{{' }}.Names{{ '}}' }}\t{{ '{{' }}.Status{{ '}}' }}' | grep extagram"
+      register: docker_services
+      changed_when: false
+      failed_when: false
+      tags: [verify]
+    
+    - name: Mostrar servicios activos
+      debug:
+        msg: "{{ docker_services.stdout_lines }}"
+      when: docker_services.stdout_lines is defined
+      tags: [verify]
+    
+    - name: Verificar servicio systemd
+      systemd:
+        name: extagram-grafana-init
+      register: systemd_status
+      failed_when: false
+      tags: [monitoring, verify]
+    
+    - name: Mostrar estado del servicio
+      debug:
+        msg: "Servicio extagram-grafana-init: {{ 'ACTIVO' if systemd_status.status.ActiveState == 'active' else systemd_status.status.ActiveState | default('NO ENCONTRADO') }}"
+      when: systemd_status.status is defined
+      tags: [monitoring, verify]
+    
+    - name: Verificar acceso HTTPS
+      uri:
+        url: "https://{{ domain_name }}/health"
+        validate_certs: no
+        status_code: 200
+      register: health_check
+      retries: 3
+      delay: 5
+      failed_when: false
+      tags: [verify]
+    
+    - name: Mostrar resultado health check
+      debug:
+        msg: "Health check: {{ 'OK' if health_check.status == 200 else 'FAILED' }}"
+      tags: [verify]
+    
+    - name: Resumen del despliegue
+      debug:
+        msg:
+          - "=========================================="
+          - "✅ VERIFICACIÓN COMPLETADA"
+          - "=========================================="
+          - "Dominio: {{ domain_name }}"
+          - "Certificado SSL: {{ 'VÁLIDO' if ssl_cert.stat.exists else 'NO ENCONTRADO' }}"
+          - "Docker: {{ 'FUNCIONANDO' if docker_services.rc == 0 else 'VERIFICAR' }}"
+          - "Contenedores: {{ docker_services.stdout_lines | length if docker_services.stdout_lines is defined else 0 }}"
+          - "Health check: {{ 'OK' if health_check.status == 200 else 'FAILED' }}"
+          - "=========================================="
+          - "URLs de acceso:"
+          - "  - Extagram: https://{{ domain_name }}/extagram.php"
+          - "  - Grafana: https://{{ domain_name }}/grafana/"
+          - "  - Prometheus: https://{{ domain_name }}/prometheus/"
+          - "  - cAdvisor: https://{{ domain_name }}/cadvisor/"
+          - "=========================================="
+      tags: [verify, always]
+```
 
 **Executar:**
 ```bash
@@ -1462,10 +1580,10 @@ ok: [extagram-server] => {
         "Health check: OK",
         "==========================================",
         "URLs de acceso:",
-        "  - Extagram: https://extagram-grup3.duckdns.org/extagram.php",
-        "  - Grafana: https://extagram-grup3.duckdns.org/grafana/",
-        "  - Prometheus: https://extagram-grup3.duckdns.org/prometheus/",
-        "  - cAdvisor: https://extagram-grup3.duckdns.org/cadvisor/",
+        "  - Extagram: [https://extagram-grup3.duckdns.org/extagram.php](https://extagram-grup3.duckdns.org/extagram.php)",
+        "  - Grafana: [https://extagram-grup3.duckdns.org/grafana/](https://extagram-grup3.duckdns.org/grafana/)",
+        "  - Prometheus: [https://extagram-grup3.duckdns.org/prometheus/](https://extagram-grup3.duckdns.org/prometheus/)",
+        "  - cAdvisor: [https://extagram-grup3.duckdns.org/cadvisor/](https://extagram-grup3.duckdns.org/cadvisor/)",
         "=========================================="
     ]
 }
@@ -1476,9 +1594,22 @@ extagram-server            : ok=11   changed=0    unreachable=0    failed=0
 
 #### 2. Playbook Només Verificació
 
-**Arxiu:** `ansible/playbooks/verify.yml`
+**Arxiu:** [`ansible/playbooks/verify.yml`](ansible/playbooks/verify.yml)
 
 Playbook simplificat que només executa les tasques de verificació.
+
+**Codi complet:**
+```yaml
+---
+- name: Verificar estado de Extagram
+  hosts: extagram-server
+  become: yes
+  
+  tasks:
+    - name: Importar tareas de verificación
+      import_playbook: deploy-full.yml
+      tags: [verify]
+```
 
 **Executar:**
 ```bash
@@ -1559,7 +1690,61 @@ ansible extagram-server -i inventory.yml -m shell -a "docker system prune -f"
 
 El directori `ansible/scripts/` conté scripts bash per facilitar operacions comunes:
 
-**Arxiu:** `ansible/scripts/shortcuts.sh`
+**Arxiu:** [`ansible/scripts/shortcuts.sh`](ansible/scripts/shortcuts.sh)
+
+**Codi complet del script:**
+```bash
+#!/bin/bash
+# Atajos rápidos para Ansible
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ANSIBLE_DIR="$(dirname "$SCRIPT_DIR")"
+INVENTORY="$ANSIBLE_DIR/inventory.yml"
+HOST="extagram-server"
+
+case "$1" in
+  verify)
+    ansible-playbook -i $INVENTORY $ANSIBLE_DIR/playbooks/deploy-full.yml --tags verify
+    ;;
+  
+  logs)
+    CONTAINER="${2:-extagram-grafana}"
+    ansible $HOST -i $INVENTORY -m shell -a "docker logs $CONTAINER --tail 50"
+    ;;
+  
+  restart)
+    CONTAINER="${2:-s1-loadbalancer}"
+    ansible $HOST -i $INVENTORY -m shell -a "docker compose -f /home/ubuntu/extagram-project/configuracions/docker/docker-compose.yml restart $CONTAINER"
+    ;;
+  
+  status)
+    ansible $HOST -i $INVENTORY -m shell -a "docker ps --format 'table {{.Names}}\t{{.Status}}'"
+    ;;
+  
+  deploy)
+    ansible-playbook -i $INVENTORY $ANSIBLE_DIR/playbooks/deploy-full.yml
+    ;;
+  
+  *)
+    echo "🚀 Atajos Ansible - Extagram"
+    echo ""
+    echo "Uso: $0 {comando} [opciones]"
+    echo ""
+    echo "Comandos:"
+    echo "  verify                       Verificar estado del sistema"
+    echo "  logs [contenedor]            Ver logs (default: extagram-grafana)"
+    echo "  restart [contenedor]         Reiniciar contenedor (default: s1-loadbalancer)"
+    echo "  status                       Ver estado de contenedores"
+    echo "  deploy                       Despliegue completo"
+    echo ""
+    echo "Ejemplos:"
+    echo "  $0 verify"
+    echo "  $0 logs extagram-prometheus"
+    echo "  $0 restart grafana"
+    echo "  $0 status"
+    ;;
+esac
+```
 
 **Ús:**
 ```bash
@@ -1602,7 +1787,7 @@ ansible --version
 
 **2. Clonar repositori:**
 ```bash
-git clone https://github.com/HamzaTayibiITB2425/extagram-project.git
+git clone [https://github.com/HamzaTayibiITB2425/extagram-project.git](https://github.com/HamzaTayibiITB2425/extagram-project.git)
 cd extagram-project/ansible
 ```
 
@@ -1636,10 +1821,10 @@ extagram-server | SUCCESS => {
 
 Tota la documentació detallada d'Ansible es troba a:
 
-- **README principal:** `ansible/README.md`
-- **Guia d'instal·lació:** `ansible/docs/INSTALL.md`
-- **Comandos útils:** `ansible/docs/COMMANDS.md`
-- **Troubleshooting:** `ansible/docs/TROUBLESHOOTING.md`
+- **README principal:** [`ansible/README.md`](ansible/README.md)
+- **Guia d'instal·lació:** [`ansible/docs/INSTALL.md`](ansible/docs/INSTALL.md)
+- **Comandos útils:** [`ansible/docs/COMMANDS.md`](ansible/docs/COMMANDS.md)
+- **Troubleshooting:** [`ansible/docs/TROUBLESHOOTING.md`](ansible/docs/TROUBLESHOOTING.md)
 
 ---
 
