@@ -35,7 +35,7 @@ nano alertas.env
 TELEGRAM_BOT_TOKEN=tu_token_aqui
 TELEGRAM_CHAT_ID=tu_chat_id_aqui
 GRAFANA_USER=admin
-GRAFANA_PASS=admin123
+GRAFANA_PASS=password
 GRAFANA_URL=http://localhost:3000/grafana
 ```
 
@@ -148,7 +148,7 @@ Reexecutar:
 
 **1. Verificar Contact Point:**
 ```bash
-curl -u admin:admin123 http://localhost:3000/grafana/api/v1/provisioning/contact-points | jq
+curl -u admin:password http://localhost:3000/grafana/api/v1/provisioning/contact-points | jq
 ```
 
 **2. Test manual a Grafana:**
