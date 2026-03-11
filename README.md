@@ -2374,10 +2374,6 @@ El projecte disposa de documentació tècnica exhaustiva organitzada per àrees:
 
 Tots els sprints disposen de documentació completa:
 
-### Actes de Sprints
-
-Tots els sprints disposen de documentació completa:
-
 #### Sprint 1 - MVP
 
 - **[Planning](actes/sprint1/SPRINT1_PLANNING.md):** Objectius, backlog, estimacions
