@@ -16,7 +16,7 @@
 ```
    https://api.telegram.org/bot<TU_TOKEN>/getUpdates
 ```
-3. Busca el camp `"chat":{"id":123456789}`
+3. Busca el camp `"chat":{"id":123456789}` 
 4. Guarda aquest **chat_id**
 
 ### 3. Configurar Alertas
