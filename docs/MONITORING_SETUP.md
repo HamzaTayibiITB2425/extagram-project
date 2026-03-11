@@ -71,7 +71,7 @@ grafana:
     - "3000:3000"
   environment:
     - GF_SECURITY_ADMIN_USER=admin
-    - GF_SECURITY_ADMIN_PASSWORD=admin123
+    - GF_SECURITY_ADMIN_PASSWORD=password
     - GF_SERVER_DOMAIN=extagram-grup3.duckdns.org
     - GF_SERVER_ROOT_URL=https://extagram-grup3.duckdns.org/grafana/
     - GF_SERVER_SERVE_FROM_SUB_PATH=true
@@ -85,7 +85,7 @@ grafana:
 ```
 
 **Accés:** https://extagram-grup3.duckdns.org/grafana/  
-**Credencials:** admin / admin123
+**Credencials:** admin / password
 
 ### Loki
 
@@ -337,7 +337,7 @@ done
 
 # Crear datasource Prometheus
 curl -X POST -H "Content-Type: application/json" \
-  -u admin:admin123 \
+  -u admin:password \
   http://localhost:3000/grafana/api/datasources \
   -d '{
     "name": "Prometheus",
@@ -349,7 +349,7 @@ curl -X POST -H "Content-Type: application/json" \
 
 # Crear datasource Loki
 curl -X POST -H "Content-Type: application/json" \
-  -u admin:admin123 \
+  -u admin:password \
   http://localhost:3000/grafana/api/datasources \
   -d '{
     "name": "Loki",
@@ -359,12 +359,12 @@ curl -X POST -H "Content-Type: application/json" \
   }'
 
 # Obtenir UIDs
-LOKI_UID=$(curl -s -u admin:admin123 http://localhost:3000/grafana/api/datasources | jq -r '.[] | select(.type=="loki") | .uid')
-PROM_UID=$(curl -s -u admin:admin123 http://localhost:3000/grafana/api/datasources | jq -r '.[] | select(.type=="prometheus") | .uid')
+LOKI_UID=$(curl -s -u admin:password http://localhost:3000/grafana/api/datasources | jq -r '.[] | select(.type=="loki") | .uid')
+PROM_UID=$(curl -s -u admin:password http://localhost:3000/grafana/api/datasources | jq -r '.[] | select(.type=="prometheus") | .uid')
 
 # Crear dashboard
 curl -X POST -H "Content-Type: application/json" \
-  -u admin:admin123 \
+  -u admin:password \
   http://localhost:3000/grafana/api/dashboards/db \
   -d @dashboard.json
 
@@ -382,7 +382,7 @@ chmod +x init-grafana.sh
 **Passos:**
 
 1. Accedir a Grafana: https://extagram-grup3.duckdns.org/grafana/
-2. Login amb admin / admin123
+2. Login amb admin / password
 3. Configuration → Data Sources → Add data source
 4. Seleccionar **Prometheus**:
    - URL: `http://prometheus:9090`
