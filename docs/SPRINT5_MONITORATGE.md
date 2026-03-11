@@ -116,7 +116,7 @@ grafana:
     - "3000:3000"
   environment:
     - GF_SECURITY_ADMIN_USER=admin
-    - GF_SECURITY_ADMIN_PASSWORD=admin123
+    - GF_SECURITY_ADMIN_PASSWORD=password
     - GF_SERVER_DOMAIN=extagram-grup3.duckdns.org
     - GF_SERVER_ROOT_URL=https://extagram-grup3.duckdns.org/grafana/
     - GF_SERVER_SERVE_FROM_SUB_PATH=true
@@ -138,7 +138,7 @@ grafana:
 **Accés:**
 ```
 URL: https://extagram-grup3.duckdns.org/grafana/
-Credencials: admin / admin123
+Credencials: admin / password
 ```
 
 ### Dashboard Principal
@@ -271,12 +271,12 @@ until curl -s http://localhost:3000/grafana/api/health > /dev/null 2>&1; do
 done
 
 # Obtenir UIDs dels datasources
-LOKI_UID=$(curl -s -u admin:admin123 http://localhost:3000/grafana/api/datasources | jq -r '.[] | select(.type=="loki") | .uid')
-PROM_UID=$(curl -s -u admin:admin123 http://localhost:3000/grafana/api/datasources | jq -r '.[] | select(.type=="prometheus") | .uid')
+LOKI_UID=$(curl -s -u admin:password http://localhost:3000/grafana/api/datasources | jq -r '.[] | select(.type=="loki") | .uid')
+PROM_UID=$(curl -s -u admin:password http://localhost:3000/grafana/api/datasources | jq -r '.[] | select(.type=="prometheus") | .uid')
 
 # Crear datasource Prometheus
 curl -s -X POST -H "Content-Type: application/json" \
-  -u admin:admin123 \
+  -u admin:password \
   http://localhost:3000/grafana/api/datasources \
   -d '{
     "name": "Prometheus",
@@ -288,7 +288,7 @@ curl -s -X POST -H "Content-Type: application/json" \
 
 # Crear datasource Loki
 curl -s -X POST -H "Content-Type: application/json" \
-  -u admin:admin123 \
+  -u admin:password \
   http://localhost:3000/grafana/api/datasources \
   -d '{
     "name": "Loki",
@@ -298,18 +298,18 @@ curl -s -X POST -H "Content-Type: application/json" \
   }' > /dev/null 2>&1
 
 # Actualitzar UIDs després de crear
-LOKI_UID=$(curl -s -u admin:admin123 http://localhost:3000/grafana/api/datasources | jq -r '.[] | select(.type=="loki") | .uid')
-PROM_UID=$(curl -s -u admin:admin123 http://localhost:3000/grafana/api/datasources | jq -r '.[] | select(.type=="prometheus") | .uid')
+LOKI_UID=$(curl -s -u admin:password http://localhost:3000/grafana/api/datasources | jq -r '.[] | select(.type=="loki") | .uid')
+PROM_UID=$(curl -s -u admin:password http://localhost:3000/grafana/api/datasources | jq -r '.[] | select(.type=="prometheus") | .uid')
 
 # Crear dashboard (JSON simplificat aquí)
 curl -s -X POST -H "Content-Type: application/json" \
-  -u admin:admin123 \
+  -u admin:password \
   http://localhost:3000/grafana/api/dashboards/db \
   -d "{...dashboard JSON...}" > /dev/null
 
 # Configurar dashboard com a home
 curl -s -X PUT -H "Content-Type: application/json" \
-  -u admin:admin123 \
+  -u admin:password \
   http://localhost:3000/grafana/api/org/preferences \
   -d '{"homeDashboardUID":"extagram-main","theme":"dark"}' > /dev/null
 
@@ -700,7 +700,7 @@ curl -s http://localhost:9090/api/v1/targets | jq '.data.activeTargets[] | {job:
 ### 3. Verificar Dashboard a Grafana
 ```bash
 # Comprovar que el dashboard existeix
-curl -s -u admin:admin123 http://localhost:3000/grafana/api/search | grep "Extagram Docker Monitoring"
+curl -s -u admin:password http://localhost:3000/grafana/api/search | grep "Extagram Docker Monitoring"
 
 # Esperat: JSON amb el dashboard
 ```
