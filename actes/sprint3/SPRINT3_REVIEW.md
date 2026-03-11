@@ -70,7 +70,7 @@
 
 ---
 
-## 4. Retrospectiva del Projecte
+## 4. Retrospectiva
 
 ### Que ha anat be?
 
