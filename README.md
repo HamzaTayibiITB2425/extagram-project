@@ -2356,7 +2356,7 @@ El projecte disposa de documentació tècnica exhaustiva organitzada per àrees:
 
 #### Instal·lació Completa
 
-1. **[Guia d'Instal·lació Ràpida](#guia-dinstal·lació-ràpida)** - Desplegament bàsic
+1. **[Guia d'Instal·lació Ràpida](docs/GUIA_INSTALACIO.md)** - Desplegament bàsic
 2. **[Configuració SSL](docs/SSL_SETUP.md)** - Certificats Let's Encrypt
 3. **[Configuració LDAP](docs/LDAP_SETUP.md)** - Autenticació usuaris
 4. **[Configuració Monitoring](docs/MONITORING_SETUP.md)** - Grafana + Loki + Prometheus
