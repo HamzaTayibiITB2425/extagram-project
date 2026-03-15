@@ -32,6 +32,8 @@
    - [Flux de Peticions](#flux-de-peticions)
 5. [Proves de Segmentació de Xarxa](#proves-de-segmentació-de-xarxa)
 6. [Tecnologies Utilitzades](#tecnologies-utilitzades)
+   - [Stack Tecnològic Principal](#stack-tecnològic-principal)
+   - [Comparativa de Tecnologies](#comparativa-de-tecnologies)
 7. [Seguretat del Sistema](#seguretat-del-sistema)
    - [Web Application Firewall (WAF)](#web-application-firewall-waf)
    - [Firewall Perimetral (iptables)](#firewall-perimetral-iptables)
@@ -437,6 +439,399 @@ La segmentació de xarxa garanteix:
 | **Documentació** | Markdown | - | Tots els docs al repo |
 | **Sistema Operatiu** | Ubuntu Server | 22.04 LTS | Sistema host |
 | **Proves d'Estrès** | Apache Bench | 2.3 | Load testing |
+
+---
+
+### Comparativa de Tecnologies
+
+A continuació es presenten les **decisions tecnològiques clau** del projecte amb comparatives detallades respecte a alternatives populars. Cada elecció ha estat justificada en base a requisits específics del projecte, experiència de l'equip i objectius d'aprenentatge.
+
+---
+
+#### 🐳 Containerització: Docker vs Podman vs LXC/LXD
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="26%">🏆 Docker (ESCOLLIT)</th>
+<th width="27%">Podman</th>
+<th width="27%">LXC/LXD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Arquitectura</strong></td>
+<td>✅ Daemon centralitzat + CLI<br>Fàcil orquestració amb Compose</td>
+<td>❌ Daemonless (més segur)<br>Compatibilitat limitada Compose</td>
+<td>❌ Contenidors sistema complets<br>Més pesat que Docker</td>
+</tr>
+<tr>
+<td><strong>Ecosistema</strong></td>
+<td>✅ Docker Hub amb milions d'imatges<br>Documentació exhaustiva</td>
+<td>⚠️ Compatible amb imatges Docker<br>Menys recursos educatius</td>
+<td>❌ Ecosistema limitat<br>Imatges personalitzades</td>
+</tr>
+<tr>
+<td><strong>Corba d'Aprenentatge</strong></td>
+<td>✅ Molt documentat<br>Sintaxi intuïtiva</td>
+<td>⚠️ Sintaxi similar a Docker<br>Troubleshooting més complex</td>
+<td>❌ Configuració manual complexa<br>Conceptes diferents</td>
+</tr>
+<tr>
+<td><strong>Suport Networking</strong></td>
+<td>✅ Xarxes bridge/overlay natives<br>Segmentació simple</td>
+<td>⚠️ Networking menys madur<br>Configuració manual</td>
+<td>⚠️ Networking potent però complex<br>Requereix coneixements avançats</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús</strong></td>
+<td>✅ Microserveis, CI/CD, Dev<br>Projectes educatius</td>
+<td>✅ Entorns HPC sense root<br>Seguretat avançada</td>
+<td>✅ Virtualització lleuger<br>Migracions VM → Container</td>
+</tr>
+</tbody>
+</table>
+
+**🎯 Per què Docker?**
+- **Ecosistema consolidat:** Imatges oficials de NGINX, MySQL, PHP-FPM amb Alpine Linux optimitzades
+- **Docker Compose:** Orquestració declarativa en YAML perfecta per a 8 serveis amb 4 xarxes
+- **Experiència educativa:** Tots els recursos i tutorials utilitzen Docker com a estàndard
+- **Troubleshooting ràpid:** Comunitat massiva amb solucions documentades
+
+---
+
+#### ⚡ Proxy Invers / Load Balancer: NGINX vs Apache vs Traefik
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="26%">🏆 NGINX (ESCOLLIT)</th>
+<th width="27%">Apache HTTP Server</th>
+<th width="27%">Traefik</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rendiment</strong></td>
+<td>✅ Event-driven (async I/O)<br>10K+ connexions simultànies</td>
+<td>❌ Process-based (blocking I/O)<br>Consum alt de RAM</td>
+<td>✅ Go nativo (lightweight)<br>Bon rendiment general</td>
+</tr>
+<tr>
+<td><strong>Configuració</strong></td>
+<td>✅ nginx.conf llegible<br>Directives clares</td>
+<td>⚠️ .htaccess + httpd.conf<br>Configuració dispersa</td>
+<td>❌ YAML + Labels Docker<br>Configuració automàtica complexa</td>
+</tr>
+<tr>
+<td><strong>WAF Natiu</strong></td>
+<td>✅ Regex en directives if{}<br>ModSecurity disponible</td>
+<td>✅ ModSecurity madur<br>Configuració verbose</td>
+<td>❌ Middleware limitat<br>Requereix plugins externs</td>
+</tr>
+<tr>
+<td><strong>Load Balancing</strong></td>
+<td>✅ Round-Robin, IP Hash, Least Conn<br>Health checks natius</td>
+<td>⚠️ mod_proxy_balancer<br>Menys eficient</td>
+<td>✅ Auto-discovery Docker<br>Overhead configuració</td>
+</tr>
+<tr>
+<td><strong>Footprint</strong></td>
+<td>✅ Imatge Alpine 40MB<br>~10MB RAM idle</td>
+<td>❌ Imatge base 200MB+<br>~50MB RAM idle</td>
+<td>⚠️ Imatge 80MB<br>~30MB RAM idle</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús</strong></td>
+<td>✅ APIs, microserveis, static files<br>Proxy invers clàssic</td>
+<td>✅ Aplicacions legacy<br>Compatibilitat .htaccess</td>
+<td>✅ Kubernetes, Swarm<br>Auto-discovery avançat</td>
+</tr>
+</tbody>
+</table>
+
+**🎯 Per què NGINX?**
+- **Eficiència:** Model event-driven ideal per a alt tràfic concurrent amb baix consum de RAM
+- **Simplicitat:** Configuració centralitzada en un sol fitxer `nginx.conf` vs dispersió Apache
+- **WAF integrat:** Regles regex natives sense plugins externs (vs Traefik que requereix middleware)
+- **Versatilitat:** S1 (Load Balancer + WAF), S5 (Image Server), S6 (Static Server) amb la mateixa tecnologia
+
+---
+
+#### 🐘 Backend: PHP-FPM vs Node.js vs Python Flask
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="26%">🏆 PHP-FPM (ESCOLLIT)</th>
+<th width="27%">Node.js + Express</th>
+<th width="27%">Python Flask</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Experiència Equip</strong></td>
+<td>✅ Domini complet PHP 8.2<br>Curriculum ASIX2c</td>
+<td>⚠️ Coneixements bàsics JS<br>Corba aprenentatge async</td>
+<td>⚠️ Python conegut<br>Flask no practicat</td>
+</tr>
+<tr>
+<td><strong>Integració NGINX</strong></td>
+<td>✅ FastCGI Protocol natiu<br>fastcgi_pass trivial</td>
+<td>⚠️ Proxy HTTP requerit<br>proxy_pass + port management</td>
+<td>⚠️ WSGI/ASGI server extra<br>Gunicorn + config complexa</td>
+</tr>
+<tr>
+<td><strong>Escalabilitat</strong></td>
+<td>✅ Process Manager (pm.dynamic)<br>Auto-scaling workers</td>
+<td>✅ Cluster mode nativo<br>Single-threaded per worker</td>
+<td>⚠️ Multi-worker Gunicorn<br>GIL limita threading</td>
+</tr>
+<tr>
+<td><strong>Consum Recursos</strong></td>
+<td>✅ 30MB RAM per worker<br>Imatge Alpine 80MB</td>
+<td>⚠️ 50MB RAM per worker<br>Imatge Alpine 120MB</td>
+<td>⚠️ 40MB RAM per worker<br>Imatge Alpine 150MB</td>
+</tr>
+<tr>
+<td><strong>Integració BD</strong></td>
+<td>✅ PDO natiu MySQL/LDAP<br>Extensions madures</td>
+<td>✅ mysql2, ldapjs<br>Callbacks/Promises</td>
+<td>✅ PyMySQL, ldap3<br>Sintaxi Pythonic</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús</strong></td>
+<td>✅ CMSs, apps tradicionals<br>Shared hosting</td>
+<td>✅ APIs RESTful, real-time<br>Microserveis modern</td>
+<td>✅ APIs ràpides, ML/data<br>Scripting avançat</td>
+</tr>
+</tbody>
+</table>
+
+**🎯 Per què PHP-FPM?**
+- **Competència tècnica:** Domini de PHP 8.2 amb experiència prèvia en projectes acadèmics
+- **Integració NGINX perfecta:** Protocol FastCGI natiu sense overhead de proxy HTTP
+- **Process Manager avançat:** `pm.dynamic` amb auto-scaling segons càrrega (max_children, spare_servers)
+- **Footprint optimitzat:** Alpine Linux + extensions mínimes (mysqli, ldap, pdo_mysql) = 80MB vs 150MB Python
+
+---
+
+#### 🗄️ Base de Dades: MySQL vs PostgreSQL vs MongoDB
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="26%">🏆 MySQL (ESCOLLIT)</th>
+<th width="27%">PostgreSQL</th>
+<th width="27%">MongoDB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model de Dades</strong></td>
+<td>✅ Relacional (ACID)<br>Esquema rígid perfecte</td>
+<td>✅ Relacional avançat<br>JSONB, Arrays, PostGIS</td>
+<td>❌ Document-oriented<br>Schema-less (no encaixa)</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús Projecte</strong></td>
+<td>✅ Posts amb relacions clares<br>JOIN users ↔ posts trivial</td>
+<td>✅ Queries complexes avançades<br>Overkill per a cas simple</td>
+<td>❌ No requereix flexibilitat<br>Posts = estructura fixa</td>
+</tr>
+<tr>
+<td><strong>Integració PHP</strong></td>
+<td>✅ mysqli, PDO nadiu<br>Drivers optimitzats</td>
+<td>⚠️ pdo_pgsql disponible<br>Menys documentació PHP</td>
+<td>⚠️ php-mongodb PECL<br>Sintaxi diferent</td>
+</tr>
+<tr>
+<td><strong>Hardening</strong></td>
+<td>✅ mysql_secure_installation<br>Docs extenses seguretat</td>
+<td>✅ pg_hba.conf granular<br>Row-level security</td>
+<td>⚠️ Auth complex<br>Menys recursos hardening</td>
+</tr>
+<tr>
+<td><strong>Footprint</strong></td>
+<td>✅ 450MB imatge oficial<br>200MB RAM mínim</td>
+<td>⚠️ 350MB imatge Alpine<br>250MB RAM mínim</td>
+<td>⚠️ 700MB imatge oficial<br>300MB RAM mínim</td>
+</tr>
+<tr>
+<td><strong>Experiència Equip</strong></td>
+<td>✅ Practicat extensivament<br>Sintaxi SQL dominant</td>
+<td>⚠️ Conceptes similars<br>Sintaxi lleugerament diferent</td>
+<td>❌ No practicat<br>Query language diferent</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús</strong></td>
+<td>✅ OLTP, CMSs, aplicacions web<br>Lectura-escriptura equilibrada</td>
+<td>✅ Analítica, GIS, dades complexes<br>Queries pesades</td>
+<td>✅ Apps real-time, IoT, logs<br>Escriptures massives</td>
+</tr>
+</tbody>
+</table>
+
+**🎯 Per què MySQL?**
+- **Model relacional perfecte:** Posts amb user_id (FK), timestamps, captions = esquema fix
+- **Simplicitat:** No necessitem JSONB, arrays, ni GIS de PostgreSQL per a una xarxa social bàsica
+- **Integració PHP nativa:** mysqli + PDO amb prepared statements anti-SQL Injection
+- **Hardening documentat:** Guies extenses de fortificació (eliminar users anònims, privilegis mínims, local_infile=0)
+
+---
+
+#### 📊 Monitoratge: Grafana + Loki vs ELK Stack vs Datadog
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="26%">🏆 Grafana + Loki (ESCOLLIT)</th>
+<th width="27%">ELK Stack</th>
+<th width="27%">Datadog</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Arquitectura</strong></td>
+<td>✅ 3 components lleugers<br>Grafana + Loki + Promtail</td>
+<td>❌ 3 components pesants<br>Elasticsearch + Logstash + Kibana</td>
+<td>✅ SaaS Managed<br>Agent únic</td>
+</tr>
+<tr>
+<td><strong>Consum Recursos</strong></td>
+<td>✅ 500MB RAM total<br>Loki indexa només labels</td>
+<td>❌ 4GB+ RAM (Elasticsearch)<br>Full-text indexing</td>
+<td>✅ Agent 200MB RAM<br>Backend cloud</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>✅ 100% Open Source<br>Self-hosted gratuït</td>
+<td>⚠️ Open Source (Elastic License)<br>Features limitades</td>
+<td>❌ SaaS de pagament<br>$15/host/mes mínim</td>
+</tr>
+<tr>
+<td><strong>Integració Docker</strong></td>
+<td>✅ Promtail docker_sd_configs<br>Auto-discovery natiu</td>
+<td>⚠️ Filebeat Docker input<br>Configuració manual</td>
+<td>✅ Agent auto-detect<br>Tags automàtics</td>
+</tr>
+<tr>
+<td><strong>Query Language</strong></td>
+<td>✅ LogQL (similar PromQL)<br>Sintaxi simple</td>
+<td>⚠️ Lucene/KQL<br>Corba aprenentatge</td>
+<td>✅ GUI point-and-click<br>Query builder visual</td>
+</tr>
+<tr>
+<td><strong>Dashboards</strong></td>
+<td>✅ Grafana unificat<br>Logs + Mètriques same UI</td>
+<td>⚠️ Kibana separat<br>Prometheus requereix Grafana</td>
+<td>✅ Dashboards predefinits<br>Integracions automàtiques</td>
+</tr>
+<tr>
+<td><strong>Retenció Dades</strong></td>
+<td>✅ 7 dies configurable<br>Filesystem/S3</td>
+<td>⚠️ Índexs creixents<br>Necessita gestió activa</td>
+<td>⚠️ 15 dies gratuïts<br>Extensió de pagament</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús</strong></td>
+<td>✅ Microserveis cloud-native<br>Kubernetes, Docker</td>
+<td>✅ Analítica de logs complexa<br>Full-text search massiu</td>
+<td>✅ Empreses SaaS<br>Sense gestió infraestructura</td>
+</tr>
+</tbody>
+</table>
+
+**🎯 Per què Grafana + Loki?**
+- **Eficiència:** Loki indexa només labels (container_name, stream) vs full-text indexing ELK = 1/10 RAM
+- **Experiència unificada:** Grafana mostra logs (Loki) + mètriques (Prometheus) en mateix dashboard
+- **Auto-discovery Docker:** Promtail detecta automàticament contenidors amb docker_sd_configs
+- **Cost zero:** Self-hosted open source vs Datadog $15/host/mes × 1 host = $180/any
+
+---
+
+#### ⚙️ Automatització: Ansible vs Terraform vs Chef
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="26%">🏆 Ansible (ESCOLLIT)</th>
+<th width="27%">Terraform</th>
+<th width="27%">Chef</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Paradigma</strong></td>
+<td>✅ Procedural (push)<br>Playbooks YAML clars</td>
+<td>⚠️ Declaratiu (state)<br>HCL per infraestructura</td>
+<td>❌ DSL Ruby (pull)<br>Cookbooks complexos</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús</strong></td>
+<td>✅ Config Management<br>Desplegament apps</td>
+<td>✅ Provisioning infra cloud<br>AWS, Azure, GCP</td>
+<td>✅ Config Management enterprise<br>Compliances avançats</td>
+</tr>
+<tr>
+<td><strong>Requisits Agents</strong></td>
+<td>✅ Agentless (SSH)<br>Python a target host</td>
+<td>✅ Agentless (API calls)<br>Terraform binary local</td>
+<td>❌ Chef Agent requerit<br>Chef Server centralitzat</td>
+</tr>
+<tr>
+<td><strong>Corba Aprenentatge</strong></td>
+<td>✅ YAML llegible<br>Sintaxi natural</td>
+<td>⚠️ HCL específic<br>Conceptes state/plan</td>
+<td>❌ Ruby DSL<br>Paradigma Chef complex</td>
+</tr>
+<tr>
+<td><strong>Idempotència</strong></td>
+<td>✅ Natiu en mòduls<br>changed/ok states</td>
+<td>✅ State tracking automàtic<br>Detecció drift</td>
+<td>✅ Resources convergence<br>Test-and-repair</td>
+</tr>
+<tr>
+<td><strong>Ecosistema</strong></td>
+<td>✅ Ansible Galaxy mòduls<br>Community immensa</td>
+<td>✅ Terraform Registry<br>Providers cloud</td>
+<td>⚠️ Chef Supermarket<br>Community reduïda</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús Projecte</strong></td>
+<td>✅ Verificar Docker running<br>Desplegar config files</td>
+<td>❌ No provisioning cloud<br>Host Ubuntu existent</td>
+<td>❌ Overhead innecessari<br>No compliances enterprise</td>
+</tr>
+</tbody>
+</table>
+
+**🎯 Per què Ansible?**
+- **Simplicitat:** Playbooks YAML humans llegibles vs HCL Terraform o Ruby Chef
+- **Agentless:** SSH + Python (ja present Ubuntu) vs instal·lar Chef Agent + Server
+- **Cas d'ús perfecte:** Verificació sistema existent (Docker, SSL, contenidors) vs provisioning cloud Terraform
+- **Ecosistema:** Ansible Galaxy amb mòduls docker_container, systemd, apt perfectes pel projecte
+
+---
+
+### Resum de Decisions Tecnològiques
+
+| Component | Tecnologia Escollida | Raó Principal | Alternatives Descartades |
+|-----------|---------------------|---------------|--------------------------|
+| **Containerització** | 🐳 Docker | Ecosistema consolidat + Docker Compose | Podman, LXC/LXD |
+| **Proxy Invers** | ⚡ NGINX | Event-driven + WAF natiu + Footprint mínim | Apache, Traefik |
+| **Backend** | 🐘 PHP-FPM | Experiència equip + FastCGI natiu | Node.js, Python Flask |
+| **Base de Dades** | 🗄️ MySQL | Model relacional perfecte + Hardening docs | PostgreSQL, MongoDB |
+| **Monitoratge** | 📊 Grafana + Loki | Eficiència recursos + UI unificada | ELK Stack, Datadog |
+| **Automatització** | ⚙️ Ansible | YAML llegible + Agentless + Config Mgmt | Terraform, Chef |
+
+**🎓 Lliçó Apresa:** Les millors tecnologies no són sempre les més modernes, sinó les que **encaixen amb els requisits del projecte**, **l'experiència de l'equip** i **els objectius d'aprenentatge**.
 
 ---
 
@@ -1393,7 +1788,7 @@ El projecte inclou **automatització completa amb Ansible** per permetre despleg
 
 ### Inventari i Variables
 
-**Arxiu:** [`ansible/inventory.yml`](ansible/inventory.yml)
+**Arxiu:** `ansible/inventory.yml`
 ```yaml
 all:
   hosts:
@@ -1405,19 +1800,15 @@ all:
       ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
   
   vars:
-    # Configuración del dominio
+    # Configuració del domini
     domain_name: extagram-grup3.duckdns.org
     email_ssl: hamza@example.com
     
-    # Directorios
+    # Directoris
     project_dir: /home/ubuntu/extagram-project
     docker_dir: "{{ project_dir }}/configuracions/docker"
     
-    # Credenciales Grafana
-    grafana_admin_user: admin
-    grafana_admin_password: admin123
-    
-    # Configuración monitoring
+    # Configuració monitoring
     prometheus_scrape_interval: 5s
     loki_retention_days: 7
 ```
@@ -1433,7 +1824,7 @@ all:
 
 #### 1. Playbook de Verificació Completa
 
-**Arxiu:** [`ansible/playbooks/deploy-full.yml`](ansible/playbooks/deploy-full.yml)
+**Arxiu:** `ansible/playbooks/deploy-full.yml`
 
 Aquest playbook realitza una verificació exhaustiva de tot el sistema:
 
@@ -1444,120 +1835,6 @@ Aquest playbook realitza una verificació exhaustiva de tot el sistema:
 - Verificar servei systemd `extagram-grafana-init`
 - Comprovar health endpoint HTTPS
 - Generar resum amb totes les mètriques
-
-**Codi complet del playbook:**
-```yaml
----
-- name: Desplegar Extagram completo en producción
-  hosts: extagram-server
-  become: yes
-  
-  vars:
-    domain_name: extagram-grup3.duckdns.org
-    project_dir: /home/ubuntu/extagram-project
-    docker_dir: "{{ project_dir }}/configuracions/docker"
-    grafana_admin_user: admin
-    grafana_admin_password: admin123
-  
-  tasks:
-    - name: Actualizar paquetes del sistema
-      apt:
-        update_cache: yes
-        cache_valid_time: 3600
-      tags: [system, never-skip]
-    
-    - name: Instalar dependencias base
-      apt:
-        name:
-          - apt-transport-https
-          - ca-certificates
-          - curl
-          - gnupg
-          - lsb-release
-          - git
-          - python3-pip
-          - jq
-        state: present
-      tags: [system]
-    
-    - name: Verificar que Docker funciona
-      command: docker ps
-      changed_when: false
-      tags: [docker, verify]
-    
-    - name: Verificar estado de certificado SSL
-      stat:
-        path: "/etc/letsencrypt/live/{{ domain_name }}/fullchain.pem"
-      register: ssl_cert
-      tags: [ssl, verify]
-    
-    - name: Mostrar estado SSL
-      debug:
-        msg: "Certificado SSL existe: {{ ssl_cert.stat.exists }}"
-      tags: [ssl, verify]
-    
-    - name: Verificar servicios Docker corriendo
-      shell: "docker ps --format 'table {{ '{{' }}.Names{{ '}}' }}\t{{ '{{' }}.Status{{ '}}' }}' | grep extagram"
-      register: docker_services
-      changed_when: false
-      failed_when: false
-      tags: [verify]
-    
-    - name: Mostrar servicios activos
-      debug:
-        msg: "{{ docker_services.stdout_lines }}"
-      when: docker_services.stdout_lines is defined
-      tags: [verify]
-    
-    - name: Verificar servicio systemd
-      systemd:
-        name: extagram-grafana-init
-      register: systemd_status
-      failed_when: false
-      tags: [monitoring, verify]
-    
-    - name: Mostrar estado del servicio
-      debug:
-        msg: "Servicio extagram-grafana-init: {{ 'ACTIVO' if systemd_status.status.ActiveState == 'active' else systemd_status.status.ActiveState | default('NO ENCONTRADO') }}"
-      when: systemd_status.status is defined
-      tags: [monitoring, verify]
-    
-    - name: Verificar acceso HTTPS
-      uri:
-        url: "https://{{ domain_name }}/health"
-        validate_certs: no
-        status_code: 200
-      register: health_check
-      retries: 3
-      delay: 5
-      failed_when: false
-      tags: [verify]
-    
-    - name: Mostrar resultado health check
-      debug:
-        msg: "Health check: {{ 'OK' if health_check.status == 200 else 'FAILED' }}"
-      tags: [verify]
-    
-    - name: Resumen del despliegue
-      debug:
-        msg:
-          - "=========================================="
-          - "✅ VERIFICACIÓN COMPLETADA"
-          - "=========================================="
-          - "Dominio: {{ domain_name }}"
-          - "Certificado SSL: {{ 'VÁLIDO' if ssl_cert.stat.exists else 'NO ENCONTRADO' }}"
-          - "Docker: {{ 'FUNCIONANDO' if docker_services.rc == 0 else 'VERIFICAR' }}"
-          - "Contenedores: {{ docker_services.stdout_lines | length if docker_services.stdout_lines is defined else 0 }}"
-          - "Health check: {{ 'OK' if health_check.status == 200 else 'FAILED' }}"
-          - "=========================================="
-          - "URLs de acceso:"
-          - "  - Extagram: https://{{ domain_name }}/extagram.php"
-          - "  - Grafana: https://{{ domain_name }}/grafana/"
-          - "  - Prometheus: https://{{ domain_name }}/prometheus/"
-          - "  - cAdvisor: https://{{ domain_name }}/cadvisor/"
-          - "=========================================="
-      tags: [verify, always]
-```
 
 **Executar:**
 ```bash
@@ -1580,10 +1857,10 @@ ok: [extagram-server] => {
         "Health check: OK",
         "==========================================",
         "URLs de acceso:",
-        "  - Extagram: [https://extagram-grup3.duckdns.org/extagram.php](https://extagram-grup3.duckdns.org/extagram.php)",
-        "  - Grafana: [https://extagram-grup3.duckdns.org/grafana/](https://extagram-grup3.duckdns.org/grafana/)",
-        "  - Prometheus: [https://extagram-grup3.duckdns.org/prometheus/](https://extagram-grup3.duckdns.org/prometheus/)",
-        "  - cAdvisor: [https://extagram-grup3.duckdns.org/cadvisor/](https://extagram-grup3.duckdns.org/cadvisor/)",
+        "  - Extagram: https://extagram-grup3.duckdns.org/extagram.php",
+        "  - Grafana: https://extagram-grup3.duckdns.org/grafana/",
+        "  - Prometheus: https://extagram-grup3.duckdns.org/prometheus/",
+        "  - cAdvisor: https://extagram-grup3.duckdns.org/cadvisor/",
         "=========================================="
     ]
 }
@@ -1594,22 +1871,9 @@ extagram-server            : ok=11   changed=0    unreachable=0    failed=0
 
 #### 2. Playbook Només Verificació
 
-**Arxiu:** [`ansible/playbooks/verify.yml`](ansible/playbooks/verify.yml)
+**Arxiu:** `ansible/playbooks/verify.yml`
 
 Playbook simplificat que només executa les tasques de verificació.
-
-**Codi complet:**
-```yaml
----
-- name: Verificar estado de Extagram
-  hosts: extagram-server
-  become: yes
-  
-  tasks:
-    - name: Importar tareas de verificación
-      import_playbook: deploy-full.yml
-      tags: [verify]
-```
 
 **Executar:**
 ```bash
@@ -1690,61 +1954,7 @@ ansible extagram-server -i inventory.yml -m shell -a "docker system prune -f"
 
 El directori `ansible/scripts/` conté scripts bash per facilitar operacions comunes:
 
-**Arxiu:** [`ansible/scripts/shortcuts.sh`](ansible/scripts/shortcuts.sh)
-
-**Codi complet del script:**
-```bash
-#!/bin/bash
-# Atajos rápidos para Ansible
-
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ANSIBLE_DIR="$(dirname "$SCRIPT_DIR")"
-INVENTORY="$ANSIBLE_DIR/inventory.yml"
-HOST="extagram-server"
-
-case "$1" in
-  verify)
-    ansible-playbook -i $INVENTORY $ANSIBLE_DIR/playbooks/deploy-full.yml --tags verify
-    ;;
-  
-  logs)
-    CONTAINER="${2:-extagram-grafana}"
-    ansible $HOST -i $INVENTORY -m shell -a "docker logs $CONTAINER --tail 50"
-    ;;
-  
-  restart)
-    CONTAINER="${2:-s1-loadbalancer}"
-    ansible $HOST -i $INVENTORY -m shell -a "docker compose -f /home/ubuntu/extagram-project/configuracions/docker/docker-compose.yml restart $CONTAINER"
-    ;;
-  
-  status)
-    ansible $HOST -i $INVENTORY -m shell -a "docker ps --format 'table {{.Names}}\t{{.Status}}'"
-    ;;
-  
-  deploy)
-    ansible-playbook -i $INVENTORY $ANSIBLE_DIR/playbooks/deploy-full.yml
-    ;;
-  
-  *)
-    echo "🚀 Atajos Ansible - Extagram"
-    echo ""
-    echo "Uso: $0 {comando} [opciones]"
-    echo ""
-    echo "Comandos:"
-    echo "  verify                       Verificar estado del sistema"
-    echo "  logs [contenedor]            Ver logs (default: extagram-grafana)"
-    echo "  restart [contenedor]         Reiniciar contenedor (default: s1-loadbalancer)"
-    echo "  status                       Ver estado de contenedores"
-    echo "  deploy                       Despliegue completo"
-    echo ""
-    echo "Ejemplos:"
-    echo "  $0 verify"
-    echo "  $0 logs extagram-prometheus"
-    echo "  $0 restart grafana"
-    echo "  $0 status"
-    ;;
-esac
-```
+**Arxiu:** `ansible/scripts/shortcuts.sh`
 
 **Ús:**
 ```bash
@@ -1787,7 +1997,7 @@ ansible --version
 
 **2. Clonar repositori:**
 ```bash
-git clone [https://github.com/HamzaTayibiITB2425/extagram-project.git](https://github.com/HamzaTayibiITB2425/extagram-project.git)
+git clone https://github.com/HamzaTayibiITB2425/extagram-project.git
 cd extagram-project/ansible
 ```
 
@@ -1821,10 +2031,10 @@ extagram-server | SUCCESS => {
 
 Tota la documentació detallada d'Ansible es troba a:
 
-- **README principal:** [`ansible/README.md`](ansible/README.md)
-- **Guia d'instal·lació:** [`ansible/docs/INSTALL.md`](ansible/docs/INSTALL.md)
-- **Comandos útils:** [`ansible/docs/COMMANDS.md`](ansible/docs/COMMANDS.md)
-- **Troubleshooting:** [`ansible/docs/TROUBLESHOOTING.md`](ansible/docs/TROUBLESHOOTING.md)
+- **README principal:** `ansible/README.md`
+- **Guia d'instal·lació:** `ansible/docs/INSTALL.md`
+- **Comandos útils:** `ansible/docs/COMMANDS.md`
+- **Troubleshooting:** `ansible/docs/TROUBLESHOOTING.md`
 
 ---
 
@@ -2356,7 +2566,7 @@ El projecte disposa de documentació tècnica exhaustiva organitzada per àrees:
 
 #### Instal·lació Completa
 
-1. **[Guia d'Instal·lació Ràpida](docs/GUIA_INSTALACIO.md)** - Desplegament bàsic
+1. **[Guia d'Instal·lació Ràpida](#guia-dinstal·lació-ràpida)** - Desplegament bàsic
 2. **[Configuració SSL](docs/SSL_SETUP.md)** - Certificats Let's Encrypt
 3. **[Configuració LDAP](docs/LDAP_SETUP.md)** - Autenticació usuaris
 4. **[Configuració Monitoring](docs/MONITORING_SETUP.md)** - Grafana + Loki + Prometheus
@@ -2378,31 +2588,31 @@ Tots els sprints disposen de documentació completa:
 
 - **[Planning](actes/sprint1/SPRINT1_PLANNING.md):** Objectius, backlog, estimacions
 - **[Review](actes/sprint1/SPRINT1_REVIEW.md):** Resultats, demo, retrospectiva
-- **[Retrospectiva](actes/sprint1/SPRINT1_REVIEW.md#4-retrospectiva):** Què va anar bé, millores
+- **[Retrospectiva](actes/sprint1/SPRINT1_RETROSPECTIVA.md):** Què va anar bé, millores
 
 #### Sprint 2 - Dockerització
 
 - **[Planning](actes/sprint2/SPRINT2_PLANNING.md):** Objectius dockerització
 - **[Review](actes/sprint2/SPRINT2_REVIEW.md):** Contenidors desplegats
-- **[Retrospectiva](actes/sprint2/SPRINT2_REVIEW.md#4-retrospectiva):** Lliçons apreses
+- **[Retrospectiva](actes/sprint2/SPRINT2_RETROSPECTIVA.md):** Lliçons apreses
 
 #### Sprint 3 - Integració
 
 - **[Planning](actes/sprint3/SPRINT3_PLANNING.md):** Proves finals
 - **[Review](actes/sprint3/SPRINT3_REVIEW.md):** Sistema integrat
-- **[Retrospectiva](actes/sprint3/SPRINT3_REVIEW.md#4-retrospectiva):** Millores identificades
+- **[Retrospectiva](actes/sprint3/SPRINT3_RETROSPECTIVA.md):** Millores identificades
 
 #### Sprint 4 - Seguretat
 
 - **[Planning](actes/sprint4/SPRINT4_PLANNING.md):** Objectius seguretat
 - **[Review](actes/sprint4/SPRINT4_REVIEW.md):** WAF, Hardening, Firewall
-- **[Retrospectiva](actes/sprint4/SPRINT4_REVIEW.md#4-retrospectiva):** Lliçons seguretat
+- **[Retrospectiva](actes/sprint4/SPRINT4_RETROSPECTIVA.md):** Lliçons seguretat
 
 #### Sprint 5 - Monitoratge
 
 - **[Planning](actes/sprint5/SPRINT5_PLANNING.md):** Objectius monitoring
 - **[Review](actes/sprint5/SPRINT5_REVIEW.md):** Grafana operatiu
-- **[Retrospectiva](actes/sprint5/SPRINT5_REVIEW.md#4-retrospectiva):** Repte container_name
+- **[Retrospectiva](actes/sprint5/SPRINT5_RETROSPECTIVA.md):** Repte container_name
 
 ### Documentació de Proves
 
