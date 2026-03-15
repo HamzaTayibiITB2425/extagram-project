@@ -444,394 +444,1191 @@ La segmentació de xarxa garanteix:
 
 ### Comparativa de Tecnologies
 
-A continuació es presenten les **decisions tecnològiques clau** del projecte amb comparatives detallades respecte a alternatives populars. Cada elecció ha estat justificada en base a requisits específics del projecte, experiència de l'equip i objectius d'aprenentatge.
+A continuació es presenta una anàlisi detallada de les decisions tecnològiques del projecte, comparant cada tecnologia escollida amb les seves principals alternatives del mercat. Cada elecció s'ha basat en criteris tècnics objectius, requisits específics del projecte i objectius d'aprenentatge.
 
 ---
 
-#### 🐳 Containerització: Docker vs Podman vs LXC/LXD
+#### 1. Containerització: Docker vs Podman vs LXC/LXD
 
 <table>
 <thead>
 <tr>
 <th width="20%">Criteri</th>
-<th width="26%">🏆 Docker (ESCOLLIT)</th>
+<th width="27%">Docker (ESCOLLIT)</th>
 <th width="27%">Podman</th>
-<th width="27%">LXC/LXD</th>
+<th width="26%">LXC/LXD</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>Arquitectura</strong></td>
-<td>✅ Daemon centralitzat + CLI<br>Fàcil orquestració amb Compose</td>
-<td>❌ Daemonless (més segur)<br>Compatibilitat limitada Compose</td>
-<td>❌ Contenidors sistema complets<br>Més pesat que Docker</td>
+<td>Daemon centralitzat amb client CLI. Model client-servidor clàssic.</td>
+<td>Daemonless architecture. Processos fill directes del sistema.</td>
+<td>Contenidors de sistema complets. Virtualització a nivell de SO.</td>
 </tr>
 <tr>
 <td><strong>Ecosistema</strong></td>
-<td>✅ Docker Hub amb milions d'imatges<br>Documentació exhaustiva</td>
-<td>⚠️ Compatible amb imatges Docker<br>Menys recursos educatius</td>
-<td>❌ Ecosistema limitat<br>Imatges personalitzades</td>
+<td>Docker Hub amb més de 8 milions d'imatges verificades. Documentació exhaustiva.</td>
+<td>Compatible amb Docker Hub. Ecosistema emergent però menys madur.</td>
+<td>Ecosistema limitat. Requereix construcció manual d'imatges.</td>
 </tr>
 <tr>
-<td><strong>Corba d'Aprenentatge</strong></td>
-<td>✅ Molt documentat<br>Sintaxi intuïtiva</td>
-<td>⚠️ Sintaxi similar a Docker<br>Troubleshooting més complex</td>
-<td>❌ Configuració manual complexa<br>Conceptes diferents</td>
+<td><strong>Integració Compose</strong></td>
+<td>Docker Compose natiu. Sintaxi declarativa YAML estandarditzada.</td>
+<td>Podman Compose disponible. Compatibilitat parcial amb sintaxi Docker.</td>
+<td>No suporta Compose. Orquestració manual necessària.</td>
 </tr>
 <tr>
-<td><strong>Suport Networking</strong></td>
-<td>✅ Xarxes bridge/overlay natives<br>Segmentació simple</td>
-<td>⚠️ Networking menys madur<br>Configuració manual</td>
-<td>⚠️ Networking potent però complex<br>Requereix coneixements avançats</td>
+<td><strong>Networking</strong></td>
+<td>Xarxes bridge, overlay, macvlan natives. CNI plugins disponibles.</td>
+<td>Networking CNI natiu. Configuració més manual.</td>
+<td>Networking potent amb profiles. Corba d'aprenentatge elevada.</td>
 </tr>
 <tr>
-<td><strong>Cas d'Ús</strong></td>
-<td>✅ Microserveis, CI/CD, Dev<br>Projectes educatius</td>
-<td>✅ Entorns HPC sense root<br>Seguretat avançada</td>
-<td>✅ Virtualització lleuger<br>Migracions VM → Container</td>
+<td><strong>Experiència Equip</strong></td>
+<td>Domini complet. Practicat extensivament al curriculum ASIX2c.</td>
+<td>Sintaxi similar però sense experiència prèvia.</td>
+<td>Conceptes diferents. Requereix formació específica.</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>Microserveis, CI/CD, desenvolupament local, producció consolidada.</td>
+<td>Entorns HPC, execució rootless, seguretat avançada.</td>
+<td>Migracions VM a contenidor, virtualització lleuger.</td>
 </tr>
 </tbody>
 </table>
 
-**🎯 Per què Docker?**
-- **Ecosistema consolidat:** Imatges oficials de NGINX, MySQL, PHP-FPM amb Alpine Linux optimitzades
-- **Docker Compose:** Orquestració declarativa en YAML perfecta per a 8 serveis amb 4 xarxes
-- **Experiència educativa:** Tots els recursos i tutorials utilitzen Docker com a estàndard
-- **Troubleshooting ràpid:** Comunitat massiva amb solucions documentades
+**Justificació Tècnica:**
+
+Docker s'ha escollit per les següents raons tècniques fonamentals:
+
+1. **Ecosistema consolidat**: Imatges oficials optimitzades de NGINX Alpine (40MB), PHP-FPM Alpine (80MB) i MySQL 8.0 (450MB) amb configuracions pre-testades.
+2. **Docker Compose declaratiu**: Orquestració de 8 serveis amb 4 xarxes diferents en un sol fitxer YAML llegible.
+3. **Experiència tècnica**: Domini complet de Dockerfiles multi-stage, volums bind/named i troubleshooting avançat.
+4. **Suport comunitari**: Resolució ràpida de problemes amb Stack Overflow (50M+ posts Docker-related) i documentació oficial extensiva.
 
 ---
 
-#### ⚡ Proxy Invers / Load Balancer: NGINX vs Apache vs Traefik
+#### 2. Orquestració: Docker Compose vs Kubernetes vs Docker Swarm
 
 <table>
 <thead>
 <tr>
 <th width="20%">Criteri</th>
-<th width="26%">🏆 NGINX (ESCOLLIT)</th>
-<th width="27%">Apache HTTP Server</th>
-<th width="27%">Traefik</th>
+<th width="27%">Docker Compose (ESCOLLIT)</th>
+<th width="27%">Kubernetes</th>
+<th width="26%">Docker Swarm</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td><strong>Complexitat</strong></td>
+<td>Fitxer YAML únic. Sintaxi simple i intuïtiva.</td>
+<td>Manifests YAML múltiples (Deployment, Service, ConfigMap, Secret). Corba d'aprenentatge pronunciada.</td>
+<td>Configuració similar a Compose. Mode swarm requereix inicialització.</td>
+</tr>
+<tr>
+<td><strong>Escalat</strong></td>
+<td>Escalat manual amb 'docker compose up --scale'. Adequat per 1-10 nodes.</td>
+<td>Escalat automàtic amb HPA. Dissenyat per centenars de nodes.</td>
+<td>Escalat declaratiu amb replicas. Suporta fins a ~100 nodes.</td>
+</tr>
+<tr>
+<td><strong>Alta Disponibilitat</strong></td>
+<td>Redundància manual (S2, S3). restart: unless-stopped per recuperació.</td>
+<td>Self-healing natiu. ReplicaSets garanteixen disponibilitat.</td>
+<td>Replicació automàtica. Rebalanceig en fallada de node.</td>
+</tr>
+<tr>
+<td><strong>Networking</strong></td>
+<td>Xarxes bridge personalitzades. Segmentació manual clara.</td>
+<td>CNI plugins avançats (Calico, Flannel). NetworkPolicies granulars.</td>
+<td>Overlay network automàtic. Mesh routing integrat.</td>
+</tr>
+<tr>
+<td><strong>Recursos Necessaris</strong></td>
+<td>Host únic. Overhead mínim (només Docker Engine).</td>
+<td>Cluster multi-node. Control plane consumeix ~2GB RAM.</td>
+<td>Host únic o cluster. Overhead moderat.</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>Desenvolupament, testing, producció single-host, prototips.</td>
+<td>Producció enterprise, microserveis massius, multi-cloud.</td>
+<td>Producció small-medium, clusters simples.</td>
+</tr>
+</tbody>
+</table>
+
+**Justificació Tècnica:**
+
+Docker Compose s'adapta perfectament als requisits del projecte:
+
+1. **Single-host deployment**: El projecte utilitza 1 servidor AWS EC2, no requereix orquestració multi-node.
+2. **Simplicitat operacional**: Gestió completa amb 3 comandes (`up`, `down`, `restart`) vs kubectl amb 50+ subcomandes.
+3. **Segmentació de xarxa clara**: Definició explícita de 4 xarxes (`extagram_front`, `extagram_services`, `extagram_data`, `monitoring`) amb control granular.
+4. **Temps de setup**: 5 minuts vs 2+ hores per Kubernetes cluster funcional.
+
+---
+
+#### 3. Proxy Invers / Load Balancer: NGINX vs Apache HTTP Server vs Traefik
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="27%">NGINX (ESCOLLIT)</th>
+<th width="27%">Apache HTTP Server</th>
+<th width="26%">Traefik</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model de Processos</strong></td>
+<td>Event-driven asíncron. Master + Workers amb event loop.</td>
+<td>Process-based síncrón. 1 thread per connexió.</td>
+<td>Go runtime. Goroutines per connexió concurrent.</td>
+</tr>
+<tr>
 <td><strong>Rendiment</strong></td>
-<td>✅ Event-driven (async I/O)<br>10K+ connexions simultànies</td>
-<td>❌ Process-based (blocking I/O)<br>Consum alt de RAM</td>
-<td>✅ Go nativo (lightweight)<br>Bon rendiment general</td>
-</tr>
-<tr>
-<td><strong>Configuració</strong></td>
-<td>✅ nginx.conf llegible<br>Directives clares</td>
-<td>⚠️ .htaccess + httpd.conf<br>Configuració dispersa</td>
-<td>❌ YAML + Labels Docker<br>Configuració automàtica complexa</td>
-</tr>
-<tr>
-<td><strong>WAF Natiu</strong></td>
-<td>✅ Regex en directives if{}<br>ModSecurity disponible</td>
-<td>✅ ModSecurity madur<br>Configuració verbose</td>
-<td>❌ Middleware limitat<br>Requereix plugins externs</td>
+<td>10K+ connexions simultànies amb 10MB RAM per worker.</td>
+<td>Màxim ~500 connexions per worker. 50MB RAM per worker.</td>
+<td>5K+ connexions. 30MB RAM base.</td>
 </tr>
 <tr>
 <td><strong>Load Balancing</strong></td>
-<td>✅ Round-Robin, IP Hash, Least Conn<br>Health checks natius</td>
-<td>⚠️ mod_proxy_balancer<br>Menys eficient</td>
-<td>✅ Auto-discovery Docker<br>Overhead configuració</td>
+<td>Round-Robin, IP Hash, Least Conn natiu. Health checks HTTP/TCP.</td>
+<td>mod_proxy_balancer. Configuració verbose.</td>
+<td>Auto-discovery Docker/K8s. Algoritmes avançats (Weighted, Maglev).</td>
+</tr>
+<tr>
+<td><strong>Configuració</strong></td>
+<td>nginx.conf centralitzat. Directives clares i estructurades.</td>
+<td>.htaccess + httpd.conf. Configuració dispersa en múltiples fitxers.</td>
+<td>YAML + Docker labels. Configuració dinàmica automàtica.</td>
+</tr>
+<tr>
+<td><strong>WAF Natiu</strong></td>
+<td>Regex en directives if{}. ModSecurity disponible com a mòdul.</td>
+<td>ModSecurity nadiu madur. Configuració XML complexa.</td>
+<td>Middleware limitat. Requereix plugins externs (e.g. Fail2Ban).</td>
 </tr>
 <tr>
 <td><strong>Footprint</strong></td>
-<td>✅ Imatge Alpine 40MB<br>~10MB RAM idle</td>
-<td>❌ Imatge base 200MB+<br>~50MB RAM idle</td>
-<td>⚠️ Imatge 80MB<br>~30MB RAM idle</td>
+<td>Imatge Alpine 40MB. Binari compilat 1.5MB.</td>
+<td>Imatge base 200MB+. Binari 5MB+ amb mòduls.</td>
+<td>Imatge oficial 80MB. Binari Go 50MB.</td>
 </tr>
 <tr>
-<td><strong>Cas d'Ús</strong></td>
-<td>✅ APIs, microserveis, static files<br>Proxy invers clàssic</td>
-<td>✅ Aplicacions legacy<br>Compatibilitat .htaccess</td>
-<td>✅ Kubernetes, Swarm<br>Auto-discovery avançat</td>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>APIs REST, microserveis, serving estàtic, reverse proxy clàssic.</td>
+<td>Aplicacions legacy, compatibilitat .htaccess, CMSs antics.</td>
+<td>Kubernetes, Docker Swarm, auto-discovery, Let's Encrypt automàtic.</td>
 </tr>
 </tbody>
 </table>
 
-**🎯 Per què NGINX?**
-- **Eficiència:** Model event-driven ideal per a alt tràfic concurrent amb baix consum de RAM
-- **Simplicitat:** Configuració centralitzada en un sol fitxer `nginx.conf` vs dispersió Apache
-- **WAF integrat:** Regles regex natives sense plugins externs (vs Traefik que requereix middleware)
-- **Versatilitat:** S1 (Load Balancer + WAF), S5 (Image Server), S6 (Static Server) amb la mateixa tecnologia
+**Justificació Tècnica:**
+
+NGINX s'ha escollit per raons de rendiment i versatilitat:
+
+1. **Model event-driven**: Gestió eficient de 1000+ peticions simultànies amb un sol worker process vs Apache que requereix 1 thread/process per connexió.
+2. **Multiús en l'arquitectura**: S1 (Load Balancer + WAF), S5 (Image Server), S6 (Static Server) utilitzen la mateixa tecnologia, simplificant manteniment.
+3. **WAF integrat**: Regles regex natives en nginx.conf sense overhead de ModSecurity (que consumeix +100MB RAM).
+4. **FastCGI natiu**: Protocol optimitzat per comunicació amb PHP-FPM vs Apache que requereix mod_proxy_fcgi.
 
 ---
 
-#### 🐘 Backend: PHP-FPM vs Node.js vs Python Flask
+#### 4. Web Application Firewall: NGINX WAF vs ModSecurity vs Cloudflare WAF
 
 <table>
 <thead>
 <tr>
 <th width="20%">Criteri</th>
-<th width="26%">🏆 PHP-FPM (ESCOLLIT)</th>
-<th width="27%">Node.js + Express</th>
-<th width="27%">Python Flask</th>
+<th width="27%">NGINX WAF (ESCOLLIT)</th>
+<th width="27%">ModSecurity</th>
+<th width="26%">Cloudflare WAF</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Experiència Equip</strong></td>
-<td>✅ Domini complet PHP 8.2<br>Curriculum ASIX2c</td>
-<td>⚠️ Coneixements bàsics JS<br>Corba aprenentatge async</td>
-<td>⚠️ Python conegut<br>Flask no practicat</td>
+<td><strong>Integració</strong></td>
+<td>Directament en nginx.conf. Regles regex natives.</td>
+<td>Mòdul extern per NGINX/Apache. Configuració XML separada.</td>
+<td>Servei SaaS cloud. Proxy DNS obligatori.</td>
 </tr>
 <tr>
-<td><strong>Integració NGINX</strong></td>
-<td>✅ FastCGI Protocol natiu<br>fastcgi_pass trivial</td>
-<td>⚠️ Proxy HTTP requerit<br>proxy_pass + port management</td>
-<td>⚠️ WSGI/ASGI server extra<br>Gunicorn + config complexa</td>
+<td><strong>Rendiment</strong></td>
+<td>Overhead <5ms per petició. Avaluació inline.</td>
+<td>Overhead 20-50ms. Inspecció profunda de payload.</td>
+<td>Overhead 10-30ms (latència xarxa). CDN integrat.</td>
 </tr>
 <tr>
-<td><strong>Escalabilitat</strong></td>
-<td>✅ Process Manager (pm.dynamic)<br>Auto-scaling workers</td>
-<td>✅ Cluster mode nativo<br>Single-threaded per worker</td>
-<td>⚠️ Multi-worker Gunicorn<br>GIL limita threading</td>
+<td><strong>Regles</strong></td>
+<td>Regex personalitzades per SQL Injection, XSS, Path Traversal.</td>
+<td>OWASP Core Rule Set. 200+ regles pre-configurades.</td>
+<td>Managed Rulesets. Actualització automàtica.</td>
 </tr>
 <tr>
-<td><strong>Consum Recursos</strong></td>
-<td>✅ 30MB RAM per worker<br>Imatge Alpine 80MB</td>
-<td>⚠️ 50MB RAM per worker<br>Imatge Alpine 120MB</td>
-<td>⚠️ 40MB RAM per worker<br>Imatge Alpine 150MB</td>
+<td><strong>Rate Limiting</strong></td>
+<td>limit_req_zone nativa. Configuració granular per zona/IP.</td>
+<td>Disponible via directives. Configuració complexa.</td>
+<td>Natiu. Límits per IP/país/ASN.</td>
 </tr>
 <tr>
-<td><strong>Integració BD</strong></td>
-<td>✅ PDO natiu MySQL/LDAP<br>Extensions madures</td>
-<td>✅ mysql2, ldapjs<br>Callbacks/Promises</td>
-<td>✅ PyMySQL, ldap3<br>Sintaxi Pythonic</td>
+<td><strong>Logging</strong></td>
+<td>Logs NGINX estàndard. Integració directa amb Loki.</td>
+<td>Audit logs detallats. Format JSON configurable.</td>
+<td>Logs centralitzats cloud. Exportació via API.</td>
 </tr>
 <tr>
-<td><strong>Cas d'Ús</strong></td>
-<td>✅ CMSs, apps tradicionals<br>Shared hosting</td>
-<td>✅ APIs RESTful, real-time<br>Microserveis modern</td>
-<td>✅ APIs ràpides, ML/data<br>Scripting avançat</td>
+<td><strong>Cost</strong></td>
+<td>Gratuït. Open source complet.</td>
+<td>Gratuït (Apache License 2.0). Suport comercial opcional.</td>
+<td>SaaS de pagament. $20/mes mínim (Free tier limitat).</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>Protecció bàsica self-hosted. Control total de regles.</td>
+<td>Seguretat enterprise. Compliment PCI-DSS.</td>
+<td>Protecció DDoS massiu. CDN global integrat.</td>
 </tr>
 </tbody>
 </table>
 
-**🎯 Per què PHP-FPM?**
-- **Competència tècnica:** Domini de PHP 8.2 amb experiència prèvia en projectes acadèmics
-- **Integració NGINX perfecta:** Protocol FastCGI natiu sense overhead de proxy HTTP
-- **Process Manager avançat:** `pm.dynamic` amb auto-scaling segons càrrega (max_children, spare_servers)
-- **Footprint optimitzat:** Alpine Linux + extensions mínimes (mysqli, ldap, pdo_mysql) = 80MB vs 150MB Python
+**Justificació Tècnica:**
+
+NGINX WAF natiu s'adapta als requisits de seguretat del projecte:
+
+1. **Zero overhead arquitectural**: Regles inline en S1-LoadBalancer sense processos/mòduls addicionals.
+2. **Control granular**: Customització completa de patterns (e.g. `union.*select|insert.*into|delete.*from`).
+3. **Integració Loki**: Logs de bloquejos directament en `/var/log/nginx/error.log` → Promtail → Loki.
+4. **Self-hosted**: No depèn de serveis externs (Cloudflare DNS proxy modificaria IP origen).
 
 ---
 
-#### 🗄️ Base de Dades: MySQL vs PostgreSQL vs MongoDB
+#### 5. Firewall: iptables vs nftables vs ufw
 
 <table>
 <thead>
 <tr>
 <th width="20%">Criteri</th>
-<th width="26%">🏆 MySQL (ESCOLLIT)</th>
+<th width="27%">iptables (ESCOLLIT)</th>
+<th width="27%">nftables</th>
+<th width="26%">ufw</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Maduresa</strong></td>
+<td>Estàndard Linux >20 anys. Batalla-tested en producció.</td>
+<td>Successor modern de iptables (kernel 3.13+). Adopció creixent.</td>
+<td>Frontend simplificat per iptables. Utilitzat per defecte a Ubuntu.</td>
+</tr>
+<tr>
+<td><strong>Sintaxi</strong></td>
+<td>Comandes CLI clàssiques. Sintaxi verbose però estàndard.</td>
+<td>Sintaxi més concisa. Unifica iptables/ip6tables/arptables.</td>
+<td>Sintaxi ultra-simple. 'ufw allow 80/tcp'.</td>
+</tr>
+<tr>
+<td><strong>Granularitat</strong></td>
+<td>Control total de chains (INPUT/OUTPUT/FORWARD). Match modules extensos.</td>
+<td>Sets i maps natius. Regles més eficients.</td>
+<td>Granularitat limitada. Configurable via /etc/ufw/before.rules.</td>
+</tr>
+<tr>
+<td><strong>Rendiment</strong></td>
+<td>Avaluació lineal de regles. O(n) per packet.</td>
+<td>Avaluació optimitzada. Lookups O(log n) amb sets.</td>
+<td>Overhead mínim (wrapper sobre iptables).</td>
+</tr>
+<tr>
+<td><strong>Persistència</strong></td>
+<td>Requereix iptables-persistent/iptables-save.</td>
+<td>Natiu amb /etc/nftables.conf.</td>
+<td>Persistència automàtica amb systemd.</td>
+</tr>
+<tr>
+<td><strong>Compatibilitat</strong></td>
+<td>Universal. Documentació exhaustiva disponible.</td>
+<td>Kernel modern requerit (>3.13). Menys documentació.</td>
+<td>Només Ubuntu/Debian. No disponible a RHEL/CentOS.</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>Servidors legacy, compatibilitat universal, regles complexes.</td>
+<td>Servidors moderns, firewalls complexos, alta performance.</td>
+<td>Desktops, servidors simples, usuaris no experts.</td>
+</tr>
+</tbody>
+</table>
+
+**Justificació Tècnica:**
+
+iptables s'ha escollit per estabilitat i experiència:
+
+1. **Estàndard del sector**: Documentació extensa amb exemples de configuració anti-DDoS (`--connlimit`, `--limit`).
+2. **Experiència curricular**: Practicat extensivament a l'assignatura de Seguretat ASIX2c.
+3. **Compatibilitat universal**: Funciona idènticament en Ubuntu 22.04, Debian 11, CentOS 8, etc.
+4. **Troubleshooting documentat**: Stack Overflow conté 100K+ preguntes amb solucions verificades.
+
+---
+
+#### 6. Backend: PHP-FPM vs Node.js (Express) vs Python (Flask)
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="27%">PHP-FPM (ESCOLLIT)</th>
+<th width="27%">Node.js + Express</th>
+<th width="26%">Python + Flask</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model d'Execució</strong></td>
+<td>Process Manager amb workers (pm.dynamic). Processos PHP independents.</td>
+<td>Event loop single-threaded. Cluster mode per multi-core.</td>
+<td>WSGI multi-threaded amb Gunicorn. GIL limita paral·lelisme.</td>
+</tr>
+<tr>
+<td><strong>Integració NGINX</strong></td>
+<td>FastCGI Protocol natiu. Comunicació socket Unix optimitzada.</td>
+<td>HTTP proxy requerit. Comunicació via localhost:PORT.</td>
+<td>WSGI/ASGI requereix Gunicorn/uWSGI. Configuració extra.</td>
+</tr>
+<tr>
+<td><strong>Rendiment I/O</strong></td>
+<td>Síncrón blocking. Adequat per requests PHP tradicionals.</td>
+<td>Asíncron non-blocking. Ideal per I/O intensiu (WebSockets).</td>
+<td>Síncrón blocking. ASGI (async) disponible però menys madur.</td>
+</tr>
+<tr>
+<td><strong>Integració BD</strong></td>
+<td>PDO natiu amb prepared statements. mysqli optimitzat per MySQL.</td>
+<td>Drivers npm (mysql2, pg). Callbacks/Promises.</td>
+<td>SQLAlchemy ORM madur. PyMySQL/psycopg2 natius.</td>
+</tr>
+<tr>
+<td><strong>Ecosistema Llibreries</strong></td>
+<td>Composer amb 350K+ paquets. Extensions C optimitzades.</td>
+<td>npm amb 2M+ paquets. Ecosistema massiu.</td>
+<td>PyPI amb 450K+ paquets. Llibreries científiques.</td>
+</tr>
+<tr>
+<td><strong>Consum Recursos</strong></td>
+<td>30MB RAM per worker. Imatge Alpine 80MB.</td>
+<td>50MB RAM per worker. Imatge Alpine 120MB.</td>
+<td>40MB RAM per worker. Imatge Alpine 150MB.</td>
+</tr>
+<tr>
+<td><strong>Experiència Equip</strong></td>
+<td>Domini complet PHP 8.2. Curriculum ASIX2c.</td>
+<td>Coneixements bàsics JavaScript. Async/await no practicat.</td>
+<td>Python conegut. Flask/Django no practicat a fons.</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>CMSs (WordPress, Drupal), aplicacions web tradicionals, shared hosting.</td>
+<td>APIs RESTful, real-time apps (chat, notifications), microserveis.</td>
+<td>APIs ràpides, ML/Data Science, scripting backend.</td>
+</tr>
+</tbody>
+</table>
+
+**Justificació Tècnica:**
+
+PHP-FPM 8.2 s'adapta perfectament als requisits:
+
+1. **FastCGI natiu**: Protocol optimitzat `fastcgi_pass unix:/var/run/php-fpm.sock` vs Node.js que requereix proxy HTTP.
+2. **Process Manager avançat**: Configuració `pm.dynamic` amb auto-scaling (`pm.max_children = 50`, `pm.start_servers = 5`, `pm.spare_servers = 10`).
+3. **Prepared Statements natiu**: Protecció SQL Injection amb PDO sense llibreries externes.
+4. **Footprint optimitzat**: Alpine Linux + extensions selectives (mysqli, ldap, pdo_mysql) = 80MB vs Node.js 120MB.
+
+---
+
+#### 7. Base de Dades: MySQL vs PostgreSQL vs MongoDB
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="27%">MySQL (ESCOLLIT)</th>
 <th width="27%">PostgreSQL</th>
-<th width="27%">MongoDB</th>
+<th width="26%">MongoDB</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>Model de Dades</strong></td>
-<td>✅ Relacional (ACID)<br>Esquema rígid perfecte</td>
-<td>✅ Relacional avançat<br>JSONB, Arrays, PostGIS</td>
-<td>❌ Document-oriented<br>Schema-less (no encaixa)</td>
+<td>Relacional ACID. Esquema rígid amb taules i claus foranes.</td>
+<td>Relacional ACID avançat. Suport JSONB, arrays, PostGIS.</td>
+<td>Document-oriented. Schema-less amb col·leccions BSON.</td>
 </tr>
 <tr>
 <td><strong>Cas d'Ús Projecte</strong></td>
-<td>✅ Posts amb relacions clares<br>JOIN users ↔ posts trivial</td>
-<td>✅ Queries complexes avançades<br>Overkill per a cas simple</td>
-<td>❌ No requereix flexibilitat<br>Posts = estructura fixa</td>
+<td>Posts amb relacions clares. JOIN users ↔ posts trivial.</td>
+<td>Queries complexes avançades. Overkill per aplicació social simple.</td>
+<td>No encaixa. Posts = estructura fixa (user_id, caption, image_url).</td>
 </tr>
 <tr>
 <td><strong>Integració PHP</strong></td>
-<td>✅ mysqli, PDO nadiu<br>Drivers optimitzats</td>
-<td>⚠️ pdo_pgsql disponible<br>Menys documentació PHP</td>
-<td>⚠️ php-mongodb PECL<br>Sintaxi diferent</td>
+<td>mysqli, PDO nadiu. Drivers altament optimitzats.</td>
+<td>pdo_pgsql disponible. Menys documentació amb PHP.</td>
+<td>Extensió PECL php-mongodb. Sintaxi diferent a SQL.</td>
+</tr>
+<tr>
+<td><strong>Rendiment</strong></td>
+<td>Optimitzat per reads (MyISAM). InnoDB per transaccions ACID.</td>
+<td>Optimitzat per writes complexos. MVCC avançat.</td>
+<td>Optimitzat per writes massius. Sharding horitzontal natiu.</td>
 </tr>
 <tr>
 <td><strong>Hardening</strong></td>
-<td>✅ mysql_secure_installation<br>Docs extenses seguretat</td>
-<td>✅ pg_hba.conf granular<br>Row-level security</td>
-<td>⚠️ Auth complex<br>Menys recursos hardening</td>
+<td>mysql_secure_installation madur. Documentació extensa.</td>
+<td>pg_hba.conf granular. Row-level security.</td>
+<td>Autenticació SCRAM-SHA-256. Menys recursos de fortificació.</td>
 </tr>
 <tr>
 <td><strong>Footprint</strong></td>
-<td>✅ 450MB imatge oficial<br>200MB RAM mínim</td>
-<td>⚠️ 350MB imatge Alpine<br>250MB RAM mínim</td>
-<td>⚠️ 700MB imatge oficial<br>300MB RAM mínim</td>
+<td>Imatge oficial 450MB. 200MB RAM mínim.</td>
+<td>Imatge Alpine 350MB. 250MB RAM mínim.</td>
+<td>Imatge oficial 700MB. 300MB RAM mínim.</td>
 </tr>
 <tr>
 <td><strong>Experiència Equip</strong></td>
-<td>✅ Practicat extensivament<br>Sintaxi SQL dominant</td>
-<td>⚠️ Conceptes similars<br>Sintaxi lleugerament diferent</td>
-<td>❌ No practicat<br>Query language diferent</td>
+<td>Domini SQL avançat. Practicat extensivament.</td>
+<td>Sintaxi SQL similar. Funcions específiques no dominades.</td>
+<td>Query language diferent. No practicat.</td>
 </tr>
 <tr>
-<td><strong>Cas d'Ús</strong></td>
-<td>✅ OLTP, CMSs, aplicacions web<br>Lectura-escriptura equilibrada</td>
-<td>✅ Analítica, GIS, dades complexes<br>Queries pesades</td>
-<td>✅ Apps real-time, IoT, logs<br>Escriptures massives</td>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>OLTP, CMSs, e-commerce, aplicacions web tradicionals.</td>
+<td>Analítica, GIS, dades complexes, aplicacions financeres.</td>
+<td>Real-time apps, IoT, logs, catàlegs de productes.</td>
 </tr>
 </tbody>
 </table>
 
-**🎯 Per què MySQL?**
-- **Model relacional perfecte:** Posts amb user_id (FK), timestamps, captions = esquema fix
-- **Simplicitat:** No necessitem JSONB, arrays, ni GIS de PostgreSQL per a una xarxa social bàsica
-- **Integració PHP nativa:** mysqli + PDO amb prepared statements anti-SQL Injection
-- **Hardening documentat:** Guies extenses de fortificació (eliminar users anònims, privilegis mínims, local_infile=0)
+**Justificació Tècnica:**
+
+MySQL 8.0 és la millor opció per aquest projecte:
+
+1. **Model relacional perfecte**: Taula `posts` (id, user_id, caption, image_url, timestamp) amb clau forana a `users`.
+2. **Prepared Statements natiu**: PDO amb `bindParam()` prevé SQL Injection sense configuració extra.
+3. **Hardening documentat**: Scripts `hardening.sql` amb eliminació usuaris anònims, root remot, privilegis mínims.
+4. **Integració mysqli**: Connexió persistent `mysqli_connect()` optimitzada per PHP-FPM.
 
 ---
 
-#### 📊 Monitoratge: Grafana + Loki vs ELK Stack vs Datadog
+#### 8. Autenticació: OpenLDAP vs FreeIPA vs Active Directory
 
 <table>
 <thead>
 <tr>
 <th width="20%">Criteri</th>
-<th width="26%">🏆 Grafana + Loki (ESCOLLIT)</th>
-<th width="27%">ELK Stack</th>
-<th width="27%">Datadog</th>
+<th width="27%">OpenLDAP (ESCOLLIT)</th>
+<th width="27%">FreeIPA</th>
+<th width="26%">Active Directory</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>Arquitectura</strong></td>
-<td>✅ 3 components lleugers<br>Grafana + Loki + Promtail</td>
-<td>❌ 3 components pesants<br>Elasticsearch + Logstash + Kibana</td>
-<td>✅ SaaS Managed<br>Agent únic</td>
+<td>Servidor LDAP pur. Protocol estàndard RFC 4511.</td>
+<td>Suite integrada (LDAP + Kerberos + DNS + CA). Solució completa.</td>
+<td>Directori Microsoft. LDAP + Kerberos + GPO + DNS.</td>
 </tr>
 <tr>
-<td><strong>Consum Recursos</strong></td>
-<td>✅ 500MB RAM total<br>Loki indexa només labels</td>
-<td>❌ 4GB+ RAM (Elasticsearch)<br>Full-text indexing</td>
-<td>✅ Agent 200MB RAM<br>Backend cloud</td>
+<td><strong>Complexitat</strong></td>
+<td>Configuració manual LDIF. Corba aprenentatge moderada.</td>
+<td>Setup automatitzat amb ipa-server-install. Més complex.</td>
+<td>GUI integrada. Requereix Windows Server.</td>
 </tr>
 <tr>
-<td><strong>Cost</strong></td>
-<td>✅ 100% Open Source<br>Self-hosted gratuït</td>
-<td>⚠️ Open Source (Elastic License)<br>Features limitades</td>
-<td>❌ SaaS de pagament<br>$15/host/mes mínim</td>
+<td><strong>Cas d'Ús Projecte</strong></td>
+<td>Autenticació simple 2 usuaris (Hamza, Kevin). LDAP puro suficient.</td>
+<td>Overkill per 2 usuaris. Dissenyat per centenars d'usuaris.</td>
+<td>No disponible Linux. Llicència Windows Server necessària.</td>
 </tr>
 <tr>
-<td><strong>Integració Docker</strong></td>
-<td>✅ Promtail docker_sd_configs<br>Auto-discovery natiu</td>
-<td>⚠️ Filebeat Docker input<br>Configuració manual</td>
-<td>✅ Agent auto-detect<br>Tags automàtics</td>
+<td><strong>Integració PHP</strong></td>
+<td>Extensió php-ldap nativa. ldap_bind() senzill.</td>
+<td>Kerberos + LDAP. Configuració SSO complexa.</td>
+<td>ldap_connect() funciona. SSPI no disponible Linux.</td>
 </tr>
 <tr>
-<td><strong>Query Language</strong></td>
-<td>✅ LogQL (similar PromQL)<br>Sintaxi simple</td>
-<td>⚠️ Lucene/KQL<br>Corba aprenentatge</td>
-<td>✅ GUI point-and-click<br>Query builder visual</td>
+<td><strong>Footprint</strong></td>
+<td>Imatge osixia/openldap 200MB. Procés slapd ~30MB RAM.</td>
+<td>Múltiples serveis. 1GB+ RAM requerit.</td>
+<td>Windows Server base 4GB+ RAM. No containeritzable.</td>
 </tr>
 <tr>
-<td><strong>Dashboards</strong></td>
-<td>✅ Grafana unificat<br>Logs + Mètriques same UI</td>
-<td>⚠️ Kibana separat<br>Prometheus requereix Grafana</td>
-<td>✅ Dashboards predefinits<br>Integracions automàtiques</td>
+<td><strong>Containerització</strong></td>
+<td>Imatge Docker oficial osixia/openldap. LDIF pre-configurable.</td>
+<td>Containers no oficials. Setup manual necessari.</td>
+<td>No suportat. Requereix VM Windows.</td>
 </tr>
 <tr>
-<td><strong>Retenció Dades</strong></td>
-<td>✅ 7 dies configurable<br>Filesystem/S3</td>
-<td>⚠️ Índexs creixents<br>Necessita gestió activa</td>
-<td>⚠️ 15 dies gratuïts<br>Extensió de pagament</td>
-</tr>
-<tr>
-<td><strong>Cas d'Ús</strong></td>
-<td>✅ Microserveis cloud-native<br>Kubernetes, Docker</td>
-<td>✅ Analítica de logs complexa<br>Full-text search massiu</td>
-<td>✅ Empreses SaaS<br>Sense gestió infraestructura</td>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>Autenticació simple, directoris corporatius, aplicacions custom.</td>
+<td>Infraestructura enterprise Linux, SSO avançat, PKI integrat.</td>
+<td>Infraestructura Windows, GPO, Exchange Server.</td>
 </tr>
 </tbody>
 </table>
 
-**🎯 Per què Grafana + Loki?**
-- **Eficiència:** Loki indexa només labels (container_name, stream) vs full-text indexing ELK = 1/10 RAM
-- **Experiència unificada:** Grafana mostra logs (Loki) + mètriques (Prometheus) en mateix dashboard
-- **Auto-discovery Docker:** Promtail detecta automàticament contenidors amb docker_sd_configs
-- **Cost zero:** Self-hosted open source vs Datadog $15/host/mes × 1 host = $180/any
+**Justificació Tècnica:**
+
+OpenLDAP s'adapta als requisits d'autenticació:
+
+1. **Simplicitat arquitectural**: LDAP pur sense overhead de Kerberos/DNS/CA.
+2. **Container-ready**: Imatge `osixia/openldap:1.5.0` amb LDIF pre-configurable via volum.
+3. **Integració PHP trivial**: Extensió `php-ldap` amb `ldap_bind("ldap://s8-ldap:389", "cn=hamza,ou=users,dc=extagram,dc=local", $password)`.
+4. **Footprint mínim**: 30MB RAM vs FreeIPA 1GB+.
 
 ---
 
-#### ⚙️ Automatització: Ansible vs Terraform vs Chef
+#### 9. Monitoratge Logs: Grafana + Loki vs ELK Stack vs Datadog
 
 <table>
 <thead>
 <tr>
 <th width="20%">Criteri</th>
-<th width="26%">🏆 Ansible (ESCOLLIT)</th>
+<th width="27%">Grafana + Loki (ESCOLLIT)</th>
+<th width="27%">ELK Stack</th>
+<th width="26%">Datadog</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Components</strong></td>
+<td>3 components lleugers: Grafana, Loki, Promtail.</td>
+<td>3 components pesants: Elasticsearch, Logstash, Kibana.</td>
+<td>Agent únic. Backend SaaS managed.</td>
+</tr>
+<tr>
+<td><strong>Indexació</strong></td>
+<td>Només labels (container_name, stream). Logs comprimits.</td>
+<td>Full-text indexing. Lucene inverted index.</td>
+<td>Full-text indexing cloud. Structured logs.</td>
+</tr>
+<tr>
+<td><strong>Consum Recursos</strong></td>
+<td>500MB RAM total. Loki 200MB, Promtail 50MB, Grafana 250MB.</td>
+<td>4GB+ RAM. Elasticsearch 2GB mínim per node.</td>
+<td>Agent 200MB RAM. Backend cloud (no computa local).</td>
+</tr>
+<tr>
+<td><strong>Query Language</strong></td>
+<td>LogQL similar a PromQL. Sintaxi simple e intuïtiva.</td>
+<td>Lucene/KQL. Corba aprenentatge pronunciada.</td>
+<td>Query builder visual. Sintaxi propietària.</td>
+</tr>
+<tr>
+<td><strong>Dashboards</strong></td>
+<td>Grafana unificat. Logs + mètriques mateix UI.</td>
+<td>Kibana separat. Prometheus requereix Grafana extern.</td>
+<td>Dashboards predefinits. Integracions automàtiques.</td>
+</tr>
+<tr>
+<td><strong>Retenció</strong></td>
+<td>7 dies configurable. Filesystem/S3 backend.</td>
+<td>Índexs creixents. Gestió activa necessària (ILM).</td>
+<td>15 dies free tier. Extensió de pagament.</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>100% Open Source. Self-hosted gratuït.</td>
+<td>Open Source (Elastic License v2). Features limitades.</td>
+<td>SaaS pagament. $15/host/mes mínim.</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>Microserveis cloud-native, Kubernetes, Docker, IoT.</td>
+<td>Analítica logs complexa, full-text search massiu, SIEM.</td>
+<td>Empreses SaaS, APM integrat, sense gestió infra.</td>
+</tr>
+</tbody>
+</table>
+
+**Justificació Tècnica:**
+
+Grafana + Loki s'ha escollit per eficiència i integració:
+
+1. **Eficiència recursos**: Loki indexa només `{container_name="extagram-s2-php"}` vs Elasticsearch que indexa tot el contingut dels logs (1/10 RAM).
+2. **UI unificada**: Grafana mostra logs (Loki) + mètriques (Prometheus) en mateix dashboard "Extagram Docker Monitoring".
+3. **Auto-discovery Docker**: Promtail amb `docker_sd_configs` detecta automàticament contenidors sense configuració manual.
+4. **Cost zero**: Self-hosted open source vs Datadog $15/host/mes × 1 host = $180/any.
+
+---
+
+#### 10. Monitoratge Mètriques: Prometheus vs InfluxDB vs Zabbix
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="27%">Prometheus (ESCOLLIT)</th>
+<th width="27%">InfluxDB</th>
+<th width="26%">Zabbix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model de Dades</strong></td>
+<td>Time-series pull-based. Targets scrapeados periòdicament.</td>
+<td>Time-series push-based. Agents envien mètriques.</td>
+<td>Model híbrid. Agents Zabbix + SNMP + JMX.</td>
+</tr>
+<tr>
+<td><strong>Query Language</strong></td>
+<td>PromQL. Sintaxi funcional potent (rate, sum, topk).</td>
+<td>InfluxQL/Flux. Sintaxi SQL-like.</td>
+<td>Query builder visual. Sintaxi limitada.</td>
+</tr>
+<tr>
+<td><strong>Integració Grafana</strong></td>
+<td>Datasource natiu. Suport complet PromQL.</td>
+<td>Datasource natiu. Flux suportat parcialment.</td>
+<td>Plugin Grafana disponible. Funcionalitat limitada.</td>
+</tr>
+<tr>
+<td><strong>Service Discovery</strong></td>
+<td>Natiu per Kubernetes, Docker, Consul, EC2, etc.</td>
+<td>Manual o via Telegraf inputs. Menys automàtic.</td>
+<td>Auto-discovery xarxa. SNMP/IPMI/JMX.</td>
+</tr>
+<tr>
+<td><strong>Escalabilitat</strong></td>
+<td>Single-node fins a milions de sèries. Federation per multi-node.</td>
+<td>Clustering natiu. Sharding horitzontal.</td>
+<td>Distributed monitoring. Proxy escalable.</td>
+</tr>
+<tr>
+<td><strong>Footprint</strong></td>
+<td>Imatge oficial 200MB. 300MB RAM base.</td>
+<td>Imatge oficial 300MB. 500MB RAM base.</td>
+<td>Server + DB + Frontend. 1GB+ RAM.</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>Microserveis, Kubernetes, containers, cloud-native.</td>
+<td>IoT, sensors, dades alta freqüència, analítica.</td>
+<td>Infraestructura tradicional, servidors físics, SNMP.</td>
+</tr>
+</tbody>
+</table>
+
+**Justificació Tècnica:**
+
+Prometheus és ideal per monitoratge de contenidors:
+
+1. **Pull-based architecture**: Prometheus scraped cAdvisor cada 5 segons (`scrape_interval: 5s`) sense configurar agents en contenidors.
+2. **Service discovery**: `static_configs: targets: ['cadvisor:8080']` amb auto-detection de tots els contenidors.
+3. **PromQL potent**: Queries com `rate(container_cpu_usage_seconds_total{name=~"extagram.*"}[30s]) * 100` calculen % CPU en temps real.
+4. **Integració Grafana nativa**: Datasource Prometheus amb queries directament en dashboards.
+
+---
+
+#### 11. Agregació Logs: Promtail vs Fluentd vs Filebeat
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="27%">Promtail (ESCOLLIT)</th>
+<th width="27%">Fluentd</th>
+<th width="26%">Filebeat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ecosistema</strong></td>
+<td>Ecosistema Grafana. Dissenyat específicament per Loki.</td>
+<td>CNCF project. Backend agnòstic (Elasticsearch, S3, etc.).</td>
+<td>Elastic Stack. Optimitzat per Elasticsearch.</td>
+</tr>
+<tr>
+<td><strong>Configuració</strong></td>
+<td>YAML simple. docker_sd_configs natiu per Docker.</td>
+<td>Ruby DSL. Sintaxi més complexa.</td>
+<td>YAML. Autodiscover Kubernetes/Docker.</td>
+</tr>
+<tr>
+<td><strong>Service Discovery</strong></td>
+<td>Docker socket natiu. Auto-detecció contenidors.</td>
+<td>Plugins Docker disponibles. Configuració manual.</td>
+<td>Autodiscover madur. Templates per Docker/K8s.</td>
+</tr>
+<tr>
+<td><strong>Pipeline Processing</strong></td>
+<td>Stages bàsics (regex, json, labels). Suficient per casos simples.</td>
+<td>Pipeline complex. Filters, parsers, transformacions.</td>
+<td>Processors limitats. Ingest Pipelines a Elasticsearch.</td>
+</tr>
+<tr>
+<td><strong>Footprint</strong></td>
+<td>Imatge oficial 60MB. 50MB RAM.</td>
+<td>Imatge oficial 150MB. 100MB RAM (Ruby runtime).</td>
+<td>Imatge oficial 100MB. 70MB RAM (Go binary).</td>
+</tr>
+<tr>
+<td><strong>Rendiment</strong></td>
+<td>Go natiu. 10K+ línies/seg per CPU core.</td>
+<td>Ruby runtime. 5K línies/seg per CPU core.</td>
+<td>Go natiu. 15K+ línies/seg per CPU core.</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>Ecosistema Grafana/Loki, Kubernetes, Docker.</td>
+<td>Multi-backend, pipelines complexos, ETL logs.</td>
+<td>Ecosistema Elastic, Beats modules (nginx, mysql).</td>
+</tr>
+</tbody>
+</table>
+
+**Justificació Tècnica:**
+
+Promtail s'integra perfectament amb l'stack de monitoratge:
+
+1. **Docker SD natiu**: `docker_sd_configs: host: unix:///var/run/docker.sock` detecta tots els contenidors automàticament.
+2. **Relabeling automàtic**: Extreu `container_name` de `__meta_docker_container_name` sense configuració manual.
+3. **Pipeline simple**: `pipeline_stages: - docker: {}` parseja logs JSON de Docker daemon.
+4. **Footprint mínim**: 50MB RAM vs Fluentd 100MB (Ruby overhead).
+
+---
+
+#### 12. Exportador Mètriques: cAdvisor vs node_exporter vs Telegraf
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="27%">cAdvisor (ESCOLLIT)</th>
+<th width="27%">node_exporter</th>
+<th width="26%">Telegraf</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Àmbit</strong></td>
+<td>Mètriques contenidors Docker. CPU, RAM, Network, Disk I/O per contenidor.</td>
+<td>Mètriques sistema host. CPU, RAM, Disk, Network del servidor.</td>
+<td>Agent universal. Sistema + Docker + MySQL + NGINX.</td>
+</tr>
+<tr>
+<td><strong>Granularitat</strong></td>
+<td>Per contenidor. container_cpu_usage_seconds_total{name="extagram-s2-php"}.</td>
+<td>Per host. node_cpu_seconds_total{cpu="0",mode="idle"}.</td>
+<td>Configurable. Docker input + system input + mysql input.</td>
+</tr>
+<tr>
+<td><strong>Exposició</strong></td>
+<td>HTTP endpoint /metrics. Format Prometheus natiu.</td>
+<td>HTTP endpoint /metrics. Format Prometheus natiu.</td>
+<td>Output plugins. Prometheus, InfluxDB, Elasticsearch.</td>
+</tr>
+<tr>
+<td><strong>Configuració</strong></td>
+<td>Zero configuració. Docker socket automàtic.</td>
+<td>Collectors seleccionables. --collector.cpu --collector.diskstats.</td>
+<td>TOML config. Inputs/outputs/processors configurables.</td>
+</tr>
+<tr>
+<td><strong>Footprint</strong></td>
+<td>Imatge oficial 100MB. 80MB RAM.</td>
+<td>Binari Go 20MB. 30MB RAM.</td>
+<td>Binari Go 50MB. 100MB RAM.</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>Monitoratge Docker/Kubernetes per contenidor.</td>
+<td>Monitoratge sistema Linux/Unix genèric.</td>
+<td>Agent universal multi-backend, pipelines mètriques.</td>
+</tr>
+</tbody>
+</table>
+
+**Justificació Tècnica:**
+
+cAdvisor és l'eina ideal per monitoratge de contenidors:
+
+1. **Granularitat per contenidor**: Exposa `container_memory_usage_bytes{name="extagram-s7-database"}` vs node_exporter que només mostra RAM total del host.
+2. **Zero configuració**: Docker socket mount `/var/run/docker.sock:/var/run/docker.sock:ro` i cAdvisor detecta tots els contenidors.
+3. **Integració Prometheus**: Endpoint `/cadvisor/metrics` scrapeado directament amb `metrics_path: '/cadvisor/metrics'`.
+4. **Mètriques exhaustives**: CPU, RAM, Network I/O, Disk I/O, Filesystem per cada contenidor.
+
+---
+
+#### 13. Automatització: Ansible vs Terraform vs Chef
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="27%">Ansible (ESCOLLIT)</th>
 <th width="27%">Terraform</th>
-<th width="27%">Chef</th>
+<th width="26%">Chef</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>Paradigma</strong></td>
-<td>✅ Procedural (push)<br>Playbooks YAML clars</td>
-<td>⚠️ Declaratiu (state)<br>HCL per infraestructura</td>
-<td>❌ DSL Ruby (pull)<br>Cookbooks complexos</td>
+<td>Procedural (push). Playbooks YAML defineixen passos sequencials.</td>
+<td>Declaratiu (state). HCL defineix estat desitjat.</td>
+<td>DSL Ruby (pull). Cookbooks amb recipes.</td>
 </tr>
 <tr>
 <td><strong>Cas d'Ús</strong></td>
-<td>✅ Config Management<br>Desplegament apps</td>
-<td>✅ Provisioning infra cloud<br>AWS, Azure, GCP</td>
-<td>✅ Config Management enterprise<br>Compliances avançats</td>
+<td>Configuration Management. Desplegament apps, configuració serveis.</td>
+<td>Infrastructure as Code. Provisioning cloud (AWS, Azure, GCP).</td>
+<td>Configuration Management enterprise. Compliances avançats.</td>
 </tr>
 <tr>
-<td><strong>Requisits Agents</strong></td>
-<td>✅ Agentless (SSH)<br>Python a target host</td>
-<td>✅ Agentless (API calls)<br>Terraform binary local</td>
-<td>❌ Chef Agent requerit<br>Chef Server centralitzat</td>
-</tr>
-<tr>
-<td><strong>Corba Aprenentatge</strong></td>
-<td>✅ YAML llegible<br>Sintaxi natural</td>
-<td>⚠️ HCL específic<br>Conceptes state/plan</td>
-<td>❌ Ruby DSL<br>Paradigma Chef complex</td>
+<td><strong>Arquitectura</strong></td>
+<td>Agentless. SSH + Python a target host.</td>
+<td>Agentless. API calls a cloud providers.</td>
+<td>Agent-based. Chef Client + Chef Server.</td>
 </tr>
 <tr>
 <td><strong>Idempotència</strong></td>
-<td>✅ Natiu en mòduls<br>changed/ok states</td>
-<td>✅ State tracking automàtic<br>Detecció drift</td>
-<td>✅ Resources convergence<br>Test-and-repair</td>
+<td>Natiu en mòduls (apt, systemd, docker_container). States changed/ok.</td>
+<td>State tracking automàtic. Detecció drift amb terraform plan.</td>
+<td>Resources convergence. Test-and-repair pattern.</td>
+</tr>
+<tr>
+<td><strong>Corba Aprenentatge</strong></td>
+<td>YAML llegible. Sintaxi natural tipus pseudocodi.</td>
+<td>HCL específic. Conceptes state/plan/apply.</td>
+<td>Ruby DSL complex. Paradigma Chef (resources, recipes).</td>
 </tr>
 <tr>
 <td><strong>Ecosistema</strong></td>
-<td>✅ Ansible Galaxy mòduls<br>Community immensa</td>
-<td>✅ Terraform Registry<br>Providers cloud</td>
-<td>⚠️ Chef Supermarket<br>Community reduïda</td>
+<td>Ansible Galaxy. 30K+ roles community.</td>
+<td>Terraform Registry. Providers per 3000+ serveis.</td>
+<td>Chef Supermarket. Community reduïda.</td>
 </tr>
 <tr>
 <td><strong>Cas d'Ús Projecte</strong></td>
-<td>✅ Verificar Docker running<br>Desplegar config files</td>
-<td>❌ No provisioning cloud<br>Host Ubuntu existent</td>
-<td>❌ Overhead innecessari<br>No compliances enterprise</td>
+<td>Verificar Docker running, llistar contenidors, comprovar SSL.</td>
+<td>No provisioning cloud. Host Ubuntu existent.</td>
+<td>Overhead innecessari per verificacions simples.</td>
 </tr>
 </tbody>
 </table>
 
-**🎯 Per què Ansible?**
-- **Simplicitat:** Playbooks YAML humans llegibles vs HCL Terraform o Ruby Chef
-- **Agentless:** SSH + Python (ja present Ubuntu) vs instal·lar Chef Agent + Server
-- **Cas d'ús perfecte:** Verificació sistema existent (Docker, SSL, contenidors) vs provisioning cloud Terraform
-- **Ecosistema:** Ansible Galaxy amb mòduls docker_container, systemd, apt perfectes pel projecte
+**Justificació Tècnica:**
+
+Ansible s'adapta als requisits d'automatització:
+
+1. **Agentless SSH**: Connexió directa `ansible_ssh_private_key_file: ~/ansible_extagram.pem` sense instal·lar agents.
+2. **Mòduls Docker**: `docker_container`, `docker_compose` permeten gestió completa de contenidors.
+3. **Playbooks humans llegibles**: YAML amb tasques com "Verificar Docker funcionant", "Llistar contenidors actius".
+4. **Cas d'ús adequat**: Verificació sistema existent vs Terraform dissenyat per provisioning infra cloud.
+
+---
+
+#### 14. Control de Versions: Git + GitHub vs GitLab vs Bitbucket
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="27%">Git + GitHub (ESCOLLIT)</th>
+<th width="27%">GitLab</th>
+<th width="26%">Bitbucket</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hosting</strong></td>
+<td>SaaS públic. Repositoris públics/privats gratuïts.</td>
+<td>SaaS públic + self-hosted. Instància pròpia disponible.</td>
+<td>SaaS públic Atlassian. Integració Jira nativa.</td>
+</tr>
+<tr>
+<td><strong>CI/CD</strong></td>
+<td>GitHub Actions. 2000 minuts/mes free tier.</td>
+<td>GitLab CI/CD. Pipelines YAML. 400 minuts/mes free.</td>
+<td>Bitbucket Pipelines. 50 minuts/mes free.</td>
+</tr>
+<tr>
+<td><strong>Comunitat</strong></td>
+<td>100M+ repositoris. Comunitat massiva open source.</td>
+<td>50M+ usuaris. Comunitat creixent.</td>
+<td>10M+ usuaris. Comunitat més petita.</td>
+</tr>
+<tr>
+<td><strong>Integracions</strong></td>
+<td>GitHub Marketplace. 10K+ apps i integracions.</td>
+<td>Ecosistema integrat. Built-in registry, wiki, issues.</td>
+<td>Atlassian ecosystem. Jira, Confluence, Trello.</td>
+</tr>
+<tr>
+<td><strong>Pages</strong></td>
+<td>GitHub Pages gratuït. Jekyll integrat.</td>
+<td>GitLab Pages gratuït. Static site hosting.</td>
+<td>No disponible. Requereix hosting extern.</td>
+</tr>
+<tr>
+<td><strong>Visibilitat</strong></td>
+<td>Estàndard del sector. Repositori públic visible per recrutadors.</td>
+<td>Menys visibilitat pública que GitHub.</td>
+<td>Principalment privat/empresarial.</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>Projectes open source, portfolios, comunitat developer.</td>
+<td>DevOps complet, self-hosted, pipelines avançats.</td>
+<td>Equips Atlassian, integració Jira/Confluence.</td>
+</tr>
+</tbody>
+</table>
+
+**Justificació Tècnica:**
+
+GitHub s'ha escollit per visibilitat i ecosistema:
+
+1. **Visibilitat professional**: Repositori públic [github.com/HamzaTayibiITB2425/extagram-project](https://github.com/HamzaTayibiITB2425/extagram-project) accessible per recrutadors.
+2. **GitHub Pages**: Documentació accessible via `https://hamzatayibiitb2425.github.io/extagram-project/`.
+3. **Markdown rendering**: README.md amb sintaxi GitHub-flavored (taules, checkboxes, syntax highlighting).
+4. **Estàndard del sector**: Git + GitHub utilitzat universalment en ASIX2c i empreses tech.
+
+---
+
+#### 15. Gestió de Projecte: ProofHub vs Jira vs Trello
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="27%">ProofHub (ESCOLLIT)</th>
+<th width="27%">Jira</th>
+<th width="26%">Trello</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Metodologia</strong></td>
+<td>Agile + Waterfall. Kanban, Gantt, Sprints.</td>
+<td>Agile natiu. Scrum, Kanban, reportings avançats.</td>
+<td>Kanban simple. Taulers amb llistes i cards.</td>
+</tr>
+<tr>
+<td><strong>Features</strong></td>
+<td>Tasks, Kanban, Gantt, Time Tracking, Files, Chat.</td>
+<td>Issues, Epics, Sprints, Burndown charts, Roadmaps.</td>
+<td>Cards, Checklists, Labels, Deadlines. Power-Ups limitades.</td>
+</tr>
+<tr>
+<td><strong>Complexitat</strong></td>
+<td>UI simple. Corba aprenentatge baixa.</td>
+<td>UI complexa. Configurable però overwhelming.</td>
+<td>UI minimalista. Extremadament simple.</td>
+</tr>
+<tr>
+<td><strong>Reporting</strong></td>
+<td>Reports bàsics. Gantt charts, time logs.</td>
+<td>Reporting avançat. Burndown, velocity, cumulative flow.</td>
+<td>Reporting limitat. Requereix Power-Ups.</td>
+</tr>
+<tr>
+<td><strong>Preu</strong></td>
+<td>$45/mes flat rate fins a 40 usuaris.</td>
+<td>$7/usuari/mes (Standard). Free tier limitat.</td>
+<td>Gratuït fins a 10 taulers. $5/usuari/mes Premium.</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>Equips petits-mitjans. Projectes educatius. All-in-one.</td>
+<td>Equips enterprise. Scrum avançat. Integracions Atlassian.</td>
+<td>Gestió personal. Projectes simples. Organització visual.</td>
+</tr>
+</tbody>
+</table>
+
+**Justificació Tècnica:**
+
+ProofHub s'adapta als requisits acadèmics:
+
+1. **All-in-one**: Tasks, Kanban, Gantt, Time Tracking, Files en una sola plataforma.
+2. **Simplicitat**: UI intuïtiva adequada per equip de 2 persones sense experiència prèvia en Jira.
+3. **Flat rate**: $45/mes fins a 40 usuaris vs Jira $7/usuari/mes × 2 = $14/mes (més econòmic).
+4. **Features acadèmiques**: Gantt chart per presentació final, Time Tracking per validar hores estimades.
+
+---
+
+#### 16. Sistema Operatiu: Ubuntu Server vs Debian vs CentOS
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="27%">Ubuntu Server (ESCOLLIT)</th>
+<th width="27%">Debian</th>
+<th width="26%">CentOS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cicle de Versions</strong></td>
+<td>LTS cada 2 anys. 5 anys suport gratuït.</td>
+<td>Stable cada 2 anys. Suport extens comunitat.</td>
+<td>Stream rolling release. CentOS 8 EOL 2021.</td>
+</tr>
+<tr>
+<td><strong>Paquets</strong></td>
+<td>APT. Repositoris Ubuntu + PPAs. Paquets recents.</td>
+<td>APT. Repositoris Debian. Paquets més conservadors.</td>
+<td>YUM/DNF. Repositoris RHEL. Paquets estables.</td>
+</tr>
+<tr>
+<td><strong>Kernel</strong></td>
+<td>Kernel recent. Ubuntu 22.04 LTS = kernel 5.15.</td>
+<td>Kernel conservador. Debian 11 = kernel 5.10.</td>
+<td>Kernel RHEL. CentOS Stream = kernel 5.14.</td>
+</tr>
+<tr>
+<td><strong>Cloud Images</strong></td>
+<td>AMIs oficials AWS. Optimitzades per cloud.</td>
+<td>AMIs disponibles. Menys optimització cloud.</td>
+<td>AMIs oficials AWS. Optimitzades RHEL/Red Hat.</td>
+</tr>
+<tr>
+<td><strong>Documentació</strong></td>
+<td>Documentació extensiva. Community forums actius.</td>
+<td>Wiki Debian exhaustiu. Comunitat tècnica.</td>
+<td>Docs RHEL aplicables. Comunitat en transició.</td>
+</tr>
+<tr>
+<td><strong>Experiència Equip</strong></td>
+<td>Domini complet. Practicat extensivament a ASIX2c.</td>
+<td>Sintaxi APT idèntica. Diferències menors.</td>
+<td>Sintaxi YUM diferent. No practicat.</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>Servidors cloud, Docker, Kubernetes, desktops.</td>
+<td>Servidors on-premise, estabilitat màxima, embedded.</td>
+<td>Enterprise RHEL-compatible (transició a Rocky/Alma).</td>
+</tr>
+</tbody>
+</table>
+
+**Justificació Tècnica:**
+
+Ubuntu Server 22.04 LTS és la millor opció:
+
+1. **LTS garantit**: 5 anys suport fins a Abril 2027 (cobreix cicle de vida del projecte + manteniment post-acadèmic).
+2. **Cloud-optimized**: AMI oficial AWS `ami-0c7217cdde317cfec` (us-east-1) amb optimitzacions networking.
+3. **Packages recents**: Docker 24.0, Docker Compose v2.20, Python 3.10, PHP 8.1 disponibles en repos oficials.
+4. **Experiència tècnica**: Domini complet APT, systemd, netplan practicat a ASIX2c.
+
+---
+
+#### 17. Proves d'Estrès: Apache Bench vs JMeter vs K6
+
+<table>
+<thead>
+<tr>
+<th width="20%">Criteri</th>
+<th width="27%">Apache Bench (ESCOLLIT)</th>
+<th width="27%">JMeter</th>
+<th width="26%">K6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Interfície</strong></td>
+<td>CLI puro. Comandos simples.</td>
+<td>GUI Java. Test plans XML.</td>
+<td>CLI + JavaScript. Scripts test.js.</td>
+</tr>
+<tr>
+<td><strong>Sintaxi</strong></td>
+<td>ab -n 1000 -c 100 https://extagram-grup3.duckdns.org/</td>
+<td>GUI point-and-click. Thread Groups, Samplers.</td>
+<td>JavaScript: http.get('https://example.com');</td>
+</tr>
+<tr>
+<td><strong>Complexitat</strong></td>
+<td>Molt simple. 1 comanda = 1 test.</td>
+<td>Complexitat alta. Configuració XML verbosa.</td>
+<td>Complexitat moderada. Scripting JavaScript.</td>
+</tr>
+<tr>
+<td><strong>Casos d'Ús</strong></td>
+<td>Tests HTTP simples. Benchmarks ràpids.</td>
+<td>Scenarios complexos. APIs, WebSockets, JDBC.</td>
+<td>Load testing modern. CI/CD integration, cloud.</td>
+</tr>
+<tr>
+<td><strong>Mètriques</strong></td>
+<td>Requests/sec, Time per request, Transfer rate.</td>
+<td>Response time, Throughput, Errors, Percentiles.</td>
+<td>HTTP req duration, VUs, iterations, checks.</td>
+</tr>
+<tr>
+<td><strong>Reporting</strong></td>
+<td>Stdout text. Simple i directe.</td>
+<td>HTML reports. Graphs, aggregate tables.</td>
+<td>JSON output. Integració Grafana/InfluxDB.</td>
+</tr>
+<tr>
+<td><strong>Cas d'Ús Ideal</strong></td>
+<td>Tests ràpids single-endpoint. Validació rendiment.</td>
+<td>Scenarios enterprise. Múltiples endpoints, workflows.</td>
+<td>Load testing cloud-native. Performance CI/CD.</td>
+</tr>
+</tbody>
+</table>
+
+**Justificació Tècnica:**
+
+Apache Bench és l'eina adequada per proves bàsiques:
+
+1. **Simplicitat absoluta**: Comanda `ab -n 10000 -c 100 https://extagram-grup3.duckdns.org/extagram.php` executa 10K requests amb 100 concurrents.
+2. **Instal·lació trivial**: `apt install apache2-utils` (2MB) vs JMeter (100MB Java runtime).
+3. **Mètriques suficients**: Requests/sec i Time/request validen que el sistema suporta càrrega esperada.
+4. **Cas d'ús adequat**: Projecte requereix validació bàsica de rendiment, no load testing enterprise.
 
 ---
 
 ### Resum de Decisions Tecnològiques
 
-| Component | Tecnologia Escollida | Raó Principal | Alternatives Descartades |
-|-----------|---------------------|---------------|--------------------------|
-| **Containerització** | 🐳 Docker | Ecosistema consolidat + Docker Compose | Podman, LXC/LXD |
-| **Proxy Invers** | ⚡ NGINX | Event-driven + WAF natiu + Footprint mínim | Apache, Traefik |
-| **Backend** | 🐘 PHP-FPM | Experiència equip + FastCGI natiu | Node.js, Python Flask |
-| **Base de Dades** | 🗄️ MySQL | Model relacional perfecte + Hardening docs | PostgreSQL, MongoDB |
-| **Monitoratge** | 📊 Grafana + Loki | Eficiència recursos + UI unificada | ELK Stack, Datadog |
-| **Automatització** | ⚙️ Ansible | YAML llegible + Agentless + Config Mgmt | Terraform, Chef |
+| Component | Tecnologia Escollida | Justificació Principal | Alternatives Descartades |
+|-----------|---------------------|------------------------|--------------------------|
+| **Containerització** | Docker | Ecosistema consolidat + Docker Compose YAML | Podman, LXC/LXD |
+| **Orquestració** | Docker Compose | Single-host + Simplicitat operacional | Kubernetes, Docker Swarm |
+| **Proxy Invers** | NGINX | Event-driven + FastCGI natiu + Footprint mínim | Apache, Traefik |
+| **WAF** | NGINX WAF | Zero overhead + Control granular + Self-hosted | ModSecurity, Cloudflare |
+| **Firewall** | iptables | Estàndard del sector + Experiència + Documentació | nftables, ufw |
+| **Backend** | PHP-FPM | FastCGI natiu + Process Manager + Experiència | Node.js, Python Flask |
+| **Base de Dades** | MySQL | Model relacional + PDO natiu + Hardening docs | PostgreSQL, MongoDB |
+| **Autenticació** | OpenLDAP | Simplicitat + Container-ready + php-ldap | FreeIPA, Active Directory |
+| **Monitoratge Logs** | Grafana + Loki | Eficiència recursos + UI unificada + Auto-discovery | ELK Stack, Datadog |
+| **Monitoratge Mètriques** | Prometheus | Pull-based + PromQL + Integració Grafana | InfluxDB, Zabbix |
+| **Agregació Logs** | Promtail | Docker SD natiu + Pipeline simple + Footprint | Fluentd, Filebeat |
+| **Exportador Mètriques** | cAdvisor | Granularitat contenidor + Zero config + /metrics | node_exporter, Telegraf |
+| **Automatització** | Ansible | Agentless SSH + YAML llegible + Config Mgmt | Terraform, Chef |
+| **Control de Versions** | Git + GitHub | Visibilitat + Ecosistema + Markdown rendering | GitLab, Bitbucket |
+| **Gestió de Projecte** | ProofHub | All-in-one + Simplicitat + Flat rate | Jira, Trello |
+| **Sistema Operatiu** | Ubuntu Server 22.04 | LTS 5 anys + Cloud-optimized + Experiència | Debian, CentOS |
+| **Proves d'Estrès** | Apache Bench | Simplicitat + Mètriques suficients + CLI pur | JMeter, K6 |
 
-**🎓 Lliçó Apresa:** Les millors tecnologies no són sempre les més modernes, sinó les que **encaixen amb els requisits del projecte**, **l'experiència de l'equip** i **els objectius d'aprenentatge**.
+**Conclusió:**
+
+Les decisions tecnològiques del projecte segueixen un patró coherent basat en tres principis fonamentals:
+
+1. **Eficiència de recursos**: Tecnologies amb footprint mínim (Alpine Linux, NGINX, Loki vs ELK).
+2. **Experiència tècnica**: Aprofitar coneixements existents per maximitzar qualitat (PHP-FPM, MySQL, iptables).
+3. **Simplicitat operacional**: Eines que minimitzen complexitat sense sacrificar funcionalitat (Docker Compose vs Kubernetes, ProofHub vs Jira).
+
+Aquestes eleccions han permès desenvolupar un sistema d'alta disponibilitat complet en 13 setmanes amb un equip de 2 persones, complint tots els objectius tècnics i pedagògics del projecte.
 
 ---
 
