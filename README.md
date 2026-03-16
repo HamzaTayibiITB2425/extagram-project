@@ -11,7 +11,7 @@
 ![Security](https://img.shields.io/badge/Security-WAF%20%2B%20Hardening%20%2B%20Firewall-red)
 ![Monitoring](https://img.shields.io/badge/Monitoring-Grafana%20%2B%20Loki%20%2B%20Prometheus-orange)
 
-**Aplicació web de xarxes socials amb arquitectura de microserveis**  
+**Servidor web de xarxes socials amb arquitectura de microserveis**  
 *Institut Tecnològic de Barcelona - ASIX2c*
 
 [Documentació](#documentació) • [Instal·lació](#guia-dinstal·lació-ràpida) • [Equip](#equip-de-treball) • [Planificació](#planificació-de-sprints)
