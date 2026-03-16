@@ -286,6 +286,12 @@ services:
     privileged: true
     command:
       - '--url_base_prefix=/cadvisor'
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/cadvisor/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     networks:
       - monitoring
 
