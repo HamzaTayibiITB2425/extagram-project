@@ -40,8 +40,8 @@ CD.
 | T5.1 | Centralització de logs: Grafana, Elastic o Nagios | Hamza | ✓ | Fet |
 | T5.2 | Proves d'estrès | Kevin | ✓ | Fet |
 | T5.3 | Dashboard de rendiment | Hamza, kevin | ✓ | Fet |
-| T5.4 | Automatització de la posada a producció del desplegament amb Ansible.| Hamza, Kevin | ✓ | Fet |
-| T5.5 | Alertes Telegram | Hamza, Kevin | ✓ | Fet |
+| T5.4 | Automatització de la posada a producció del desplegament amb Ansible.| Hamza | ✓ | Fet |
+| T5.5 | Alertes Telegram | Hamza | ✓ | Fet |
 
 ---
 
