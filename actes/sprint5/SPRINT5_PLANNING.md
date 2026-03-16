@@ -36,7 +36,7 @@ CD.
 | T5.2 | Proves d'estrès | Kevin | 3h | Alta |
 | T5.3 | Dashboard de rendiment | Hamza, Kevin | 2h | Alta |
 | T5.4 | automatització de la posada a producció del desplegament amb Ansible. | Hamza | 3h | Alta |
-| T5.5 | Alertes Telegram | Hamza | ✓ | Fet |
+| T5.5 | Alertes Telegram | Hamza | 2h | mitjà |
 
 Total estimat: 11 hores 
 
